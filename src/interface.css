@@ -1,0 +1,33 @@
+.bar {
+  position: absolute;
+  bottom: 0;
+  height: 192px;
+  display: flex;
+  cursor: pointer;
+}
+
+.bar .dialogueText {
+  position: absolute;
+  left: 50px;
+  top: 20px;
+  font-size: 28px;
+}
+
+.bar #second-line {
+  top: 80px;
+}
+
+#mainButtons {
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  width: 308px;
+  height: 152px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.mainButton {
+  background-color: white;
+  color: black;
+}
