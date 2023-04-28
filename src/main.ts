@@ -1,5 +1,5 @@
 import './main.css'
-import "./app.css"
+import "./styles/app.css"
 import typescriptLogo from "/typescript.svg"
 import logo from '/icon.svg'
 import { blackScreenIn, blackScreenOut } from './utils'
@@ -9,10 +9,10 @@ export let game: Game
 export const app = document.querySelector<HTMLDivElement>("#app") as HTMLElement
 function handleClick() {
   app.innerHTML = `
-  <canvas class="gameCanvas"></canvas>
+  <canvas class="gameCanvas"/></canvas>
 
   <div class="userInterface">
-    <div class="bar"/>
+    <div class="bar"></div>
   </div>
 
   <div class="blackScreen">

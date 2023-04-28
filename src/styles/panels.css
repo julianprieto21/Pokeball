@@ -1,0 +1,89 @@
+.panel {
+  position: absolute;
+}
+
+.panel h2 {
+  position: absolute;
+  margin: 0;
+  color: var(--dark-text-color);
+  font-size: 20px;
+
+}
+
+#allyPanel {
+  bottom: 192px;
+  right: 100px;
+}
+
+#enemyPanel {
+  top: 20px;
+  left: 120px;
+}
+
+.name,
+.level {
+  top: 22px;
+}
+
+#ally-name {
+  left: 60px;
+}
+
+#enemy-name {
+  left: 24px;
+}
+
+#ally-level {
+  right: 36px;
+}
+
+#enemy-level {
+  right: 56px;
+}
+
+#ally-current-health {
+  bottom: 30px;
+  right: 36px;
+}
+
+.health-bar {
+  position: absolute;
+  display: inline-block;
+  width: 196px;
+  top: 68px;
+}
+
+.default-health-bar {
+  height: 12px;
+  background-color: var(--default-health-color);
+}
+
+.current-health-bar {
+  height: 12px;
+  background-color: var(--green-health-color);
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+#ally-health-bar {
+  left: 188px;
+}
+
+#enemy-health-bar {
+  left: 152px;
+}
+
+#ally-experience-bar {
+  width: 256px;
+  position: absolute;
+  display: inline-block;
+  top: 132px;
+  left: 128px;
+}
+
+#ally-current-experience-bar {
+  background-color: var(--experience-color);
+  height: 8px;
+}

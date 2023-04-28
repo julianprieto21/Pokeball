@@ -1,8 +1,10 @@
 import { Pokemon } from "../dataClasses/pokemon";
 import { Movable, User } from "../main/engine";
 import { maps } from "../maps";
-// import { getPokemonData } from "../utils";
 import { gsap } from "gsap";
+import { Engine } from "./engine";
+import { Move } from "../dataClasses/move";
+import _ from "lodash";
 
 export class Battle {
   ctx: CanvasRenderingContext2D;
@@ -12,9 +14,9 @@ export class Battle {
   animationFrame: number;
   renderables: any[]; // Editar luego
   tl: GSAPTimeline;
-  queue: Function[]; // ???
   canClick: boolean;
   initialize: boolean;
+  eng: Engine;
   constructor(user: User, enemy: Pokemon, ctx: CanvasRenderingContext2D) {
     this.ctx = ctx;
     this.user = user;
@@ -23,11 +25,20 @@ export class Battle {
     this.animationFrame = 0;
     this.renderables = [];
     this.tl = gsap.timeline();
-    this.queue = [];
     this.canClick = false;
     this.initialize = false
+    this.eng = new Engine(this.ally, this.enemy, this.tl)
+  }
+  _allyAttack(move: Move) {
+    console.log("ally attack")
+    this.eng.attack(this.ally, move, this.enemy)
+  }
+  _enemyAttack(move: Move) {
+    console.log("enemy attack")
+    this.eng.attack(this.enemy, move, this.ally)
   }
   setBattle() {
+    // TODO: modificar de donde saca el mapa correspondiente
     const map = maps.startingMap;
     const backgroundImg = new Image();
     backgroundImg.src = map.fieldImg;

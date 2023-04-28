@@ -5,6 +5,7 @@ import { PokemonSprite } from "../drawClasses/pokemonSprite";
 import { PokemonData, PokemonBaseStats, PokemonStats, PokemonTypes, PokemonNatureStats } from "../types";
 import { statValue, setMovesByType, setNatureStats, getPokemonData } from "../utils";
 import _ from "lodash";
+import { Move } from "./move";
 
 export class Pokemon {
     // Todos privados por el momentos. Sujeto a modificaciones
@@ -32,7 +33,7 @@ export class Pokemon {
     public currentXp: number;
     public attempsToRun: number;
 
-    public moves: number[]//Move[];
+    public moves: Move[];
 
     constructor(data: PokemonData, isEnemy: boolean = false, level: number = 5) {
         this.id = data.main.id;

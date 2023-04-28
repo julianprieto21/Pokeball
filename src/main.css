@@ -1,13 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 
 :root {
-  /* font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif; */
   font-family: "Press Start 2P";
   line-height: 1.5;
   font-weight: 400;
 
   color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
+  color: rgba(255, 255, 255);
   background-color: #242424;
 
   font-synthesis: none;
@@ -15,16 +14,24 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
+
+  --green-health-color: rgb(88, 208, 128);
+  --default-health-color: rgb(72, 64, 88);
+  --experience-color: rgb(64, 200, 248);
+  --dark-text-color: rgb(40, 48, 48);
+  --light-text-color: rgb(255, 245, 254);
+
+  --button-border-color: #8888c8;
 }
 
 a {
   font-weight: 500;
-  color: #646cff;
+  color: #8888c8;
   text-decoration: inherit;
 }
 
 a:hover {
-  color: #535bf2;
+  color: var(--button-border-color);
 }
 
 body {
@@ -40,13 +47,6 @@ h1 {
   line-height: 1.1;
 }
 
-#app {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 0;
-  text-align: center;
-  position: relative;
-}
 
 .logo {
   height: 6em;
@@ -75,6 +75,7 @@ button {
 
 #startGame {
   background-color: #1a1a1a;
+  color: var(--light-text-color)
 }
 
 button:hover {

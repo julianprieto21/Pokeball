@@ -1,0 +1,76 @@
+.bar {
+  position: absolute;
+  bottom: 0;
+  height: 192px;
+  display: flex;
+  cursor: pointer;
+}
+
+.bar .dialogueText {
+  position: absolute;
+  left: 50px;
+  top: 26px;
+  font-size: 30px;
+  color: var(--light-text-color);
+  text-align: left;
+}
+
+.bar #second-line {
+  top: 80px;
+}
+
+#mainButtons {
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  width: 308px;
+  height: 152px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+button {
+  background-color: transparent;
+  color: #283030;
+}
+
+#fightButtons {
+  position: absolute;
+  display: grid;
+  top: 20px;
+  left: 20px;
+  width: 644px;
+  height: 152px;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+#move-info {
+  position: absolute;
+  width: 308px;
+  height: 152px;
+  top: 20px;
+  right: 20px;
+  font-size: 25px;
+  color: var(--dark-text-color);
+}
+
+#pp-info {
+  position: absolute;
+  left: 25px;
+  top: 25px;
+  color: var(--dark-text-color);
+}
+
+#type-info {
+  position: absolute;
+  left: 22px;
+  bottom: 25px;
+}
+
+#move-info img {
+  display: none;
+  position: absolute;
+  width: 100px;
+  left: 138px;
+  bottom: 0;
+}

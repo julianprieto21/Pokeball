@@ -133,7 +133,7 @@ export class Game {
     const enemy = new Pokemon(data, true, 5);
     const battle = new Battle(this.user, enemy, this.ctx);
     battle.setBattle()
-    this.interface.initBattle()
+    this.interface.initBattle(battle)
   }
   checkMove() {
     this.user.sprite.animate = false
@@ -157,7 +157,7 @@ export class Game {
   setGame() {
     const { background, foreground, boundaries, battleZones } = this._setMap()
     this.boundaries = boundaries, this.battleZones = battleZones
-    this.renderables = [background, ...this.boundaries, ...this.battleZones, this.user.sprite, foreground]
+    this.renderables = [background, this.user.sprite, foreground]
     this.movables = [background, foreground, ...this.boundaries, ...this.battleZones]
     this.animate()
     gsap.to(".gameCanvas", {

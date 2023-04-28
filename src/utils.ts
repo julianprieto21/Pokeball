@@ -59,7 +59,7 @@ export function setMovesByType(type: string) {
         moves.push(move);
         identifier++;
     })
-    return movesIds;
+    return moves;
 }
 export function setNatureStats(nature: PokemonData["nature"]) {
     const natureNameMap: NatureNames = {
