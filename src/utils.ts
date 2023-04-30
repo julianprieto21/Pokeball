@@ -2,13 +2,13 @@
 // Purpose: To create a file that will hold all the functions that are used in the logic of the app
 
 import { Move } from './dataClasses/move';
-import { movesByType } from './constants';
+import { movesByType, tileSize } from './constants';
 import { PokemonNatureStats, NatureNames, PokemonData } from './types';
 import { Boundary } from './main/engine';
 import _ from 'lodash';
 import { gsap } from 'gsap';
-
-const TILE_SIZE = 64;
+import { Item } from './dataClasses/item';
+import { ItemSprite } from './drawClasses/itemSprite';
 
 export function blackScreenIn() {
     gsap.to(".blackScreen", {
@@ -38,20 +38,7 @@ export function statValue(data: { base: { value: number, effort: number }, iv: n
 export function setMovesByType(type: string) {
     let movesIds: number[] = []
     let moves: Move[] = [];
-    switch (type) {
-        case "normal":
-            movesIds = movesByType.normal;
-            break;
-        case "grass":
-            movesIds = movesByType.grass;
-            break;
-        case "fire":
-            movesIds = movesByType.fire;
-            break;
-        case "water":
-            movesIds = movesByType.water;
-            break;
-    };
+    movesIds = movesByType[type]
     let identifier = 1;
     movesIds.forEach(async (id: number) => {
         const data = await getMoveData(id);
@@ -130,13 +117,13 @@ export async function getItemData(name: string) {
 export function mapCollisionsArrays(array: number[], offset: { x: number, y: number }) {
     const map: number[][] = []
     const list: Boundary[] = []
-    for (let i = 0; i < array.length; i += TILE_SIZE) {
-        map.push(array.slice(i, i + TILE_SIZE))
+    for (let i = 0; i < array.length; i += tileSize) {
+        map.push(array.slice(i, i + tileSize))
     }
     map.forEach((row: number[], i: number) => {
         row.forEach((value: number, j: number) => {
             if (value === 14759) {
-                list.push(new Boundary({ x: j * TILE_SIZE + offset.x, y: i * TILE_SIZE + offset.y }));
+                list.push(new Boundary({ x: j * tileSize + offset.x, y: i * tileSize + offset.y }));
             }
         });
     });
@@ -148,7 +135,27 @@ export function checkCollision(
     rect_2: { position: { x: number, y: number }, width: number, height: number }) {
     return (
         rect_1.position.x + rect_1.width >= rect_2.position.x &&
-        rect_1.position.x <= rect_2.position.x + TILE_SIZE &&
+        rect_1.position.x <= rect_2.position.x + tileSize &&
         rect_1.position.y <= rect_2.position.y &&
         rect_1.position.y + rect_1.height >= rect_2.position.y);
+}
+export async function mapItems(mapInfo: any) {
+    const map: number[][] = [];
+    const list: Item[] = [];
+    for (let i = 0; i < mapInfo.itemsArray.length; i += tileSize) {
+        map.push(mapInfo.itemsArray.slice(i, i + tileSize))
+    }
+    for (const row of map) {
+        const i: number = map.indexOf(row);
+        for (const value of row) {
+            const j: number = row.indexOf(value);
+            if (value === 14760) {
+                const itemData = await getItemData(_.sample(mapInfo.possibleItems)!);
+                const item = new Item(itemData)
+                item.setSprite({x: j * tileSize + mapInfo.offset.x, y: i * tileSize + mapInfo.offset.y})
+                list.push(item);
+            }
+        }
+    }
+    return list;
 }

@@ -20,8 +20,12 @@ import mainBar from "/assets/interface/battle/mainBar.png"
 import allyInfo from "/assets/interface/battle/allyInfo.png"
 import enemyInfo from "/assets/interface/battle/enemyInfo.png"
 import figthBar from "/assets/interface/battle/fightBar.png"
-//bag
-import backgroundImg from "/assets/interface/bag/bagBackground.png"
+// bag
+import backgroundBagImg from "/assets/interface/bag/bagBackground.png"
+import leftArrow from "/assets/interface/bag/leftarrow.png"
+import rightArrow from "/assets/interface/bag/rightarrow.png"
+// party
+import backgroundPartyImg from "/assets/interface/party/pokBackground.png"
 
 
 export class userInterface {
@@ -91,6 +95,21 @@ export class userInterface {
     const enemyMove = _.sample(enemyMoves)!
     this.updateAttacks(allyMove, enemyMove)
   }
+  handleBagArrow(e: Event) {
+    const button = e.currentTarget as HTMLButtonElement
+    const dir = button.id
+    const icons = document.getElementById("iconContainer")!
+
+    if (dir === "right") {
+      if (this.user.bag.selectedPocket == 7) this.user.bag.selectedPocket = 0;
+      else this.user.bag.selectedPocket ++;
+    } else {
+      if (this.user.bag.selectedPocket == 0) this.user.bag.selectedPocket = 7;
+      else this.user.bag.selectedPocket --;
+    }
+    this.user.bag.changePocket(this.user.bag.selectedPocket);
+
+  }
   updateAllyAttack(move: Move) {
     this.setDialogueBar(`${this.battle!.ally.name} used <br> ${move.name}!`, true)
     this.battle!._allyAttack(move);
@@ -140,7 +159,7 @@ export class userInterface {
       this.ui.innerHTML = "<div class='bar'></div>";
       this.battle!.ctx.clearRect(0, 0, 1024, 576);
       game.PAUSED = false;
-      game.setGame();
+      game.animate();
       blackScreenOut();
     }, 1000);
   }
@@ -290,10 +309,51 @@ export class userInterface {
   setBag() {
     this.state = "bag"
     this.ui.innerHTML = `
-    <img src=${backgroundImg} alt="Bag Background">
+    <img src=${backgroundBagImg} alt="Bag Background">
+
+    <div id="selector">
+      <button id="left" class="arrow">
+        <img id="leftImg" src=${leftArrow} alt="Left Arrow">
+      </button>
+      <img id="bag" src="#" alt="Pocket">
+      <button id="right" class="arrow">
+        <img id="rightImg" src=${rightArrow} alt="Right Arrow">
+      </button>
+    </div>
+
+    <div id="pocketName"></div>
+
+    <div id="iconContainer">
+      <img id="iconImg" src="#" alt="pocket"></img>
+    </div>
+
+    <div id="itemList"></div>
+
+    <div id="itemIcon">
+      <img id="itemImg" src="#" alt="item icon"></img>
+    </div>
+
+    <div id="itemDescription"></div>
+
+    <button id="backButton">BACK</button>
     `
+    this.user.bag.openBag()
+    this.user.bag.changePocket(this.user.bag.selectedPocket)
+    document.querySelectorAll(".arrow").forEach((arrow) => {
+      arrow.addEventListener("click", this.handleBagArrow.bind(this))
+    })
+    document.getElementById("backButton")!.addEventListener("click", this.setMainBattle.bind(this))
+
   }
   setParty() {
     this.state = "party"
+    this.ui.innerHTML = `
+    <img src="${backgroundPartyImg}" alt="Party background">
+
+    <button id="backButton">BACK</button>
+    `
+
+    document.getElementById("backButton")!.addEventListener("click", this.setMainBattle.bind(this))
+
   }
 }

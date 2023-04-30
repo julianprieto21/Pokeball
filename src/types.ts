@@ -214,7 +214,7 @@ export type Pockets = {
     [key: string]: Item[],
     items: Item[];
     medicine: Item[];
-    pokeBalls: Item[];
+    pokeballs: Item[];
     machines: Item[];
     berries: Item[];
     mail: Item[];

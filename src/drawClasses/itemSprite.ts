@@ -1,15 +1,18 @@
+import { Item } from "../dataClasses/item";
 import { Sprite } from "../types";
 
 export class ItemSprite implements Sprite {
     public position: { x: number, y: number };
+    public name: string;
     public imageDir: string;
     public image: HTMLImageElement;
     public width: number;
     public height: number;
 
-    constructor(position: { x: number, y: number }, itemName: string) {
+    constructor(position: { x: number, y: number }, name: string) {
         this.position = position;
-        this.imageDir = `./assets/sprites/items/${itemName}.png`;
+        this.name = name;
+        this.imageDir = `assets/sprites/items/${name.replace("-", "")}.png`;
         this.width = 0;
         this.height = 0;
         this.image = new Image();
@@ -18,5 +21,8 @@ export class ItemSprite implements Sprite {
             this.width = this.image.width;
             this.height = this.image.height;
         }
+    }
+    draw(ctx: CanvasRenderingContext2D) {
+        ctx.drawImage(this.image, this.position.x, this.position.y);
     }
 }

@@ -1,0 +1,98 @@
+#selector {
+  position: absolute;
+  width: 372px;
+  height: 176px;
+  top: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.arrow {
+  border: 0;
+}
+
+#pocketName {
+  position: absolute;
+  display: flex;
+  top: 192px;
+  width: 372px;
+  height: 48px;
+  align-items: center;
+  justify-content: center;
+  color: var(--dark-text-color);
+}
+
+#iconContainer {
+  display: block;
+  position: absolute;
+  width: 364px;
+  height: 56px;
+  top: 260px;
+  text-align: left;
+}
+
+#itemIcon {
+  width: 112px;
+  height: 112px;
+  position: absolute;
+  bottom: 40px;
+  left: 40px;
+}
+
+#itemList {
+  position: absolute;
+  top: 36px;
+  left: 400px;
+  width: 500px;
+  max-height: 296px;
+  overflow-y: scroll;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+#itemList button {
+  display: flex;
+  border-radius: 10px;
+  padding: 10px;
+  width: 100%;
+  border: transparent 4px solid;
+  transition: none;
+}
+
+#itemList button:hover {
+  border: red 4px solid
+}
+
+#itemList::-webkit-scrollbar {
+  width: 10px;
+  background-color: var(--white-color-bar);
+}
+
+#itemList::-webkit-scrollbar-thumb {
+  background-color: rgba(40, 48, 48, .6);
+  border-radius: 10px;
+}
+
+#itemList::-webkit-scrollbar-thumb:hover {
+  background-color: var(--dark-text-color);
+}
+
+#itemDescription {
+  position: absolute;
+  width: 600px;
+  height: 150px;
+  bottom: 21px;
+  left: 212px;
+}
+
+#backButton {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  color: var(--light-text-color);
+  background-color: red;
+  border-radius: 8px 0 0 0;
+  transition: none;
+}

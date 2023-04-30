@@ -1,6 +1,7 @@
 // Path: src\utils\dataClasses\itemData.ts
 // Purpose: To create a class that will hold the data for an item
 
+import { ItemSprite } from "../drawClasses/itemSprite";
 import { ItemData } from "../types";
 
 export class Item {
@@ -10,9 +11,7 @@ export class Item {
     public description: string;
     public cost: number;
     public pocket: string;
-
-    public srcImg: string;
-    public sprite: HTMLImageElement;
+    public sprite: ItemSprite;
 
     constructor(data: ItemData) {
         this.id = data.main.id;
@@ -21,12 +20,12 @@ export class Item {
         this.description = data.main.effect_entries[0].short_effect;
         this.cost = data.main.cost;
         this.pocket = data.category.pocket.name;
-
-        this.srcImg = "#" //`assets/sprites/items/${this.name.replace(" ", "")}.png`;
-        this.sprite = new Image();
-        this.sprite.src = this.srcImg;
+        this.sprite = new ItemSprite({x: 0, y: 0}, this.name);
     }
     public use() {
         this.quantity--;
+    }
+    public setSprite(position: {x: number, y: number}) {
+        this.sprite = new ItemSprite(position, this.name)
     }
 }

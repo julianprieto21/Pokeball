@@ -1,11 +1,13 @@
 import { Boundary, Movable } from "./engine";
 import { User } from "./engine";
-import { checkCollision, getPokemonData, mapCollisionsArrays } from "../utils";
+import { checkCollision, getPokemonData, mapCollisionsArrays, mapItems } from "../utils";
 import { maps } from "../maps";
 import { gsap } from "gsap";
 import { Battle } from "../battle/game";
 import { Pokemon } from "../dataClasses/pokemon";
 import { userInterface } from "../interface";
+import { ItemSprite } from "../drawClasses/itemSprite";
+import { Item } from "../dataClasses/item";
 
 const keymap: { [key: string]: boolean } = {
   w: false,
@@ -18,42 +20,50 @@ let lastkey: string = "";
 export class Game {
   private canvas: HTMLCanvasElement;
   private ctx: CanvasRenderingContext2D;
-  private boundaries: Boundary[];
-  private battleZones: Boundary[];
-  private movables: (Movable | Boundary)[];
-  private renderables: any[];
-  public animationFrame: number;
-  public user: User;
+  private boundaries: Boundary[] = [];
+  private battleZones: Boundary[] = [];
+  private items: Item[] = [];
+  private itemsSprites: ItemSprite[] = [];
+  private movables: (Movable | Boundary)[] = [];
+  private renderables: any[] = [];
+  public animationFrame: number = 0;
+  public user: User = new User();
   public PAUSED: boolean = false;
-  public interface: userInterface;
+  public interface: userInterface = new userInterface(this.user);
+  private itemInFront: Item | undefined
 
-  public handleKeyUp(e: KeyboardEvent) {
+  private handleKeyUp(e: KeyboardEvent) {
     if (e.key === "w" || e.key === "a" || e.key === "s" || e.key === "d") {
       keymap[e.key] = false;
     }
   };
-  public handleKeyDown(e: KeyboardEvent) {
+  private handleKeyDown(e: KeyboardEvent) {
     if (e.key === "w" || e.key === "a" || e.key === "s" || e.key === "d") {
       keymap[e.key] = true;
       lastkey = e.key
+    }
+    if (e.key === "e" && this.itemInFront) {
+      // get the exact item from the sprites list
+      const pickUpItem = this.itemsSprites.find(item => item === this.itemInFront!.sprite)
+      // delete item from lists
+      this.items = this.items.filter(item => item.sprite !== pickUpItem);
+      this.itemsSprites = this.itemsSprites.filter(item => item !== pickUpItem)
+      this.renderables = this.renderables.filter(item => item !== pickUpItem)
+      this.movables = this.movables.filter(item => item !== pickUpItem)
+      // pick up item
+      this.user.bag.pickUpItem(this.itemInFront)
     }
   };
 
   constructor(canvas: HTMLCanvasElement) {
     this.canvas = canvas;
     this.ctx = this.canvas.getContext("2d") as CanvasRenderingContext2D;
-    this.boundaries = [];
-    this.battleZones = [];
-    this.movables = [];
-    this.renderables = [];
     this.ctx.fillStyle = "black";
     this.ctx.fillRect(0, 0, 1024, 576);
-    this.animationFrame = 0;
-    this.user = new User();
-    this.interface = new userInterface(this.user);
   }
-  _setMap() {
+  async _setMap() {
     const map = maps.startingMap
+    const items = await mapItems(map)
     const boundaries = mapCollisionsArrays(map.collisionsArray, map.offset)
     const battleZones = mapCollisionsArrays(map.battleZonesArray, map.offset)
     const foregroundImg = new Image()
@@ -62,7 +72,7 @@ export class Game {
     backgroundImg.src = map.backImg
     const background = new Movable(map.offset.x, map.offset.y, backgroundImg)
     const foreground = new Movable(map.offset.x, map.offset.y, foregroundImg)
-    return { background, foreground, boundaries, battleZones }
+    return { background, foreground, boundaries, battleZones, items }
 
   }
   move(key: string) {
@@ -91,9 +101,20 @@ export class Game {
         break;
       }
     }
+    // Item collision
+    for (let i = 0; i < this.items.length; i++) {
+      const item = this.items[i];
+      if (checkCollision(this.user.sprite, new Boundary(
+        {x: item.sprite.position.x + x*speed, y: item.sprite.position.y + y*speed}))) {
+          this.user.moving = false;
+          this.itemInFront = item;
+          break;
+        }
+    }
 
     if (this.user.moving) {
       this.movables.forEach((movable) => {
+        this.itemInFront = undefined;
         movable.position.x += x * speed
         movable.position.y += y * speed
       })
@@ -134,6 +155,9 @@ export class Game {
     const battle = new Battle(this.user, enemy, this.ctx);
     battle.setBattle()
     this.interface.initBattle(battle)
+
+    window.removeEventListener("keydown", this.handleKeyDown.bind(this))
+    window.removeEventListener("keyup", this.handleKeyUp.bind(this))
   }
   checkMove() {
     this.user.sprite.animate = false
@@ -154,15 +178,21 @@ export class Game {
       this._checkBattle();
     }
   }
-  setGame() {
-    const { background, foreground, boundaries, battleZones } = this._setMap()
-    this.boundaries = boundaries, this.battleZones = battleZones
-    this.renderables = [background, this.user.sprite, foreground]
-    this.movables = [background, foreground, ...this.boundaries, ...this.battleZones]
+  async setGame() {
+    const { background, foreground, boundaries, battleZones, items } = await this._setMap()
+    this.boundaries = boundaries, this.battleZones = battleZones, this.items = items
+    this.items.forEach((item) => {
+      this.itemsSprites.push(item.sprite)
+    })
+    this.renderables = [background, ...this.itemsSprites, this.user.sprite, foreground]
+    this.movables = [background, ...this.itemsSprites, foreground, ...this.boundaries, ...this.battleZones]
     this.animate()
     gsap.to(".gameCanvas", {
       opacity: 1
     })
+
+    window.addEventListener("keydown", this.handleKeyDown.bind(this))
+    window.addEventListener("keyup", this.handleKeyUp.bind(this))
   }
   animate() {
     this.animationFrame = window.requestAnimationFrame(this.animate.bind(this))
@@ -176,5 +206,3 @@ export class Game {
   }
 }
 
-window.addEventListener("keydown", Game.prototype.handleKeyDown)
-window.addEventListener("keyup", Game.prototype.handleKeyUp)

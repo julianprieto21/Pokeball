@@ -26,8 +26,8 @@ function handleClick() {
   blackScreenIn()
   game = new Game(canvas)
 
-  setTimeout(() => {
-    game.setGame()
+  setTimeout(async() => {
+    await game.setGame()
     blackScreenOut()
   }, 1000);
 
@@ -35,7 +35,7 @@ function handleClick() {
 
 app.innerHTML = `
   <div>
-    <a href="#" target="_blank">
+    <a href="https://github.com/julianprieto21/Pokeball" target="_blank">
       <img src="${logo}" class="logo" alt="Vite logo" />
     </a>
 

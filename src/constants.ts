@@ -5,7 +5,7 @@ export const canvasWidth = 1024;
 export const canvasHeight = 576;
 export const tileSize = 64;
 
-export const movesByType = {
+export const movesByType: Record<string, number[]> = {
     "normal": [33, 10],
     "grass": [33, 75],
     "fire": [33, 52],
