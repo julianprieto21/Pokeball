@@ -8,7 +8,6 @@ import { Boundary } from './main/engine';
 import _ from 'lodash';
 import { gsap } from 'gsap';
 import { Item } from './dataClasses/item';
-import { ItemSprite } from './drawClasses/itemSprite';
 
 export function blackScreenIn() {
     gsap.to(".blackScreen", {

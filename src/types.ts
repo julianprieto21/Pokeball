@@ -136,6 +136,7 @@ export interface ItemData {
         cost: number;
         effect_entries: {
             0: {
+                effect: string;
                 short_effect: string;
             }
         };

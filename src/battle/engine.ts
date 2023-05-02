@@ -47,7 +47,7 @@ export class Engine {
       let b
       if (move.type === maker.types.first || move.type === maker.types.second) b = 1.5;
       else b = 1;
-      const e = effectChart[typesMap[move.type]][typesMap[receiver.types.first]];
+      const e = effectChart[typesMap[move.type].id][typesMap[receiver.types.first].id];
       return {e, b}
     }
     // get attack and defense values

@@ -1,30 +1,33 @@
 import { Pokemon } from "../dataClasses/pokemon";
 import { Item } from "../dataClasses/item";
 import { Pockets } from "../types";
-import { tileSize } from "../constants";
+import { pocketMap, tileSize } from "../constants";
 import { getPokemonData } from "../utils";
 import { PlayerSprite } from "../drawClasses/playerSprite";
-import { gsap } from "gsap";
 
 export class User {
     teamNames: string[];
     team: Team;
-    // party: Party;
+    party: Party;
     bag: Bag;
     sprite: PlayerSprite;
     moving: boolean
 
     constructor() {
-        this.teamNames = ["charmander", "squirtle", "bulbasaur"];
+        this.teamNames = ["charmander", "squirtle", "bulbasaur", "charizard"];
         this.team = new Team(this.teamNames);
-        // this.party = new Party(this.team);
+        this.party = new Party(this.team);
         this.bag = new Bag();
         this.sprite = new PlayerSprite();
         this.moving = false
     }
-    // public pickUpItem(item: Item) {
-    //     this.bag.pickUpItem(item);
-    // }
+    public pickUpItem(item: Item) {
+        if (this.bag.length < 100) {
+            this.bag.addItem(item);
+        } else {
+            console.log("Bag is full")
+        }
+    }
 }
 
 class Team {
@@ -84,8 +87,7 @@ class Bag {
             7: { name: "key", info: "Key Items" }
         };
     }
-    private _addItem(item: Item) {
-        // TODO: verificar si item.pocket corresponde con las keys de this.pockets (PokeAPI)
+    public addItem(item: Item) {
         const itemInPocket = this.pockets[item.pocket].find((i: Item) => i.name === item.name);
         if (itemInPocket === undefined) {
             this.pockets[item.pocket].push(item);
@@ -94,48 +96,48 @@ class Bag {
             itemInPocket.quantity++;
         }
     }
-    public pickUpItem(item: Item) {
-        if (this.length < 100) {
-            this._addItem(item);
-        } else {
-            console.log("Bag is full")
-        }
-    }
     public changePocket(pocket: number) {
         // TODO: evitar duplicacion de items
         console.log(this.pocketMap[pocket].name)
 
         const list = document.getElementById("itemList")!;
-        const pocketImg = document.getElementById("bag") as HTMLImageElement;
-        const pocketIcon = document.getElementById("iconImg") as HTMLImageElement;
-        const pocketName = document.getElementById("pocketName")!;
-        const pocketIcons = document.getElementById("iconContainer")!;
-        const itemImg = document.getElementById("itemImg") as HTMLImageElement;
-        const desc = document.getElementById("itemDescription")!
-        pocketImg.src = `/assets/interface/bag/${this.pocketMap[pocket].name}Bag.png`;
-        pocketIcon.src = `/assets/interface/bag/${this.pocketMap[pocket].name}BagIcon.png`;
-        pocketName.innerText = this.pocketMap[pocket].info;
-        gsap.to(pocketIcons, {left: 4 + pocket * 44 + "px", duration: 0.1, onComplete: () => {
-            pocketIcons.style.left = 4 + pocket * 44 + "px";
-        }}) 
+        const description = document.getElementById("description")!;
        
         let elements: HTMLElement[] = [];
         list.replaceChildren()
         for (const item of this.pocketList[pocket]) {
-        const element = document.createElement("button");
-        element.innerText = item.quantity + "x " + item.name;
-        elements.push(element);
+            const element = document.createElement("button");
+            element.innerHTML = `
+            <img src="/assets/sprites/items/${item.name}.png">
+            <h2 id="itemName">${item.name}</h2>
+            <h2 id="itemQuantity">X ${item.quantity}</h2>`
+            elements.push(element);
         }
         if (elements.length > 0) list.replaceChildren(...elements)        
 
         if (this.pocketList[pocket].length > 0) {
-            itemImg.style.display = "block";
-            itemImg.src = this.pocketList[pocket][0].sprite.imageDir;
-            desc.innerText = this.pocketList[pocket][0].description;
+            const firstItem = this.pocketList[pocket][0]
+            description.innerHTML = `
+            <h2 style="background-color: ${pocketMap[this.pocketMap[pocket].name].color}">${firstItem.name}</h2>
+            <p>${firstItem.description}</p>
+            `
         } else {
-            itemImg.style.display = "none";
-            desc.innerText = "No items in this pocket"
+            description.innerHTML = `
+            <h2></h2>
+            <p></p>
+            `
         }
+
+        document.getElementById("itemList")?.querySelectorAll("button").forEach((item) => {
+            item.addEventListener("click", () => {
+                const name = item.querySelector("h2")!.innerText;
+                const obj = this.pocketList[pocket].find(item => item.name === name)!
+                description.innerHTML = `
+                <h2 style="background-color: ${pocketMap[this.pocketMap[pocket].name].color}">${obj.name}</h2>
+                <p>${obj.description}</p>
+                `
+            })
+        })
     }
     public openBag() {
         this.open = true;
@@ -152,22 +154,22 @@ class Bag {
     }
 }
 
-// class Party {
-//     team: Team;
-//     open: boolean;
-//     constructor(team: Team) {
-//         this.team = team;
-//         this.open = false;
-//     }
-//     public openParty() {
-//         this.open = true;
-//         // TODO: open party menu
-//     }
-//     public closeParty() {
-//         this.open = false;
-//         // TODO: close party menu
-//     }
-// }
+class Party {
+    team: Team;
+    open: boolean;
+    constructor(team: Team) {
+        this.team = team;
+        this.open = false;
+    }
+    public openParty() {
+        this.open = true;
+        // TODO: open party menu
+    }
+    public closeParty() {
+        this.open = false;
+        // TODO: close party menu
+    }
+}
 
 export class Boundary {
     position: { x: number, y: number };

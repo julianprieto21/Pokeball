@@ -1,4 +1,3 @@
-import { Item } from "../dataClasses/item";
 import { Sprite } from "../types";
 
 export class ItemSprite implements Sprite {

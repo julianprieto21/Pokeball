@@ -7,6 +7,7 @@ import { Move } from "./dataClasses/move";
 import { blackScreenIn, blackScreenOut } from "./utils";
 import { game } from "./main";
 import { Pokemon } from "./dataClasses/pokemon";
+import { pocketMap, typesMap } from "./constants";
 
 import "./styles/interface.css"
 import "./styles/panels.css"
@@ -21,11 +22,9 @@ import allyInfo from "/assets/interface/battle/allyInfo.png"
 import enemyInfo from "/assets/interface/battle/enemyInfo.png"
 import figthBar from "/assets/interface/battle/fightBar.png"
 // bag
-import backgroundBagImg from "/assets/interface/bag/bagBackground.png"
-import leftArrow from "/assets/interface/bag/leftarrow.png"
-import rightArrow from "/assets/interface/bag/rightarrow.png"
+import backgroundImg from "/assets/interface/bag/test.png"
 // party
-import backgroundPartyImg from "/assets/interface/party/pokBackground.png"
+// import backgroundPartyImg from "/assets/interface/party/pokBackground.png"
 
 
 export class userInterface {
@@ -75,15 +74,16 @@ export class userInterface {
     }
   }
   handleAttackHover(e: Event) {
-    console.log("mouse enter")
     const moveButton: any = e.target!;
     const moveName = moveButton.innerText;
     const moves = this.battle!.ally.getMoves()
     const move = moves.find(move => move.name === moveName)!
-    const typeImg = document.getElementById("move-info-img") as HTMLImageElement
-    typeImg.style.display = "block";
-    typeImg.src = `assets/interface/types/${move.type}.png`;
-    document.getElementById("pp-info")!.innerText = "PP " + move.currentPp + "/" + move.pp;
+    const type = document.getElementById("type")!
+    const pp = document.getElementById("pp-info")!
+    type.style.display = "block";
+    type.style.backgroundColor = typesMap[move.type].color;
+    type.innerText = typesMap[move.type].name
+    pp.innerText = "PP " + move.currentPp + "/" + move.pp;
   }
   handleAttackClick(e: Event) {
     console.log("attack click")
@@ -95,19 +95,11 @@ export class userInterface {
     const enemyMove = _.sample(enemyMoves)!
     this.updateAttacks(allyMove, enemyMove)
   }
-  handleBagArrow(e: Event) {
-    const button = e.currentTarget as HTMLButtonElement
-    const dir = button.id
-    const icons = document.getElementById("iconContainer")!
-
-    if (dir === "right") {
-      if (this.user.bag.selectedPocket == 7) this.user.bag.selectedPocket = 0;
-      else this.user.bag.selectedPocket ++;
-    } else {
-      if (this.user.bag.selectedPocket == 0) this.user.bag.selectedPocket = 7;
-      else this.user.bag.selectedPocket --;
-    }
-    this.user.bag.changePocket(this.user.bag.selectedPocket);
+  handlePocketButtons(e: Event) {
+    const button = e.currentTarget as HTMLElement
+    const pocket = button.id;
+    this.user.bag.selectedPocket = pocketMap[pocket].id;
+    this.user.bag.changePocket(this.user.bag.selectedPocket)
 
   }
   updateAllyAttack(move: Move) {
@@ -148,7 +140,7 @@ export class userInterface {
   }
   updateExperience() {
     const xp = this.battle!.eng.getExperience();
-    this.setDialogueBar(`${this.battle!.ally.name} has won ${xp} <br> experience!`, true)
+    this.setDialogueBar(`${this.battle!.ally.name} gained ${xp} <br> experience points!`, true)
     this.battle!.eng.winExperience();
   }
   quit() {
@@ -253,6 +245,24 @@ export class userInterface {
     this.bar = document.querySelector<HTMLDivElement>(".bar")!
     this.bar.addEventListener("click", this.handleMainClick.bind(this))
   }
+  setPokList() {
+    const poks = document.getElementById("pokemones")!
+    for (let i = 0; i < this.user.teamNames.length; i++) {
+      const element = document.createElement("div")!;
+      element.id = `pokemon-${i}`
+      element.className = "pokemon"
+      const pokemon = this.user.team.pokemon[i];
+      const health = pokemon.currentHp * 160 / pokemon.stats.hp
+      element.innerHTML = `
+      <img id="icon" src="/assets/sprites/pokemon/front/${pokemon.id}.png">
+      <h2 id="name">${pokemon.name}</h2>
+      <div id="healthBar" style="width: ${health}px"></div>
+      <h2 id="health">${pokemon.currentHp}/${pokemon.stats.hp}<h2>
+      <h2 id="level">Lv. ${pokemon.level}</h2>
+      `
+      poks.appendChild(element)
+    }
+  }
   setMainBattle() {
     this.state = "main";
     const text = `What should <br> ${this.battle!.ally.name} do?`
@@ -287,7 +297,7 @@ export class userInterface {
         <div id="pp-info">PP</div>
         <div id="type-info">
           TYPE/
-          <img id="move-info-img" src="#" alt="Move Type">
+          <div id="type"></div>
         </div>
       </div>
     </div>
@@ -300,55 +310,73 @@ export class userInterface {
       button.addEventListener("click", this.handleAttackClick.bind(this))
       button.addEventListener("mouseenter", this.handleAttackHover.bind(this))
       button.addEventListener("mouseleave", () => {
-        console.log("mouse leave")
         document.getElementById("pp-info")!.innerText = "PP"
-        document.getElementById("move-info-img")!.style.display = "none";
+        document.getElementById("type")!.style.display = "none";
       })
     })
   }
   setBag() {
     this.state = "bag"
     this.ui.innerHTML = `
-    <img src=${backgroundBagImg} alt="Bag Background">
+    <img src=${backgroundImg} alt="Bag Background">
 
-    <div id="selector">
-      <button id="left" class="arrow">
-        <img id="leftImg" src=${leftArrow} alt="Left Arrow">
-      </button>
-      <img id="bag" src="#" alt="Pocket">
-      <button id="right" class="arrow">
-        <img id="rightImg" src=${rightArrow} alt="Right Arrow">
-      </button>
+    <div id=pokemones>
+      <h1 id="title">BAG</h1>
     </div>
+    
+    <div id="bag">
+      <div id="pockets">
+        <button id="misc">
+          <img src="/assets/interface/bag/bag.svg" style="width: 30px"></img>
+        </button>
+        <button id="medicine">
+          <img src="/assets/interface/bag/medicine.svg" style="width: 25px"></img>
+        </button>
+        <button id="pokeballs">
+          <img src="/assets/interface/bag/pokeball.svg" style="width: 40px"></img>
+        </button>
+        <button id="machines">
+          <img src="/assets/interface/bag/machines.svg" style="width: 30px"></img>
+        </button>
+        <button id="berries">
+          <img src="/assets/interface/bag/berry.svg" style="width: 30px"></img>
+        </button>
+        <button id="mail">
+          <img src="/assets/interface/bag/mail.svg" style="width: 30px"></img>
+        </button>
+        <button id="battle">
+          <img src="/assets/interface/bag/battle.svg" style="width: 25px"></img>
+        </button>
+        <button id="key">
+          <img src="/assets/interface/bag/key.svg" style="width: 30px"></img>
+        </button>
+      </div>
 
-    <div id="pocketName"></div>
+      <div id="itemList"></div>
 
-    <div id="iconContainer">
-      <img id="iconImg" src="#" alt="pocket"></img>
+      <div id="description"></div>
     </div>
-
-    <div id="itemList"></div>
-
-    <div id="itemIcon">
-      <img id="itemImg" src="#" alt="item icon"></img>
-    </div>
-
-    <div id="itemDescription"></div>
+    
 
     <button id="backButton">BACK</button>
     `
-    this.user.bag.openBag()
-    this.user.bag.changePocket(this.user.bag.selectedPocket)
-    document.querySelectorAll(".arrow").forEach((arrow) => {
-      arrow.addEventListener("click", this.handleBagArrow.bind(this))
+    this.user.bag.openBag();
+
+    this.setPokList();
+
+    document.getElementById("pockets")?.querySelectorAll("button").forEach((button) =>{
+      button.addEventListener("mouseenter", () => {button.style.backgroundColor = pocketMap[button.id].color})
+      button.addEventListener("mouseleave", () => {button.style.backgroundColor = "transparent"})
+      button.addEventListener("click", this.handlePocketButtons.bind(this))
     })
     document.getElementById("backButton")!.addEventListener("click", this.setMainBattle.bind(this))
 
+    this.user.bag.changePocket(this.user.bag.selectedPocket)
   }
   setParty() {
     this.state = "party"
     this.ui.innerHTML = `
-    <img src="${backgroundPartyImg}" alt="Party background">
+    <img src="${backgroundImg}" alt="Party background">
 
     <button id="backButton">BACK</button>
     `

@@ -9,15 +9,17 @@ export class Item {
     public name: string;
     public quantity: number;
     public description: string;
+    public shortDesc: string;
     public cost: number;
     public pocket: string;
     public sprite: ItemSprite;
 
     constructor(data: ItemData) {
         this.id = data.main.id;
-        this.name = data.main.name.toUpperCase();
+        this.name = data.main.name.toUpperCase().replace("-", "");
         this.quantity = 1;
-        this.description = data.main.effect_entries[0].short_effect;
+        this.description = data.main.effect_entries[0].effect;
+        this.shortDesc = data.main.effect_entries[0].short_effect;
         this.cost = data.main.cost;
         this.pocket = data.category.pocket.name;
         this.sprite = new ItemSprite({x: 0, y: 0}, this.name);

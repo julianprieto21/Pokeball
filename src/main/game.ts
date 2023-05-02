@@ -51,7 +51,7 @@ export class Game {
       this.renderables = this.renderables.filter(item => item !== pickUpItem)
       this.movables = this.movables.filter(item => item !== pickUpItem)
       // pick up item
-      this.user.bag.pickUpItem(this.itemInFront)
+      this.user.pickUpItem(this.itemInFront)
     }
   };
 

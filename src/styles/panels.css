@@ -5,8 +5,8 @@
 .panel h2 {
   position: absolute;
   margin: 0;
-  color: var(--dark-text-color);
-  font-size: 20px;
+  color: var(--light-text-color);
+  font-size: 26px;
 
 }
 
@@ -22,7 +22,7 @@
 
 .name,
 .level {
-  top: 22px;
+  top: 14px;
 }
 
 #ally-name {

@@ -8,15 +8,11 @@
 
 .bar .dialogueText {
   position: absolute;
-  left: 50px;
-  top: 26px;
-  font-size: 30px;
+  margin: 30px 30px;
+  font-size: 40px;
   color: var(--light-text-color);
   text-align: left;
-}
-
-.bar #second-line {
-  top: 80px;
+  line-height: 70px;
 }
 
 #mainButtons {
@@ -29,9 +25,18 @@
   grid-template-columns: repeat(2, 1fr);
 }
 
-button {
+.mainButton,
+.fightButton {
+  border: 0 solid transparent;
+  font-size: 20px;
   background-color: transparent;
-  color: #283030;
+  color: var(--dark-text-color);
+}
+
+.mainButton:hover,
+.fightButton:hover {
+  color: var(--light-text-color);
+  background-color: var(--dark-text-color);
 }
 
 #fightButtons {
@@ -50,7 +55,7 @@ button {
   height: 152px;
   top: 20px;
   right: 20px;
-  font-size: 25px;
+  font-size: 30px;
   color: var(--dark-text-color);
 }
 
@@ -58,6 +63,7 @@ button {
   position: absolute;
   left: 25px;
   top: 25px;
+  font-size: 30px;
   color: var(--dark-text-color);
 }
 
@@ -67,10 +73,10 @@ button {
   bottom: 25px;
 }
 
-#move-info img {
-  display: none;
+#type {
   position: absolute;
-  width: 100px;
-  left: 138px;
   bottom: 0;
+  left: 120px;
+  width: 160px;
+  border-radius: 8px;
 }
