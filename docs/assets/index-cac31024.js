@@ -105,7 +105,7 @@ function print() { __p += __j.call(arguments, '') }
 
     ${i?this.setPanels():""}
     `,i&&this.updatePanels(),Xe.to(".dialogueText",{text:{value:n},duration:1.5,onStart:()=>{this.canClick=!1},onComplete:()=>{this.canClick=!0}}),this.bar=document.querySelector(".bar"),this.bar.addEventListener("click",this.handleMainClick.bind(this))}setPokList(){const n=document.getElementById("pokemones");for(let i=0;i<this.user.teamNames.length;i++){const r=document.createElement("div");r.id=`pokemon-${i}`,r.className="pokemon";const u=this.user.team.pokemon[i],a=u.currentHp*160/u.stats.hp;r.innerHTML=`
-      <img id="icon" src="/assets/sprites/pokemon/front/${u.id}.png">
+      <img id="icon" src="assets/sprites/pokemon/front/${u.id}.png">
       <h2 id="name">${u.name}</h2>
       <div id="healthBar" style="width: ${a}px"></div>
       <h2 id="health">${u.currentHp}/${u.stats.hp}<h2>
@@ -150,28 +150,28 @@ function print() { __p += __j.call(arguments, '') }
     <div id="bag">
       <div id="pockets">
         <button id="misc">
-          <img src="/assets/interface/bag/bag.svg" style="width: 30px"></img>
+          <img src="assets/interface/bag/bag.svg" style="width: 30px"></img>
         </button>
         <button id="medicine">
-          <img src="/assets/interface/bag/medicine.svg" style="width: 25px"></img>
+          <img src="assets/interface/bag/medicine.svg" style="width: 25px"></img>
         </button>
         <button id="pokeballs">
-          <img src="/assets/interface/bag/pokeball.svg" style="width: 40px"></img>
+          <img src="assets/interface/bag/pokeball.svg" style="width: 40px"></img>
         </button>
         <button id="machines">
-          <img src="/assets/interface/bag/machines.svg" style="width: 30px"></img>
+          <img src="assets/interface/bag/machines.svg" style="width: 30px"></img>
         </button>
         <button id="berries">
-          <img src="/assets/interface/bag/berry.svg" style="width: 30px"></img>
+          <img src="assets/interface/bag/berry.svg" style="width: 30px"></img>
         </button>
         <button id="mail">
-          <img src="/assets/interface/bag/mail.svg" style="width: 30px"></img>
+          <img src="assets/interface/bag/mail.svg" style="width: 30px"></img>
         </button>
         <button id="battle">
-          <img src="/assets/interface/bag/battle.svg" style="width: 25px"></img>
+          <img src="assets/interface/bag/battle.svg" style="width: 25px"></img>
         </button>
         <button id="key">
-          <img src="/assets/interface/bag/key.svg" style="width: 30px"></img>
+          <img src="assets/interface/bag/key.svg" style="width: 30px"></img>
         </button>
       </div>
 

@@ -254,7 +254,7 @@ export class userInterface {
       const pokemon = this.user.team.pokemon[i];
       const health = pokemon.currentHp * 160 / pokemon.stats.hp
       element.innerHTML = `
-      <img id="icon" src="/assets/sprites/pokemon/front/${pokemon.id}.png">
+      <img id="icon" src="assets/sprites/pokemon/front/${pokemon.id}.png">
       <h2 id="name">${pokemon.name}</h2>
       <div id="healthBar" style="width: ${health}px"></div>
       <h2 id="health">${pokemon.currentHp}/${pokemon.stats.hp}<h2>
@@ -327,28 +327,28 @@ export class userInterface {
     <div id="bag">
       <div id="pockets">
         <button id="misc">
-          <img src="/assets/interface/bag/bag.svg" style="width: 30px"></img>
+          <img src="assets/interface/bag/bag.svg" style="width: 30px"></img>
         </button>
         <button id="medicine">
-          <img src="/assets/interface/bag/medicine.svg" style="width: 25px"></img>
+          <img src="assets/interface/bag/medicine.svg" style="width: 25px"></img>
         </button>
         <button id="pokeballs">
-          <img src="/assets/interface/bag/pokeball.svg" style="width: 40px"></img>
+          <img src="assets/interface/bag/pokeball.svg" style="width: 40px"></img>
         </button>
         <button id="machines">
-          <img src="/assets/interface/bag/machines.svg" style="width: 30px"></img>
+          <img src="assets/interface/bag/machines.svg" style="width: 30px"></img>
         </button>
         <button id="berries">
-          <img src="/assets/interface/bag/berry.svg" style="width: 30px"></img>
+          <img src="assets/interface/bag/berry.svg" style="width: 30px"></img>
         </button>
         <button id="mail">
-          <img src="/assets/interface/bag/mail.svg" style="width: 30px"></img>
+          <img src="assets/interface/bag/mail.svg" style="width: 30px"></img>
         </button>
         <button id="battle">
-          <img src="/assets/interface/bag/battle.svg" style="width: 25px"></img>
+          <img src="assets/interface/bag/battle.svg" style="width: 25px"></img>
         </button>
         <button id="key">
-          <img src="/assets/interface/bag/key.svg" style="width: 30px"></img>
+          <img src="assets/interface/bag/key.svg" style="width: 30px"></img>
         </button>
       </div>
 
