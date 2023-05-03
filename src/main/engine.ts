@@ -58,7 +58,6 @@ class Bag {
     public pocketList: Item[][];
     public length: number;
     public selectedPocket: number;
-    public selectedPocketList: Item[];
     public pocketMap: { [key: number]: { name: string, info: string } };
     constructor() {
         this.open = false;
@@ -75,7 +74,6 @@ class Bag {
         this.pocketList = Object.values(this.pockets); // Sujeto a cambios
         this.length = 0;
         this.selectedPocket = 0;
-        this.selectedPocketList = this.pocketList[this.selectedPocket];
         this.pocketMap = {
             0: { name: "misc", info: "Items" },
             1: { name: "medicine", info: "Medicine" },
@@ -88,69 +86,65 @@ class Bag {
         };
     }
     public addItem(item: Item) {
-        const itemInPocket = this.pockets[item.pocket].find((i: Item) => i.name === item.name);
+        const pocket = this.pockets[item.pocket]
+        const itemInPocket = pocket.find((i: Item) => i.name === item.name);
         if (itemInPocket === undefined) {
-            this.pockets[item.pocket].push(item);
+            pocket.push(item);
             this.length++;
         } else {
             itemInPocket.quantity++;
         }
     }
-    public changePocket(pocket: number) {
-        // TODO: evitar duplicacion de items
-        console.log(this.pocketMap[pocket].name)
-
+    public changePocket(pocketId: number) {
         const list = document.getElementById("itemList")!;
         const description = document.getElementById("description")!;
-       
+        const pocket = this.pocketList[pocketId]
+        const pocketInfo = this.pocketMap[pocketId]
+
         let elements: HTMLElement[] = [];
         list.replaceChildren()
-        for (const item of this.pocketList[pocket]) {
+        for (const item of pocket) {
             const element = document.createElement("button");
             element.innerHTML = `
-            <img src="/assets/sprites/items/${item.name}.png">
+            <img src="${item.sprite.imageDir}">
             <h2 id="itemName">${item.name}</h2>
             <h2 id="itemQuantity">X ${item.quantity}</h2>`
             elements.push(element);
         }
-        if (elements.length > 0) list.replaceChildren(...elements)        
+        if (elements.length > 0) list.replaceChildren(...elements)
 
-        if (this.pocketList[pocket].length > 0) {
-            const firstItem = this.pocketList[pocket][0]
-            description.innerHTML = `
-            <h2 style="background-color: ${pocketMap[this.pocketMap[pocket].name].color}">${firstItem.name}</h2>
-            <p>${firstItem.description}</p>
-            `
-        } else {
-            description.innerHTML = `
-            <h2></h2>
-            <p></p>
-            `
-        }
+        // if (pocket.length > 0) {
+        //     const firstItem = pocket[0]
+        //     description.innerHTML = `
+        //     <h2 style="background-color: ${pocketMap[pocketInfo.name].color}">${firstItem.name}</h2>
+        //     <p>${firstItem.description}</p>`
+        // } else {
+        //     description.innerHTML = `
+        //     <h2></h2>
+        //     <p></p>`
+        // }
 
         document.getElementById("itemList")?.querySelectorAll("button").forEach((item) => {
-            item.addEventListener("click", () => {
+            item.addEventListener("mouseenter", () => {
                 const name = item.querySelector("h2")!.innerText;
-                const obj = this.pocketList[pocket].find(item => item.name === name)!
+                const obj = pocket.find(item => item.name === name)!
                 description.innerHTML = `
-                <h2 style="background-color: ${pocketMap[this.pocketMap[pocket].name].color}">${obj.name}</h2>
-                <p>${obj.description}</p>
-                `
+                <h2 style="background-color: ${pocketMap[pocketInfo.name].color}">${obj.name}</h2>
+                <p>${obj.description}</p>`
+            })
+            item.addEventListener("mouseleave", () => {
+                description.innerHTML = `
+                <h2 style="background-color: ${pocketMap[pocketInfo.name].color}"></h2>
+                <p></p>`
             })
         })
     }
     public openBag() {
         this.open = true;
-        console.log("open bag")
-        // TODO: open bag menu
     }
     public closeBag() {
         this.open = false;
-        console.log("close bag")
-        // TODO: close bag menu
-    }
-    public resetBag() {
-        // TODO: reset bag menu
+        this.selectedPocket = 0
     }
 }
 

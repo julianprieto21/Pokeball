@@ -7,6 +7,7 @@ import { Game } from './main/game'
 
 export let game: Game
 export const app = document.querySelector<HTMLDivElement>("#app") as HTMLElement
+
 function handleClick() {
   app.innerHTML = `
   <canvas class="gameCanvas"/></canvas>
@@ -26,7 +27,7 @@ function handleClick() {
   blackScreenIn()
   game = new Game(canvas)
 
-  setTimeout(async() => {
+  setTimeout(async () => {
     await game.setGame()
     blackScreenOut()
   }, 1000);

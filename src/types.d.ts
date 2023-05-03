@@ -1,4 +1,4 @@
-// Path: src\utils\utils.ts
+// Path: src\utils\utils.d.ts
 // Purpose: To store all the types used in the project
 
 import { Item } from "./dataClasses/item"
@@ -21,27 +21,27 @@ export interface PokemonData {
         stats: {
             0: {
                 base_stat: number,
-                effort: number
+                effort: 0 | 1
             },
             1: {
                 base_stat: number,
-                effort: number
+                effort: 0 | 1
             },
             2: {
                 base_stat: number,
-                effort: number
+                effort: 0 | 1
             },
             3: {
                 base_stat: number,
-                effort: number
+                effort: 0 | 1
             },
             4: {
                 base_stat: number,
-                effort: number
+                effort: 0 | 1
             },
             5: {
                 base_stat: number,
-                effort: number
+                effort: 0 | 1
             }
         },
         base_experience: number,

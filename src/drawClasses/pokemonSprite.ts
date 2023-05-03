@@ -2,6 +2,7 @@ import { Sprite } from "../types";
 
 export class PokemonSprite implements Sprite {
     public position: { x: number, y: number };
+    public sprites: {front: string, back: string};
     public imageDir: string;
     public image: HTMLImageElement;
     public width: number;
@@ -10,9 +11,9 @@ export class PokemonSprite implements Sprite {
     public opacity: number;
 
     constructor(id: number, isEnemy: boolean) {
-        // TODO: Cambiar posicion segun isEnemy
         this.position = isEnemy ? { x: 580, y: -20 } : { x: 100, y: 110 };
-        this.imageDir = isEnemy ? `./assets/sprites/pokemon/front/${id}.png` : `./assets/sprites/pokemon/back/${id}.png`;
+        this.sprites = {front: `./assets/sprites/pokemon/front/${id}.png`, back: `./assets/sprites/pokemon/back/${id}.png`}
+        this.imageDir = isEnemy ? this.sprites.front : this.sprites.back;
         this.width = 0;
         this.height = 0;
         this.isEnemy = isEnemy;

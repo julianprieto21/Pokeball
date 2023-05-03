@@ -3,7 +3,7 @@
 
 import { Move } from './dataClasses/move';
 import { movesByType, tileSize } from './constants';
-import { PokemonNatureStats, NatureNames, PokemonData } from './types';
+import { PokemonNatureStats, NatureNames, PokemonData, MoveData } from './types';
 import { Boundary } from './main/engine';
 import _ from 'lodash';
 import { gsap } from 'gsap';
@@ -88,7 +88,7 @@ export async function getPokemonData(id: number | string) {
     response = await fetch(urlNature + _.random(1, 25));
     const natureData = await response.json();
 
-    const pokemonData = {
+    const pokemonData: PokemonData = {
         main: mainData,
         specie: speciesData,
         evolution: evolutionData,
@@ -97,10 +97,11 @@ export async function getPokemonData(id: number | string) {
     return pokemonData;
 }
 export async function getMoveData(id: number) {
-    if (id < 1) return console.error("Invalid id");
+    if (id < 1) return {} as MoveData
     const url = "https://pokeapi.co/api/v2/move/";
     const response = await fetch(url + id);
-    return await response.json();
+    const data: MoveData = await response.json()
+    return data;
 }
 export async function getItemData(name: string) {
     let response;

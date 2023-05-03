@@ -21,10 +21,19 @@ import mainBar from "/assets/interface/battle/mainBar.png"
 import allyInfo from "/assets/interface/battle/allyInfo.png"
 import enemyInfo from "/assets/interface/battle/enemyInfo.png"
 import figthBar from "/assets/interface/battle/fightBar.png"
-// bag
+
 import backgroundImg from "/assets/interface/bag/test.png"
+// bag
+import misc from "/assets/interface/bag/pocketIcons/misc.svg"
+import med from "/assets/interface/bag/pocketIcons/medicine.svg"
+import pok from "/assets/interface/bag/pocketIcons/pokeball.svg"
+import mach from "/assets/interface/bag/pocketIcons/machines.svg"
+import mail from "/assets/interface/bag/pocketIcons/mail.svg"
+import berries from "/assets/interface/bag/pocketIcons/berries.svg"
+import battle from "/assets/interface/bag/pocketIcons/battle.svg"
+import keys from "/assets/interface/bag/pocketIcons/key.svg"
 // party
-// import backgroundPartyImg from "/assets/interface/party/pokBackground.png"
+
 
 
 export class userInterface {
@@ -44,13 +53,14 @@ export class userInterface {
     this.queue = [];
     this.canClick = false;
   }
+
   handleMainClick() {
     if (this.canClick) {
       if (this.queue.length > 0) {
-      this.queue[0]();
-      this.queue.shift()
-    } else {
-      this.setMainBattle()
+        this.queue[0]();
+        this.queue.shift()
+      } else {
+        this.setMainBattle()
       }
     }
   }
@@ -99,6 +109,7 @@ export class userInterface {
     const button = e.currentTarget as HTMLElement
     const pocket = button.id;
     this.user.bag.selectedPocket = pocketMap[pocket].id;
+    // button.style.backgroundColor = pocketMap[button.id].color
     this.user.bag.changePocket(this.user.bag.selectedPocket)
 
   }
@@ -112,7 +123,7 @@ export class userInterface {
       })
       // experience
       this.queue.push(() => {
-        this.updateExperience();           
+        this.updateExperience();
       })
       // quit
       this.queue.push(() => {
@@ -169,7 +180,7 @@ export class userInterface {
         this.queue.push(() => {
           this.updateAllyAttack(allyMove);
         })
-      } 
+      }
     }
   }
   updatePanels() {
@@ -241,7 +252,7 @@ export class userInterface {
     ${panels ? this.setPanels() : ""}
     `
     if (panels) this.updatePanels()
-    gsap.to(".dialogueText", {text: { value: text }, duration: 1.5, onStart: () => {this.canClick = false}, onComplete: () => {this.canClick = true}})
+    gsap.to(".dialogueText", { text: { value: text }, duration: 1.5, onStart: () => { this.canClick = false }, onComplete: () => { this.canClick = true } })
     this.bar = document.querySelector<HTMLDivElement>(".bar")!
     this.bar.addEventListener("click", this.handleMainClick.bind(this))
   }
@@ -254,7 +265,7 @@ export class userInterface {
       const pokemon = this.user.team.pokemon[i];
       const health = pokemon.currentHp * 160 / pokemon.stats.hp
       element.innerHTML = `
-      <img id="icon" src="assets/sprites/pokemon/front/${pokemon.id}.png">
+      <img id="icon" src="${pokemon.mainSprite.sprites.front}">
       <h2 id="name">${pokemon.name}</h2>
       <div id="healthBar" style="width: ${health}px"></div>
       <h2 id="health">${pokemon.currentHp}/${pokemon.stats.hp}<h2>
@@ -264,6 +275,7 @@ export class userInterface {
     }
   }
   setMainBattle() {
+    this.user.bag.closeBag()
     this.state = "main";
     const text = `What should <br> ${this.battle!.ally.name} do?`
     this.ui.innerHTML = `
@@ -327,28 +339,28 @@ export class userInterface {
     <div id="bag">
       <div id="pockets">
         <button id="misc">
-          <img src="assets/interface/bag/bag.svg" style="width: 30px"></img>
+          <img src=${misc} style="width: 30px"></img>
         </button>
         <button id="medicine">
-          <img src="assets/interface/bag/medicine.svg" style="width: 25px"></img>
+          <img src=${med} style="width: 25px"></img>
         </button>
         <button id="pokeballs">
-          <img src="assets/interface/bag/pokeball.svg" style="width: 40px"></img>
+          <img src=${pok} style="width: 40px"></img>
         </button>
         <button id="machines">
-          <img src="assets/interface/bag/machines.svg" style="width: 30px"></img>
+          <img src=${mach} style="width: 30px"></img>
         </button>
         <button id="berries">
-          <img src="assets/interface/bag/berry.svg" style="width: 30px"></img>
+          <img src=${berries} style="width: 30px"></img>
         </button>
         <button id="mail">
-          <img src="assets/interface/bag/mail.svg" style="width: 30px"></img>
+          <img src=${mail} style="width: 30px"></img>
         </button>
         <button id="battle">
-          <img src="assets/interface/bag/battle.svg" style="width: 25px"></img>
+          <img src=${battle} style="width: 25px"></img>
         </button>
         <button id="key">
-          <img src="assets/interface/bag/key.svg" style="width: 30px"></img>
+          <img src=${keys} style="width: 30px"></img>
         </button>
       </div>
 
@@ -364,9 +376,9 @@ export class userInterface {
 
     this.setPokList();
 
-    document.getElementById("pockets")?.querySelectorAll("button").forEach((button) =>{
-      button.addEventListener("mouseenter", () => {button.style.backgroundColor = pocketMap[button.id].color})
-      button.addEventListener("mouseleave", () => {button.style.backgroundColor = "transparent"})
+    document.getElementById("pockets")?.querySelectorAll("button").forEach((button) => {
+      button.addEventListener("mouseenter", () => { button.style.border = pocketMap[button.id].color + " 2px solid" })
+      button.addEventListener("mouseleave", () => { button.style.border = "none" })
       button.addEventListener("click", this.handlePocketButtons.bind(this))
     })
     document.getElementById("backButton")!.addEventListener("click", this.setMainBattle.bind(this))
