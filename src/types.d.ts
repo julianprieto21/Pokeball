@@ -1,234 +1,151 @@
 // Path: src\utils\utils.d.ts
 // Purpose: To store all the types used in the project
 
-import { Item } from "./dataClasses/item"
+import { Item } from './dataClasses/item'
 
 export interface PokemonData {
-    main: {
-        id: number,
-        name: string,
-        sprites: {
-            back_default: string,
-            front_default: string
-        },
-        abilities: {
-            0: {
-                ability: {
-                    name: string
-                }
-            }
-        },
-        stats: {
-            0: {
-                base_stat: number,
-                effort: 0 | 1
-            },
-            1: {
-                base_stat: number,
-                effort: 0 | 1
-            },
-            2: {
-                base_stat: number,
-                effort: 0 | 1
-            },
-            3: {
-                base_stat: number,
-                effort: 0 | 1
-            },
-            4: {
-                base_stat: number,
-                effort: 0 | 1
-            },
-            5: {
-                base_stat: number,
-                effort: 0 | 1
-            }
-        },
-        base_experience: number,
-        types: {
-            0: {
-                type: {
-                    name: string
-                }
-            },
-            1: {
-                type: {
-                    name: string
-                }
-            }
-        }
-    },
-    specie: {
-        growth_rate: {
-            name: string
-        }
-    },
-    evolution: {
-        chain: {
-            evolves_to: {
-                0: {
-                    evolution_details: {
-                        0: {
-                            min_level: number
-                        }
-                    },
-                    evolves_to: {
-                        0: {
-                            evolution_details: {
-                                0: {
-                                    min_level: number
-                                }
-                            },
-                            species: {
-                                name: string
-                            }
-                        } | null
-                    },
-                    species: {
-                        name: string
-                    }
-                } | null
-            }
-        }
-    },
-    nature: {
-        id: number,
-        name: string
-        decreased_stat: {
-            name: string
-        } | null,
-        increased_stat: {
-            name: string
-        } | null
-    },
-
+  id: number
+  name: string
+  spriteFront: string
+  spriteBack: string
+  ability: string
+  baseStats: {
+    hp: {
+      value: number
+      effort: 0 | 1
+    }
+    attack: {
+      value: number
+      effort: 0 | 1
+    }
+    defense: {
+      value: number
+      effort: 0 | 1
+    }
+    spAttack: {
+      value: number
+      effort: 0 | 1
+    }
+    spDefense:
+    {
+      value: number
+      effort: 0 | 1
+    }
+    speed: {
+      value: number
+      effort: 0 | 1
+    }
+  }
+  baseExperience: number
+  types: {
+    primary: string
+    second: string | undefined
+  }
+  growthRate: string
+  evolution: {
+    first: { name: string, level: number } | undefined
+    second: { name: string, level: number } | undefined
+  }
+  nature: {
+    id: number
+    name: string
+    decreasedStat: string | undefined
+    increasedStat: string | undefined
+  }
 }
 export interface MoveData {
-    id: number;
-    name: string;
-    power: number | null;
-    pp: number;
-    accuracy: number | null;
-    priority: number;
-    meta: {
-        crit_rate: number;
-    };
-    type: {
-        name: string;
-    };
-    target: {
-        name: string;
-    };
-    damage_class: {
-        name: string;
-    };
-    effect_chance: number | null;
-    effect_entries: {
-        0: {
-            short_effect: string;
-        }
-    };
+  id: number
+  name: string
+  power: number | null
+  pp: number
+  accuracy: number | null
+  priority: number
+  meta: {
+    crit_rate: number
+  }
+  type: {
+    name: string
+  }
+  target: {
+    name: string
+  }
+  damage_class: {
+    name: string
+  }
+  effect_chance: number | null
+  effect_entries: {
+    0: {
+      short_effect: string
+    }
+  }
 }
 export interface ItemData {
-    main: {
-        id: number;
-        name: string;
-        cost: number;
-        effect_entries: {
-            0: {
-                effect: string;
-                short_effect: string;
-            }
-        };
-        sprites: {
-            default: string;
-        };
-        category: {
-            url: string;
-        };
-    };
+  main: {
+    id: number
+    name: string
+    cost: number
+    effect_entries: {
+      0: {
+        effect: string
+        short_effect: string
+      }
+    }
+    sprites: {
+      default: string
+    }
     category: {
-        pocket: {
-            name: string;
-        }
+      url: string
     }
-}
-
-export type PokemonBaseStats = {
-    hp: {
-        value: number;
-        effort: number
-    },
-    attack: {
-        value: number;
-        effort: number
-    },
-    defense: {
-        value: number;
-        effort: number
-    },
-    spAttack: {
-        value: number;
-        effort: number
-    },
-    spDefense: {
-        value: number;
-        effort: number
-    },
-    speed: {
-        value: number;
-        effort: number
-    },
-    xp: {
-        value: number
+  }
+  category: {
+    pocket: {
+      name: string
     }
+  }
 }
-export type PokemonStats = {
-    hp: number
-    attack: number
-    defense: number
-    spAttack: number
-    spDefense: number
-    speed: number
+export interface PokemonStats {
+  hp: number
+  attack: number
+  defense: number
+  spAttack: number
+  spDefense: number
+  speed: number
 }
-export type PokemonTypes = {
-    first: string,
-    second?: string
+export interface PokemonTypes {
+  primary: string
+  second: string | undefined
 }
-export type PokemonNatureStats = {
-    [key: string]: number;
-    attack: number
-    defense: number
-    spAttack: number
-    spDefense: number
-    speed: number
+export interface PokemonNatureStats {
+  [key: string]: number
+  attack: number
+  defense: number
+  spAttack: number
+  spDefense: number
+  speed: number
 }
-export type NatureNames = {
-    [key: string]: string,
-    attack: string,
-    defense: string,
-    special_attack: string,
-    special_defense: string,
-    speed: string
+export interface NatureNames {
+  [key: string]: string
+  attack: string
+  defense: string
+  special_attack: string
+  special_defense: string
+  speed: string
 }
-export type Pockets = {
-    [key: string]: Item[],
-    items: Item[];
-    medicine: Item[];
-    pokeballs: Item[];
-    machines: Item[];
-    berries: Item[];
-    mail: Item[];
-    battleItems: Item[];
-    keyItems: Item[];
+export interface Pockets {
+  [key: string]: Item[]
+  items: Item[]
+  medicine: Item[]
+  pokeballs: Item[]
+  machines: Item[]
+  berries: Item[]
+  mail: Item[]
+  battleItems: Item[]
+  keyItems: Item[]
 }
-
 export interface Sprite {
-    position: { x: number, y: number };
-    imageDir: string;
-    image: HTMLImageElement;
-    width: number;
-    height: number;
+  position: { x: number, y: number }
+  imageDir: string
+  image: HTMLImageElement
+  width: number
+  height: number
 }
-
-

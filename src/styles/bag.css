@@ -16,6 +16,13 @@
   transition: none;
 }
 
+#iconBag {
+  position: absolute;
+  width: 75px;
+  left: -30px;
+  transform: rotate(-30deg);
+}
+
 #title {
   margin: 0;
   font-size: 70px;
@@ -99,6 +106,15 @@
   align-items: center;
 }
 
+#select {
+  position: absolute;
+  width: 50px;
+  height: 55px;
+  border-radius: 30%;
+  z-index: 0;
+  box-shadow: 4px 4px 10px rgba(40, 40, 40, .6);
+}
+
 #pockets button {
   border-radius: 30%;
   width: 50px;
@@ -107,6 +123,11 @@
   background-color: transparent;
   border: 0;
   transition: none;
+  z-index: 1;
+}
+
+#pockets button:hover {
+  border: rgba(255, 255, 255, .5) 2px solid;
 }
 
 #itemList {
