@@ -74,7 +74,7 @@ export const natureNameMap: Record<string, string> = {
 }
 
 export const assetsSrc = {
-  dialogue: '/assets/interface/battle/dialogueBar.png',
+  dialogue: './assets/interface/battle/dialogueBar.png',
   main: './assets/interface/battle/mainBar.png',
   allyInfo: './assets/interface/battle/allyInfo.png',
   enemyInfo: './assets/interface/battle/enemyInfo.png',
