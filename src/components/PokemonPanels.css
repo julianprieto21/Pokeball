@@ -1,0 +1,77 @@
+.pokemon-panel {
+  position: absolute;
+}
+.pokemon-panel p {
+  position: absolute;
+  font-size: 26px;
+  margin: 0;
+}
+.pokemon-panel .health-bar {
+  position: absolute;
+  display: inline-block;
+  width: 196px;
+  height: 12px;
+  /* background-color: red; */
+}
+.pokemon-panel .default-health-bar {
+  background-color: var(--default-health-color);
+  height: 12px;
+}
+.pokemon-panel .current-health-bar {
+  background-color: var(--green-health-color);
+  height: 12px;
+  top: 0;
+  left: 0;
+  right: 0;
+  position: absolute;
+}
+
+
+#pokemon-ally-panel {
+  top: 230px;
+  right: 102px;
+}
+#pokemon-ally-panel #name {
+  top: 10px;
+  left: 54px;
+}
+#pokemon-ally-panel #level {
+  right: 26px;
+  top: 10px;
+}
+#pokemon-ally-panel #health {
+  top: 86px;
+  right: 26px;
+}
+#pokemon-ally-panel #health-bar {
+  top: 68px;
+  left: 188px;
+}
+#pokemon-ally-panel .experience-bar {
+  width: 256px;
+  position: absolute;
+  display: inline-block;
+  top: 132px;
+  left: 128px;
+}
+#pokemon-ally-panel .current-experience-bar {
+  height: 8px;
+  background-color: var(--experience-color);
+}
+
+#pokemon-enemy-panel {
+  top: 8px;
+  left: 114px;
+}
+#pokemon-enemy-panel #name {
+  top: 10px;
+  left: 16px;
+}
+#pokemon-enemy-panel #level {
+  right: 46px;
+  top: 10px;
+}
+#pokemon-enemy-panel #health-bar {
+  top: 68px;
+  left: 152px;
+}

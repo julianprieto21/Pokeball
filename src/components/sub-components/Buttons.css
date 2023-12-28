@@ -1,0 +1,31 @@
+.buttons {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.button {
+  border: 0 solid transparent;
+  font-size: 20px;
+  background-color: transparent;
+  color: var(--dark-text-color);
+}
+
+.button:hover {
+  color: var(--light-text-color);
+  background-color: var(--dark-text-color);
+}
+
+#battle-menu-buttons {
+  left: 695px;
+  top: 161px;
+  width: 308px;
+  height: 152px;
+}
+
+#battle-fight-buttons {
+  top: 205px;
+  left: 19px;
+  width: 644px;
+  height: 152px;
+}
