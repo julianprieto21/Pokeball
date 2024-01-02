@@ -59,6 +59,15 @@ function parseStats (stats: any): PokemonData['baseStats'] {
  * @returns Datos del pokemon
  */
 export function parsePokemonData (main: any, specie: any, evolution: any, nature: any): PokemonData {
+  const extractMoves = ( moves: any ): string[] => {
+    const possibleMoves = []
+    for (let i = 0; i < 5; i++) { // TODO: Continuar en un futuro. La idea seria que de estos movimientos elegir y tomando cuando suba de nivel
+      possibleMoves.push(moves[i].move.name)
+    }
+    return possibleMoves
+  }
+
+
   return {
     id: main.id,
     name: main.name,
@@ -81,7 +90,8 @@ export function parsePokemonData (main: any, specie: any, evolution: any, nature
       name: nature.name,
       decreasedStat: natureNameMap[nature.decreased_stat?.name.replace('-', '_')],
       increasedStat: natureNameMap[nature.increased_stat?.name.replace('-', '_')]
-    }
+    },
+    moves: extractMoves(main.moves)
   }
 }
 
@@ -97,4 +107,42 @@ export function format (dialogue: string, list: string[] | string) {
     result = result.replace('{' + i + '}', list[i])
   }
   return result
+}
+
+export function growthRate(growthRate: string, level: number): number {
+  const p = (i: number): number => {
+    if (i === 0) return 0
+    else if (i === 1) return 0.008
+    else if (i === 2) return 0.014
+    else return 1
+  }
+
+  switch (growthRate) {
+    case 'slow':
+      return (5 * (level ** 3)) / 4
+    case 'medium':
+      return level ** 3
+    case 'fast':
+      return (4 * (level ** 3)) / 5
+    case 'medium_slow':
+      return (1.2 * (level ** 3)) - (15 * (level ** 2)) + 100 * level - 140
+    case 'slow_then_very_fast':
+      return (level ** 3) * (2 - 0.02 * level) > 0 && level <= 50
+        ? (level ** 3) * (2 - 0.02 * level)
+        : (level ** 3) * (1.5 - 0.01 * level) > 0 && level <= 68
+            ? (level ** 3) * (1.5 - 0.01 * level)
+            : (level ** 3) * (1.274 - 0.02 * (level / 3) - p(level % 3)) > 0
+                ? (level ** 3) * (1.274 - 0.02 * (level / 3) - p(level % 3))
+                : (level ** 3) * (1.6 - 0.01 * level)
+    case 'fast_then_very_slow':
+      return (level ** 3) * (24 + (level + 1) / 3) / 50 > 0 && level <= 15
+        ? (level ** 3) * (24 + (level + 1) / 3) / 50
+        : (level ** 3) * (14 + level) / 50 > 0 && level <= 35
+            ? (level ** 3) * (14 + level) / 50
+            : (level ** 3) * (32 + (level / 2)) / 50
+    default:
+      return 0
+
+  }
+
 }

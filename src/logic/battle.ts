@@ -5,6 +5,7 @@ import { Player } from "./player";
 import { Pokemon } from "./pokemon";
 import { format } from "../utils/functions";
 import { PokemonSprite } from "../spritesClasses/pokemonSprite";
+import { MoveSprite } from "../spritesClasses/moveSprite";
 
 /**
  * Clase que se encarga de la batalla
@@ -13,7 +14,7 @@ export class Battle {
   private animationFrame: number = 0
   public game: Game
   private ctx: CanvasRenderingContext2D
-  private renders: PokemonSprite[] = []
+  private renders: (PokemonSprite | MoveSprite)[] = []
   private player: Player
   public ally: Pokemon
   private opponent: Pokemon | Player
@@ -56,7 +57,7 @@ export class Battle {
    */
   start(): void {
     // Activar interface
-    this.game.interfaceManager.setInterfaceVisible(true)
+    this.game.interfaceManager.setInterfaceVisible(1)
     this.game.interfaceManager.setInterfaceState(1)
     // Iniciar elementos renderizables
     this.renders = [this.ally.mainSprite, this.enemy.mainSprite]

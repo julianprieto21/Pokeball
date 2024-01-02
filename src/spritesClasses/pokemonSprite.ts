@@ -7,26 +7,26 @@ import { imagePaths, CANVAS_WIDTH } from '../utils/constants'
 export class PokemonSprite implements Sprite {
   public position: { x: number, y: number }
   public sprites: { front: string, back: string }
-  public imageDir: string
   public image: HTMLImageElement
   public width: number
   public height: number
   public isEnemy: boolean
   public opacity: number
+  private initialPos: { x: number, y: number }
   /**
    * Constructor de la clase PokemonSprite
    * @param id Id del pokemon
    * @param isEnemy Indica si el pokemon es enemigo o no
    */
   constructor (id: number, isEnemy: boolean) {
-    this.position = isEnemy ? { x: CANVAS_WIDTH, y: -20 } : { x: -400, y: 110 }
+    this.initialPos = isEnemy ? { x: CANVAS_WIDTH, y: -20 } : { x: -400, y: 110 }
+    this.position = this.initialPos
     this.sprites = { front: `${imagePaths.pokemonFrontImgPath}${id}.png`, back: `${imagePaths.pokemonBackImgPath}${id}.png` }
-    this.imageDir = isEnemy ? this.sprites.front : this.sprites.back
     this.width = 0
     this.height = 0
     this.isEnemy = isEnemy
     this.image = new Image()
-    this.image.src = this.imageDir
+    this.image.src = isEnemy ? this.sprites.front : this.sprites.back
     this.image.onload = () => {
       this.width = this.image.width
       this.height = this.image.height
@@ -44,4 +44,8 @@ export class PokemonSprite implements Sprite {
     ctx.drawImage(this.image, this.position.x, this.position.y)
     ctx.restore()
   }
+
+  // reset (): void {
+  //   this.position = this.initialPos
+  // }
 }

@@ -16,7 +16,6 @@ export function DialogueBar( { game }: { game: Game } ) {
     if (!game.canClick) return
     if (game.interfaceManager.dialogueQueue.length > 0 || game.interfaceManager.actionQueue.length > 0) {
       game.interfaceManager.playAction() // Ataque
-      // game.interfaceManager.playAction() // Verificar si sigue vivo
       setDialogueText(game.interfaceManager.getDialogue())
     } else {
       setDialogueText('')
@@ -31,6 +30,7 @@ export function DialogueBar( { game }: { game: Game } ) {
         className="bar"
         src={imagePaths.dialogueBarImgPath}
         onClick={handleClick}
+        alt='Dialogue Bar'
       />
       <p 
         id="initial-dialogue-text"

@@ -16,7 +16,7 @@ export class Player {
    * Constructor de la clase Player
    */
   constructor () {
-    this.teamNames = ['charizard']
+    this.teamNames = [0]
     this.team = new Team(this.teamNames)
     // this.party = new Party(this.team)
     // this.bag = new Bag()

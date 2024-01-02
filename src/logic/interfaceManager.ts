@@ -8,7 +8,7 @@ import { format } from "../utils/functions"
  */
 export class InterfaceManager {
   game: Game
-  setInterfaceVisible: React.Dispatch<React.SetStateAction<boolean>>
+  setInterfaceVisible: React.Dispatch<React.SetStateAction<number>>
   setInterfaceState: React.Dispatch<React.SetStateAction<number>>
   public dialogueQueue: string[] = []
   public actionQueue: Function[] = []
@@ -19,7 +19,7 @@ export class InterfaceManager {
    * @param interfaceVisible Setter de la visibilidad de la interfaz
    * @param interfaceState Setter del estado de la interfaz
    */
-  constructor(game: Game, interfaceVisible: React.Dispatch<React.SetStateAction<boolean>>, interfaceState: React.Dispatch<React.SetStateAction<number>>) {
+  constructor(game: Game, interfaceVisible: React.Dispatch<React.SetStateAction<number>>, interfaceState: React.Dispatch<React.SetStateAction<number>>) {
     this.game = game
     this.setInterfaceVisible = interfaceVisible
     this.setInterfaceState = interfaceState
@@ -34,7 +34,7 @@ export class InterfaceManager {
   }
 
   /**
-   * Funcion setter de la instancia de la clase Battle. TODO: No es necesaria. Puedo hacer como con los demas dialogos (usar constante)
+   * Funcion setter de la instancia de la clase Battle.
    */
   setBattle() {
     if (this.game.battle === null) throw new Error('Battle is not created')
@@ -57,8 +57,8 @@ export class InterfaceManager {
    */
   playAction() {
     if (this.actionQueue.length === 0) return
-    this.actionQueue[0]()
-    this.actionQueue.shift()
+    this.actionQueue[0]() // Ejecuta la funcion
+    this.actionQueue.shift() // La quita de la lista. No puedo ejecutarla porque capaz devuelve Undefined
   }
 
   /**
@@ -78,7 +78,7 @@ export class InterfaceManager {
   }
 
   /**
-   * Funcion que retona el texto del menu TODO: No es necesaria
+   * Funcion que retona el texto del menu
    * @returns El texto del menu
    */
   getMenuText() {
@@ -91,11 +91,10 @@ export class InterfaceManager {
   quitBattle() {
     if (this.game.battle === null) throw new Error('Battle is not created')
 
-
     this.clearActionQueue()
     this.clearDialogueQueue()
     this.setInterfaceState(0)
-    this.setInterfaceVisible(false)
+    this.setInterfaceVisible(0) 
     this.game.battle.stop()
     this.game.battle = null
     this.game.start()

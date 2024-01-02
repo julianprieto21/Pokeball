@@ -11,7 +11,9 @@ export function BattleMenuBar( { game }: { game: Game } ) {
     const button = e.target as HTMLButtonElement
     const buttonText = button.textContent
     console.log(buttonText)
-    if (buttonText === 'RUN') game.interfaceManager.quitBattle()
+    if (buttonText === 'RUN') {
+      game.battle?.engine.retreat(game.battle.ally)
+    }
     if (buttonText === 'FIGHT') game.interfaceManager.setInterfaceState(3)
   }
 
@@ -21,6 +23,7 @@ export function BattleMenuBar( { game }: { game: Game } ) {
         id="battle-menu-bar"
         className="bar"
         src={imagePaths.battleMenuBarImgPath}
+        alt='Battle Menu Bar'
       />
 
       <p 

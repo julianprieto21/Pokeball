@@ -1,7 +1,7 @@
 import { PokemonSprite } from '../spritesClasses/pokemonSprite'
 import { PokemonData, PokemonNatureStats, PokemonStats, PokemonTypes } from '../types'
 import { movesByType } from '../utils/constants'
-import { statValue } from '../utils/functions'
+import { growthRate, statValue } from '../utils/functions'
 import { getPokemonData, getMoveData } from '../api/getData'
 import _ from 'lodash'
 import { Move } from './move'
@@ -34,7 +34,6 @@ export class Pokemon {
   public evasion: number
   public currentHp: number
   public currentXp: number
-  public attempsToRun: number
 
   private moves: Move[]
   /**
@@ -67,7 +66,6 @@ export class Pokemon {
     this.evasion = 100
     this.currentHp = this.stats.hp
     this.currentXp = 0
-    this.attempsToRun = 0
 
     this.moves = this._setMoves()
   }
@@ -125,7 +123,6 @@ export class Pokemon {
     let movesIds: number[] = []
     const moves: Move[] = []
     movesIds = movesByType[this.types.primary]
-    // eslint-disable-next-line @typescript-eslint/no-misused-promises
     movesIds.forEach(async (id: number) => {
       const data = await getMoveData(id)
       const move = new Move(data)
@@ -177,32 +174,7 @@ export class Pokemon {
    * @returns Total de experiencia necesaria para llegar al nivel indicado
    */
   public getTotalXp (level: number = this.level): number {
-    const p = (i: number): number => {
-      if (i === 0) return 0
-      else if (i === 1) return 0.008
-      else if (i === 2) return 0.014
-      else return 1
-    }
-    const n: number = level
-    const GrowthRateDict: Record<string, number> = {
-      slow: (5 * (n ** 3)) / 4,
-      medium: n ** 3,
-      fast: (4 * (n ** 3)) / 5,
-      medium_slow: (1.2 * (n ** 3)) - (15 * (n ** 2)) + 100 * n - 140,
-      slow_then_very_fast: (n ** 3) * (2 - 0.02 * n) > 0 && n <= 50
-        ? (n ** 3) * (2 - 0.02 * n)
-        : (n ** 3) * (1.5 - 0.01 * n) > 0 && n <= 68
-            ? (n ** 3) * (1.5 - 0.01 * n)
-            : (n ** 3) * (1.274 - 0.02 * (n / 3) - p(n % 3)) > 0
-                ? (n ** 3) * (1.274 - 0.02 * (n / 3) - p(n % 3))
-                : (n ** 3) * (1.6 - 0.01 * n),
-      fast_then_very_slow: (n ** 3) * (24 + (n + 1) / 3) / 50 > 0 && n <= 15
-        ? (n ** 3) * (24 + (n + 1) / 3) / 50
-        : (n ** 3) * (14 + n) / 50 > 0 && n <= 35
-            ? (n ** 3) * (14 + n) / 50
-            : (n ** 3) * (32 + (n / 2)) / 50
-    }
-    return Math.floor(GrowthRateDict[this.growthRate])
+    return Math.floor(growthRate(this.growthRate, level))
   }
 
   /**
@@ -220,9 +192,9 @@ export class Pokemon {
   public levelUp (xpLeft: number): void {
     this.level++
     if (this.level === this.evolutionChain.first?.level) {
-      void this.evolve(this.evolutionChain.first.name) // operador "void" para ignorar error al no poner await en funcion asincrona evolve
+      this.evolve(this.evolutionChain.first.name) // operador "void" para ignorar error al no poner await en funcion asincrona evolve
     } else if (this.level === this.evolutionChain.second?.level) {
-      void this.evolve(this.evolutionChain.second.name)
+      this.evolve(this.evolutionChain.second.name)
     }
     this.stats = this._setStats()
     this.currentHp = this.stats.hp
@@ -243,7 +215,7 @@ export class Pokemon {
         this.sprites = { front: data.spriteFront, back: data.spriteBack }
         this.mainSprite = new PokemonSprite(this.id, this.isEnemy)
         this.baseStats = data.baseStats
-        this.stats = this._setStats()
+        // this.stats = this._setStats()
       })
       .catch((e: Error) => {
         console.error(e)
@@ -267,7 +239,7 @@ export class Pokemon {
     this.currentXp += xp
     if (this.currentXp >= this.getNextLevelXp()) {
       console.log('level up')
-      this.levelUp(this.currentXp - this.getNextLevelXp()) // TODO: Revisar logica
+      this.levelUp(this.currentXp - this.getNextLevelXp())
     }
   }
 

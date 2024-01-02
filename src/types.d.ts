@@ -52,6 +52,7 @@ export interface PokemonData {
     decreasedStat: string | undefined
     increasedStat: string | undefined
   }
+  moves: string[]
 }
 export interface MoveData {
   id: number
@@ -144,7 +145,6 @@ export interface NatureNames {
 // }
 export interface Sprite {
   position: { x: number, y: number }
-  imageDir: string
   image: HTMLImageElement
   width: number
   height: number

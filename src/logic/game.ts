@@ -9,6 +9,7 @@ import { getPokemonData } from '../api/getData'
 import React from 'react'
 import { InterfaceManager } from './interfaceManager'
 import { AnimationManager } from './animationManager'
+import _ from 'lodash'
 
 /**
  * Clase que se encarga de la logica del juego
@@ -34,12 +35,13 @@ export class Game {
   public battle: Battle | null = null
 
   public canClick: boolean = true
+  public isPaused: number = 0
   /**
    * Constructor de la clase Game
    * @param canvasRef Referencia al canvas
    * @param interfaceManager Setters de la interfaz
    */
-  constructor(canvasRef: React.RefObject<HTMLCanvasElement>, interfaceManager: {interfaceVisible: React.Dispatch<React.SetStateAction<boolean>>, interfaceState: React.Dispatch<React.SetStateAction<number>>}) {
+  constructor(canvasRef: React.RefObject<HTMLCanvasElement>, interfaceManager: {interfaceVisible: React.Dispatch<React.SetStateAction<number>>, interfaceState: React.Dispatch<React.SetStateAction<number>>}) {
     if (canvasRef.current !== null) {
       this.canvas = canvasRef.current
     } else {
@@ -59,45 +61,43 @@ export class Game {
     this.animationManager = new AnimationManager(this)
   }
 
+    /**
+   * Funcion que se encarga de iniciar el juego y setear lo necesario
+   */
+    start() {
+      // Resetear
+      this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
+      this.interfaceManager.clearActionQueue()
+      this.interfaceManager.clearDialogueQueue()
+      // Iniciar elementos renderizables
+      const player = this.player.sprite
+      const background = new Movable({ x: this.actualMap.offset.x, y: this.actualMap.offset.y }, this.actualMap.backImg)
+      const foreground = new Movable({ x: this.actualMap.offset.x, y: this.actualMap.offset.y }, this.actualMap.foreImg)
+      const collisions = this.actualMap.collisionBoundaries
+      const battleZones = this.actualMap.battleZoneBoundaries
+  
+      this.renders = [background, player, foreground, ...collisions, ...battleZones]
+  
+      // Iniciar animacion
+      this.loop()
+  
+      // Eventos de teclado
+      window.addEventListener('keydown', this.keyDownHandler.bind(this))
+      window.addEventListener('keyup', this.keyUpHandler.bind(this))
+    }
+
   /**
    * Funcion que se encarga de iniciar el loop del juego
    */
   loop() {
-    // if (this.animationFrame! % 100 == 0) console.log('game frame: ' + this.animationFrame/100)
-
     this.animationFrame = window.requestAnimationFrame(this.loop.bind(this))
+
+    if (this.isPaused) return 
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
     this.renders.forEach((render) => {
       render.draw(this.ctx)
     } )
     this.checkMove()
-    
-  }
-
-  /**
-   * Funcion que se encarga de iniciar el juego y setear lo necesario
-   */
-  start() {
-    // Resetear
-    this.interfaceManager.clearActionQueue()
-    this.interfaceManager.clearDialogueQueue()
-    // Iniciar mapa 
-    this.actualMap = new _Map_(mapInfo.startingMap) // TODO: Guardar ultima posicion de player antes de STOP() y cargar mapa en esa posicion
-    // Iniciar elementos renderizables
-    const player = this.player.sprite
-    const background = new Movable({ x: this.actualMap.offset.x, y: this.actualMap.offset.y }, this.actualMap.backImg)
-    const foreground = new Movable({ x: this.actualMap.offset.x, y: this.actualMap.offset.y }, this.actualMap.foreImg)
-    const collisions = this.actualMap.collisionBoundaries
-    const battleZones = this.actualMap.battleZoneBoundaries
-
-    this.renders = [background, player, foreground, ...collisions, ...battleZones]
-
-    // Iniciar animacion
-    this.loop()
-
-    // Eventos de teclado
-    window.addEventListener('keydown', this.keyDownHandler.bind(this))
-    window.addEventListener('keyup', this.keyUpHandler.bind(this))
   }
 
   /**
@@ -162,10 +162,12 @@ export class Game {
 
     // Check battle zone
     for (let i = 0; i < this.actualMap.battleZoneBoundaries.length; i++) {
-      const boundary = this.actualMap.battleZoneBoundaries[i]
-      if (this.actualMap.checkCollision(this.player.sprite, new Boundary(
-        { x: boundary.position.x + x, y: boundary.position.y + y }
-      ))/* Agregar random para que no sea siempre */){
+      const boundary = new Boundary(
+        { x: this.actualMap.battleZoneBoundaries[i].position.x + x, 
+          y: this.actualMap.battleZoneBoundaries[i].position.y + y
+        })
+
+      if (this.actualMap.checkCollision(this.player.sprite, boundary) && _.random(0, 100, true) < 1){ // COMMENT: Cambiar valor para modificar probs de batalla
         this.stop()
         this.initBattle()
         break
@@ -175,9 +177,14 @@ export class Game {
     if (this.player.moving) {
       this.renders.forEach((render) => {
         if (render instanceof PlayerSprite) return
-        // this.itemInFront = undefined
         render.position.x += x * PLAYER_SPEED
         render.position.y += y * PLAYER_SPEED
+        if (render instanceof Movable) {
+          this.actualMap.offset.x = render.position.x
+          this.actualMap.offset.y = render.position.y
+        }
+ 
+        // this.itemInFront = this.actualMap.checkCollision(this.player.sprite, new Boundary({ x: render.position.x, y: render.position.y })
       })
     }
   }
@@ -190,6 +197,10 @@ export class Game {
     if (e.key === 'w' || e.key === 'a' || e.key === 's' || e.key === 'd') {
       this.keyMap[e.key] = true
       this.lastKey = e.key
+    }
+
+    if (e.key === 'Escape') {
+      this.mainMenu()
     }
   }
 
@@ -207,13 +218,13 @@ export class Game {
    * Funcion que se encarga de iniciar la batalla
    */
   async initBattle() {
-    const data = await getPokemonData(1)
+    this.animationManager.blackScreenIn()
+    const data = await getPokemonData(0)
     const enemy = new Pokemon(data, true, 5)
     const battle = new Battle(this, enemy)
     this.battle = battle
     this.animationManager.setBattle()
     this.interfaceManager.setBattle()
-    this.animationManager.blackScreenIn()
   }
 
   /**
@@ -235,6 +246,12 @@ export class Game {
    */
   getActualMap(): _Map_ {
     return this.actualMap
+  }
+
+  mainMenu() {
+    this.isPaused = this.isPaused == 1 ? 0 : 1
+    this.interfaceManager.setInterfaceVisible(this.isPaused)
+    this.animationManager.animateMainMenu(this.isPaused)
   }
 
 }

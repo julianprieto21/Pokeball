@@ -12,6 +12,7 @@ export class Engine {
   battle: Battle
   ally: Pokemon
   enemy: Pokemon
+  attemptsToRun: number
   /**
    * Constructor de la clase Engine
    * @param battle Instancia de la clase Battle
@@ -20,6 +21,7 @@ export class Engine {
     this.battle = battle
     this.ally = battle.ally
     this.enemy = battle.enemy
+    this.attemptsToRun = 0
   }
 
   /**
@@ -29,40 +31,36 @@ export class Engine {
    */
   playTurn(allyMove: Move, enemyMove: Move) {
     const isAllyTurn = this.isAllyTurn(allyMove, enemyMove)
+    let first: Pokemon, second: Pokemon, first_move: Move, second_move: Move
     if (isAllyTurn) {
-      this.battle.game.interfaceManager.actionQueue.push(() => { this.makeMove(allyMove, this.ally, this.enemy) })
-      this.battle.game.interfaceManager.actionQueue.push(() => { 
-        if (this.enemy.isAlive()) { 
-          this.makeMove(enemyMove, this.enemy, this.ally) 
-        }
-        else {
-          this.faint(this.enemy)
-          this.battle.game.interfaceManager.actionQueue.push(() => { this.winExperience(this.ally, this.enemy) })
-          this.battle.game.interfaceManager.actionQueue.push(() => { this.retreat(this.ally) })
-        }
-      })
-      this.ally.isAlive() 
-      ? null 
-      :  this.battle.game.interfaceManager.actionQueue.push(() => { this.faint(this.ally) })
-
+      first = this.ally
+      first_move = allyMove
+      second = this.enemy
+      second_move = enemyMove
     } else {
-      this.battle.game.interfaceManager.actionQueue.push(() => { this.makeMove(enemyMove, this.enemy, this.ally) })
-      this.battle.game.interfaceManager.actionQueue.push(() => { 
-        if (this.ally.isAlive()) { 
-          this.makeMove(allyMove, this.ally, this.enemy) 
-        }
-        else {
-          this.faint(this.ally)
-          this.battle.game.interfaceManager.actionQueue.push(() => { this.winExperience(this.enemy, this.ally) })
-          this.battle.game.interfaceManager.actionQueue.push(() => { this,this.retreat(this.enemy) })
-        }
-      })
-      this.enemy.isAlive() 
-      ? null : 
-      this.battle.game.interfaceManager.actionQueue.push(() => { this.faint(this.enemy) })
-
+      first = this.enemy
+      first_move = enemyMove
+      second = this.ally
+      second_move = allyMove
     }
+
+    this.battle.game.interfaceManager.actionQueue.push(() => { this.makeMove(first_move, first, second) })
+    this.battle.game.interfaceManager.actionQueue.push(() => { 
+      if (second.isAlive()) { 
+        this.makeMove(second_move, second, first) 
+      }
+      else {
+        this.faint(second)
+        this.battle.game.interfaceManager.actionQueue.push(() => { this.winExperience(first, second) })
+        this.battle.game.interfaceManager.actionQueue.push(() => { this.retreat(first, true) })
+      }
+    })
+    first.isAlive() 
+    ? null 
+    :  this.battle.game.interfaceManager.actionQueue.push(() => { this.faint(first) })
   }
+
+
 
   /**
    * Funcion que se encarga de determinar si es el turno del pokemon aliado o no
@@ -75,7 +73,7 @@ export class Engine {
     else {
       if (allyMove.priority < enemyMove.priority) return false
       else {
-        return this.ally.getStats().speed > this.enemy.getStats().speed
+        return this.ally.getStats().speed >= this.enemy.getStats().speed
       }
     }
   }
@@ -175,9 +173,9 @@ export class Engine {
    * @param move Movimiento a realizar
    * @param damage Daño a realizar
    */
-  animateMove(user: Pokemon, target: Pokemon, move: Move, damage: number) {
+  animateMove(user: Pokemon, target: Pokemon, move: Move, damage: number) { // FIXME: Funcion para Animation Manager?
     const xMove = user.isEnemy ? -20 : 20
-    const moveClass = move.damageClass === 'physical' ? 'physical' : 'special' // Esto capaz se puede poner diferente. Por ahora solo se anima los fisicos y especiales
+    const moveClass = move.damageClass === 'physical' ? 'physical' : 'special' // COMMENT: Por ahora solo se anima los fisicos y especiales
     if (moveClass === "physical" || moveClass === "special") {
       target.receiveDamage(damage)
       const healthPercentage = target.currentHp / target.getStats().hp * 100
@@ -205,8 +203,35 @@ export class Engine {
    * Funcion que se encarga de retirar a un pokemon
    * @param pokemon Pokemon que se retira
    */
-  retreat(pokemon: Pokemon) {
-    this.battle.game.interfaceManager.addDialogue('[TEXTO DE RETIRADA]') // TODO: Agregar texto de retirada
-    this.battle.game.animationManager.retreatAnimation(pokemon.mainSprite)
+  retreat(pokemon: Pokemon, win: boolean = false) {
+    this.battle.game.interfaceManager.setInterfaceState(1)
+    if (this.canRetreat() || win) {
+      const text = win ? `${this.battle.ally.name} defeat ${this.battle.enemy.name}` : `${this.battle.ally.name} run away!`
+      this.battle.game.interfaceManager.addDialogue(text)
+      this.battle.game.animationManager.retreatAnimation(pokemon.mainSprite)
+      // this.battle.game.animationManager.blackScreenIn() // TODO: Modificar para que si es escape, sea sin titilar
+    } else {
+      this.battle.game.interfaceManager.addDialogue(`${this.battle.ally.name} can´t escape!`)
+    }
+    
+  }
+
+  /**
+   * Funcion que se encarga de calcular si es posible la retirada
+   */
+  canRetreat() {
+    const a = this.ally.getStats().speed
+    const b = this.enemy.getStats().speed;
+    const c = this.attemptsToRun;
+    const f = (a * 128 / b) + 30 * c;
+    if (f < 255) {
+        const randomNum = _.random(0, 255);
+        if (randomNum < f) return true;
+        else {
+            this.attemptsToRun++;
+            return false;
+        }
+    } else return true;
+
   }
 }

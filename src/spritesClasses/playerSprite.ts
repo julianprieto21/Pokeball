@@ -6,12 +6,10 @@ import { CANVAS_HEIGHT, CANVAS_WIDTH, imagePaths } from '../utils/constants'
  */
 export class PlayerSprite implements Sprite {
   public position: { x: number, y: number }
-  public imageDir: string
   public imagePaths: { up: string, left: string, down: string, right: string }
   public image: HTMLImageElement
   public width: number
   public height: number
-  public isEnemy: boolean
   public frames: { max: number, hold: number, val: number, elapsed: number }
   public animate: boolean
   MAX_FRAMES = 4
@@ -22,7 +20,6 @@ export class PlayerSprite implements Sprite {
    */
   constructor () {
     this.position = { x: 0, y: 0 }
-    this.imageDir = imagePaths.playerDownImgPath // imagen actual
     this.imagePaths = {
       up: imagePaths.playerUpImgPath,
       left: imagePaths.playerLeftImgPath,
@@ -31,11 +28,10 @@ export class PlayerSprite implements Sprite {
     }
     this.width = 0
     this.height = 0
-    this.isEnemy = false
     this.frames = { max: this.MAX_FRAMES, hold: this.HOLD_FRAMES, val: 0, elapsed: 0 }
     this.animate = false
     this.image = new Image()
-    this.image.src = this.imageDir
+    this.image.src = this.imagePaths.down
     this.image.onload = () => {
       this.width = this.image.width / this.frames.max
       this.height = this.image.height

@@ -6,6 +6,7 @@ import { PokemonPanels } from './PokemonPanels'
 import { Game } from '../logic/game'
 import { useEffect, useState } from 'react'
 import { Pokemon } from '../logic/pokemon'
+import { MainMenu } from './sub-components/MainMenu'
 
 export function Interface( { game, actualState }: { game: Game, actualState: number } ) {
 
@@ -29,7 +30,7 @@ export function Interface( { game, actualState }: { game: Game, actualState: num
     >
       {
         actualState === 0
-          ? null // TODO: Aca iria el menu principal (fuera de la batalla)
+          ? <MainMenu game={game}/>
           : actualState === 1
             ? <DialogueBar game={game} />
             : actualState === 2

@@ -8,10 +8,10 @@ import { Game } from './logic/game'
 function App() {
 
   const canvasRef = useRef<HTMLCanvasElement>(null)
-  const [interfaceVisible, setInterfaceVisible] = useState(false)
+  const [interfaceVisible, setInterfaceVisible] = useState(0)
   const [interfaceState, setInterfaceState] = useState(0)
 
-  const [game, setGame] = useState<Game | null>(null)
+  const [game, setGame] = useState<Game>()
 
   const setters = {
     interfaceVisible: setInterfaceVisible,
@@ -39,6 +39,8 @@ function App() {
       }
 
       <div className='black-screen' style={{backgroundColor: 'black', display: 'none', opacity: 0, width: 1024, height: 576, position: 'absolute', top: 0}}></div>
+
+      {/* <p style={{position: 'absolute'}}>InterfaceVisible: {interfaceVisible}<br/>InterfaceState: {interfaceState}</p> */}
     </>
     )
 }

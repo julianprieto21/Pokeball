@@ -49,11 +49,11 @@ export class Movable {
  * Clase que se encarga del manejo de los equipos del player
  */
 export class Team {
-  public pokemon: Pokemon[]
+  public pokemons: Pokemon[]
   public primary: Pokemon
   constructor (teamNames: Array<string | number>) {
-    this.pokemon = []
-    this.primary = this.pokemon[0]
+    this.pokemons = []
+    this.primary = this.pokemons[0]
     void this.setTeam(teamNames)
   }
 
@@ -65,9 +65,9 @@ export class Team {
     for (let i = 0; i < names.length; i++) {
       const data = await getPokemonData(names[i])
       const pokemon = new Pokemon(data)
-      this.pokemon.push(pokemon)
+      this.pokemons.push(pokemon)
     }
-    this.primary = this.pokemon[0]
+    this.primary = this.pokemons[0]
   }
 
   /**
@@ -75,6 +75,8 @@ export class Team {
    * @param pokemon Pokemon a cambiar
    */
   public switchFirstPokemon (pokemon: Pokemon): void {
+    const index = this.pokemons.indexOf(pokemon)
+    if (index === -1) return
     this.primary = pokemon
   }
 }

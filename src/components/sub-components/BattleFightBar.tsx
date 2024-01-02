@@ -53,6 +53,7 @@ export function BattleFightBar( { game }: { game: Game } ) {
         id="battle-fight-bar"
         className="bar"
         src={imagePaths.battleFightBarImgPath}
+        alt="Battle Fight Bar"
       />
 
       <div

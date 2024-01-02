@@ -225,4 +225,5 @@ export const imagePaths: Record<string, string> = {
   playerRightImgPath: 'assets/sprites/humans/player/right.png',
   pokemonFrontImgPath: 'assets/sprites/pokemons/front/',
   pokemonBackImgPath: 'assets/sprites/pokemons/back/',
+  mainMenuImgPath: 'assets/interface/mainMenu.png'
 }

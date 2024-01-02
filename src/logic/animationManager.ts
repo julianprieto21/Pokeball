@@ -96,7 +96,7 @@ export class AnimationManager {
    * @param healthPercentage Porcentaje de vida que le queda al pokemon
    */
   animateMove(user: PokemonSprite, target: PokemonSprite, xMove: number, healthPercentage: number) {
-    this.tl
+    this.tl // FIXME: Difiere si el Move no es de tipo fisico
           .to(user.position, {
             x: user.position.x - xMove,
             onStart: () => { this.game.canClick = false } ,
@@ -195,11 +195,20 @@ export class AnimationManager {
         window.document.getElementById('level')!.innerText = 'Lv' + this.game.battle!.ally!.level
         if (xpLeft > 0) {
           this.animateExperience(xpLeft)
-          window.document.getElementById('ally-current-experience-bar')!.style.width = '0%' // TODO: Hacer mas REACT
+          window.document.getElementById('ally-current-experience-bar')!.style.width = '0%' // FIXME: Hacer mas REACT
         } else {
           this.game.canClick = true
         }
       }
+    })
+  }
+
+  animateMainMenu(pausedFlag: number) {
+    const isOpen: number = pausedFlag ? 3 : 0
+    this.tl.to('.game-canvas', {
+      display: 'block',
+      duration: 0.1,
+      filter: `blur(${isOpen}px)` // TODO: Blureado negro -> ColorProps (GSAP)
     })
   }
 }

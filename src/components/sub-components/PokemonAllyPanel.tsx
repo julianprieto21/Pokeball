@@ -32,6 +32,7 @@ export function PokemonAllyPanel( { pokemon }: { pokemon: Pokemon } ) {
         id="ally-panel"
         className="panel"
         src={imagePaths.allyPokPanelImgPath}
+        alt='Ally Panel'
       />
 
       <p id='name'>{name}</p>

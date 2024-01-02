@@ -19,6 +19,7 @@ export function PokemonEnemyPanel( { pokemon }: { pokemon: Pokemon } ) {
     id='pokemon-enemy-panel'>
       <img
         src={imagePaths.enemyPokPanelImgPath}
+        alt='Enemy Panel'
       />
       <p id='name'>{name}</p>
       <p id='level'>Lv{level}</p>
@@ -29,4 +30,5 @@ export function PokemonEnemyPanel( { pokemon }: { pokemon: Pokemon } ) {
       </div>
     </div>
   )
+
 }

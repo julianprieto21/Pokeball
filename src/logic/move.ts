@@ -20,7 +20,6 @@ export class Move {
   public damageClass: string
   public target: string
   public critRate: number
-  public priotity: number
 
   public currentPP: number
   /**
@@ -43,7 +42,6 @@ export class Move {
     this.damageClass = data.damage_class.name
     this.target = data.target.name
     this.critRate = data.meta.crit_rate
-    this.priotity = data.priority
 
     this.currentPP = this.maxPP
   }

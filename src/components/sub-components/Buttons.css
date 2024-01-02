@@ -29,3 +29,33 @@
   width: 644px;
   height: 152px;
 }
+
+#main-menu {
+  position: absolute;
+  right: 0;
+  width: 200px;
+  height: 352px;
+}
+
+#main-menu-buttons {
+  position: absolute;
+  top: 28px;
+  left: 10px;
+  bottom: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+#main-menu-buttons button {
+  font-family: 'Montserrat', sans-serif;
+  background-color: transparent;
+  height: 60px;
+  font-size: 22px;
+  font-weight: 1000;
+  width: 180px;
+}
+
+#main-menu-buttons button:Hover {
+  font-size: 18px;
+}
