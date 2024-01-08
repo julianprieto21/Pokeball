@@ -74,6 +74,8 @@ export function parsePokemonData (main: any, specie: any, evolution: any, nature
     spriteFront: main.sprites.front_default ?? undefined,
     spriteBack: main.sprites.back_default ?? undefined,
     ability: main.abilities[0].ability.name,
+    weight: main.weight,
+    height: main.height,
     baseStats: parseStats(main.stats),
     baseExperience: main.base_experience,
     types: {
@@ -124,9 +126,9 @@ export function growthRate(growthRate: string, level: number): number {
       return level ** 3
     case 'fast':
       return (4 * (level ** 3)) / 5
-    case 'medium_slow':
+    case 'medium-slow':
       return (1.2 * (level ** 3)) - (15 * (level ** 2)) + 100 * level - 140
-    case 'slow_then_very_fast':
+    case 'slow-then-very-fast':
       return (level ** 3) * (2 - 0.02 * level) > 0 && level <= 50
         ? (level ** 3) * (2 - 0.02 * level)
         : (level ** 3) * (1.5 - 0.01 * level) > 0 && level <= 68
@@ -134,7 +136,7 @@ export function growthRate(growthRate: string, level: number): number {
             : (level ** 3) * (1.274 - 0.02 * (level / 3) - p(level % 3)) > 0
                 ? (level ** 3) * (1.274 - 0.02 * (level / 3) - p(level % 3))
                 : (level ** 3) * (1.6 - 0.01 * level)
-    case 'fast_then_very_slow':
+    case 'fast-then-very-slow':
       return (level ** 3) * (24 + (level + 1) / 3) / 50 > 0 && level <= 15
         ? (level ** 3) * (24 + (level + 1) / 3) / 50
         : (level ** 3) * (14 + level) / 50 > 0 && level <= 35

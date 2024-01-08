@@ -1,14 +1,17 @@
-import './Canvas.css'
+import './styles/Canvas.css'
 
-export function Canvas( { width, height, canvasRef }: {width: number; height: number, canvasRef: React.RefObject<HTMLCanvasElement> } ) {
+export function Canvas( 
+  { width, height, canvasRef, className }: 
+  {width: number; height: number, canvasRef: React.RefObject<HTMLCanvasElement>, className: string } 
+  ) {
 
   return (
     <canvas 
-      className="game-canvas"
-      id='main'
+      className={className}
       width={width}
       height={height}
-      ref={canvasRef}           
+      ref={canvasRef}         
+      style={{ width: width, height: height }}  
     />
   )
 }

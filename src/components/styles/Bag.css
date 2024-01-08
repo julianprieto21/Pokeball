@@ -1,0 +1,141 @@
+    #backButton {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    color: var(--light-text-color);
+    background-color: red;
+    border-radius: 8px 0 0 0;
+    transition: none;
+  }
+  
+  #iconBag {
+    position: absolute;
+    width: 75px;
+    left: 18px;
+    top: 18px;
+    transform: rotate(-30deg);
+  }
+  
+  #title {
+    margin: 0;
+    font-size: 70px;
+    font-weight: 300;
+    position: absolute;
+    top: 20px;
+    left: 110px;
+  }
+  
+  #pokemons {
+    left: 50px;
+    top: 110px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    position: absolute;
+  }
+  
+  #bag {
+    position: absolute;
+    height: 576px;
+    right: 110px;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  #pockets {
+    background-color: rgba(255, 255, 255, .5);
+    position: relative;
+    width: 450px;
+    height: 50px;
+    top: 20px;
+    border-radius: 50px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  #select {
+    position: absolute;
+    width: 50px;
+    height: 55px;
+    border-radius: 30%;
+    z-index: 0;
+    box-shadow: 4px 4px 10px rgba(40, 40, 40, .6);
+  }
+  
+  #pockets button {
+    border-radius: 30%;
+    width: 50px;
+    height: 50px;
+    padding: 0;
+    background-color: transparent;
+    border: 0;
+    transition: none;
+    z-index: 1;
+  }
+  
+  #pockets button:hover {
+    border: rgba(255, 255, 255, .5) 2px solid;
+  }
+
+  #pockets button:focus {
+    outline: none;
+  }
+  
+  #description {
+    max-width: 450px;
+    line-break: anywhere;
+  }
+  
+  #description h2 {
+    width: 545px;
+    border-radius: 30px 0 0 30px;
+    margin: 5px;
+    text-align: left;
+    padding-left: 10px;
+  }
+  
+  #description p {
+    margin: 10px;
+    text-align: left;
+  }
+
+  #item-action {
+    max-width: 450px;
+    line-break: anywhere;
+  }
+
+  #item-action-buttons {
+    position: relative;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    margin-top: 15px;
+    gap: 40px;
+  }
+
+  .item-action-button {
+    background-color: rgba(255, 255, 255, .5);
+    border-radius: 1.5cap;
+    box-shadow: 4px 4px 10px rgba(40, 40, 40, .6);
+    color: black;
+    width: 120px;
+  }
+
+  .item-action-button:hover {
+    border: rgba(255, 255, 255, .5) 2px solid;
+  }
+
+  .item-action-button:focus {
+    outline: none;
+  }
+
+  #item-action h2 {
+    width: 545px;
+    border-radius: 30px 0 0 30px;
+    margin: 5px;
+    text-align: left;
+    padding-left: 10px;
+  }

@@ -11,11 +11,13 @@ export function MainMenu( { game }: { game: Game } ) {
         if(id === 'main-menu-button-resume') {
             game.mainMenu()
         }
-        else if(id === 'main-menu-button-bag') { // TODO: Menu mochila
-            console.log('bag');
+        else if(id === 'main-menu-button-bag') {
+            game.mainMenu() // Cerrar
+            game.openBag();
         }
         else if(id === 'main-menu-button-pok') { // TODO: Menu pokemon
-            console.log('pok');
+            game.mainMenu() // Cerrar
+            game.openParty();
         }
         else if(id === 'main-menu-button-save') {
             console.log('save');

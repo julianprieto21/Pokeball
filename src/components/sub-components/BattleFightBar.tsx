@@ -23,7 +23,7 @@ export function BattleFightBar( { game }: { game: Game } ) {
       // Iniciar secuencia de ataques
       game.interfaceManager.playAction() // Ataque
       // game.interfaceManager.playAction() // Verificar si sigue vivo
-      game.interfaceManager.setInterfaceState(1)
+      game.interfaceManager.getSetters().interfaceState(1)
 
     }
   }

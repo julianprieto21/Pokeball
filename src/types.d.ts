@@ -9,6 +9,8 @@ export interface PokemonData {
   spriteFront: string
   spriteBack: string
   ability: string
+  weight: number,
+  height: number,
   baseStats: {
     hp: {
       value: number
@@ -132,24 +134,23 @@ export interface NatureNames {
   special_defense: string
   speed: string
 }
-// export interface Pockets {
-//   [key: string]: Item[]
-//   items: Item[]
-//   medicine: Item[]
-//   pokeballs: Item[]
-//   machines: Item[]
-//   berries: Item[]
-//   mail: Item[]
-//   battleItems: Item[]
-//   keyItems: Item[]
-// }
+export interface Pockets {
+  [key: string]: Item[]
+  misc: Item[]
+  medicine: Item[]
+  pokeballs: Item[]
+  machines: Item[]
+  berries: Item[]
+  mail: Item[]
+  battle: Item[]
+  key: Item[]
+}
 export interface Sprite {
   position: { x: number, y: number }
   image: HTMLImageElement
   width: number
   height: number
 }
-
 export interface MapInfo {
   offset: { x: number, y: number }
   backImg: string
@@ -161,7 +162,8 @@ export interface MapInfo {
   collisionArray: number[]
   battleZoneArray: number[]
 }
-
-// export interface Dialogue {
-//   format: (...args: string[]) => string
-// }
+export interface Setters {
+  interfaceState: React.Dispatch<React.SetStateAction<number>>,
+  interfaceVisible: React.Dispatch<React.SetStateAction<number>>,
+  [key: string]: React.Dispatch<React.SetStateAction<any>> | undefined
+}

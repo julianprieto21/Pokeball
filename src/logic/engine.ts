@@ -47,20 +47,19 @@ export class Engine {
     this.battle.game.interfaceManager.actionQueue.push(() => { this.makeMove(first_move, first, second) })
     this.battle.game.interfaceManager.actionQueue.push(() => { 
       if (second.isAlive()) { 
-        this.makeMove(second_move, second, first) 
-      }
-      else {
+        this.makeMove(second_move, second, first)
+        if (!first.isAlive()) this.battle.game.interfaceManager.actionQueue.push(() => { 
+          this.faint(first)
+          if (!second.isEnemy) this.battle.game.interfaceManager.actionQueue.push(() => { this.winExperience(second, first) })
+          this.battle.game.interfaceManager.actionQueue.push(() => { this.retreat(second, true) })
+        })
+      } else {
         this.faint(second)
-        this.battle.game.interfaceManager.actionQueue.push(() => { this.winExperience(first, second) })
-        this.battle.game.interfaceManager.actionQueue.push(() => { this.retreat(first, true) })
+        if (!first.isEnemy) this.battle.game.interfaceManager.actionQueue.push(() => { this.winExperience(first, second) })
+        this.battle.game.interfaceManager.actionQueue.push(() => { this.retreat(first, true); console.log(first.isAlive()) })
       }
     })
-    first.isAlive() 
-    ? null 
-    :  this.battle.game.interfaceManager.actionQueue.push(() => { this.faint(first) })
   }
-
-
 
   /**
    * Funcion que se encarga de determinar si es el turno del pokemon aliado o no
@@ -95,15 +94,25 @@ export class Engine {
         return _.random(0, 1, true) < acc
       } else return true
     }
-    // Realizar movimiento
-    if (!isHit() || move.damageClass === 'status') return
 
+    // Realizar movimiento
+    if (!isHit() || move.damageClass === 'status') {
+      this.battle.game.interfaceManager.addDialogue(format(dialogues.failAttackDialogue, [user.name]))
+      return
+    }
     const damage = this.getDamage(move, user, target)
-    this.animateMove(user, target, move, damage)
+    target.receiveDamage(damage)
     move.currentPP--
+
+    // Animacion de movimiento
+    const xMove = user.isEnemy ? -20 : 20
+    if (move.damageClass === "physical" || move.damageClass === "special") {
+      const healthPercentage = target.currentHp / target.getStats().hp * 100
+      this.battle.game.animationManager.animateMove(user.mainSprite, target.mainSprite, xMove, healthPercentage)
+    }
     
+    // Dialogo de movimiento
     this.battle.game.interfaceManager.addDialogue(format(dialogues.attackDialogue, [user.name, move.name]))
-    console.log(user.name + ' used ' + move.name + ' and dealt ' + damage + ' damage to ' + target.name + ' (' + target.currentHp + '/' + target.getStats().hp + ')')
   }
 
   /**
@@ -167,36 +176,38 @@ export class Engine {
   }
 
   /**
-   * Funcion que se encarga de realizar/animar el movimiento de un pokemon
-   * @param user Pokemon que realiza el movimiento
-   * @param target Pokemon que recibe el movimiento
-   * @param move Movimiento a realizar
-   * @param damage Daño a realizar
-   */
-  animateMove(user: Pokemon, target: Pokemon, move: Move, damage: number) { // FIXME: Funcion para Animation Manager?
-    const xMove = user.isEnemy ? -20 : 20
-    const moveClass = move.damageClass === 'physical' ? 'physical' : 'special' // COMMENT: Por ahora solo se anima los fisicos y especiales
-    if (moveClass === "physical" || moveClass === "special") {
-      target.receiveDamage(damage)
-      const healthPercentage = target.currentHp / target.getStats().hp * 100
-      this.battle.game.animationManager.animateMove(user.mainSprite, target.mainSprite, xMove, healthPercentage)
-    }
-  }
-
-  /**
    * Funcion que se encarga de otorgar/animar la experiencia que gana un pokemon al ganar una batalla
    * @param winner Pokemon ganador
    * @param looser Pokemon perdedor
    */
   winExperience(winner: Pokemon, looser: Pokemon) {
-    const winnerXPLeft = winner.getNextLevelXp()
     const xp = this.getExperience(looser)
-    const XPpercentage = (winner.currentXp + xp) * 100 / winnerXPLeft
-
-    winner.receiveExperience(xp)
-    
-    if (!winner.isEnemy) this.battle.game.animationManager.animateExperience(XPpercentage)
     this.battle.game.interfaceManager.addDialogue(format(dialogues.winExperienceDialogue, [winner.name, xp.toString()]))
+    this._winExperience(xp, winner)
+  }
+
+  /**
+   * Funcion recursiva que se encarga en mas detalle la carga de xp y aumento de nivel
+   * @param xp Experiencia a cargar
+   * @param winner Pokemon que recibe
+   */
+  _winExperience(xp: number, winner: Pokemon) {
+    const getPercentage = (xp: number, winner: Pokemon) => {
+      const xpLeft = winner.getNextLevelXp()
+      const percentage = xp * 100 / xpLeft
+      return percentage
+    }
+    const _ = winner.getNextLevelXp() - winner.currentXp // Exp necesaria para siguiente nivel, teniendo en cuenta la cantidad actual
+    if (xp >= _) {
+      const xpLeft = xp - _
+      winner.receiveExperience(_)
+      this.battle.game.animationManager.animateExperience(100)
+      this._winExperience(xpLeft, winner)
+    } else {
+      winner.receiveExperience(xp)
+      const percentage = getPercentage(winner.currentXp, winner)
+      this.battle.game.animationManager.animateExperience(percentage)
+    }
   }
 
   /**
@@ -204,14 +215,14 @@ export class Engine {
    * @param pokemon Pokemon que se retira
    */
   retreat(pokemon: Pokemon, win: boolean = false) {
-    this.battle.game.interfaceManager.setInterfaceState(1)
+    this.battle.game.interfaceManager.getSetters().interfaceState(1)
     if (this.canRetreat() || win) {
-      const text = win ? `${this.battle.ally.name} defeat ${this.battle.enemy.name}` : `${this.battle.ally.name} run away!`
+      const text = win ? format(dialogues.winReatreatDialogue, [pokemon.name]) : format(dialogues.retreatDialogue, [pokemon.name])
       this.battle.game.interfaceManager.addDialogue(text)
       this.battle.game.animationManager.retreatAnimation(pokemon.mainSprite)
       // this.battle.game.animationManager.blackScreenIn() // TODO: Modificar para que si es escape, sea sin titilar
     } else {
-      this.battle.game.interfaceManager.addDialogue(`${this.battle.ally.name} can´t escape!`)
+      this.battle.game.interfaceManager.addDialogue(format(dialogues.failRetreatDialogue, [pokemon.name]))
     }
     
   }

@@ -10,6 +10,7 @@ import React from 'react'
 import { InterfaceManager } from './interfaceManager'
 import { AnimationManager } from './animationManager'
 import _ from 'lodash'
+import { Setters } from '../types'
 
 /**
  * Clase que se encarga de la logica del juego
@@ -36,12 +37,16 @@ export class Game {
 
   public canClick: boolean = true
   public isPaused: number = 0
+  public interfaceState: number
+
+  public boundKeyDownHandler: (event: KeyboardEvent) => void
+  public boundKeyUpHandler: (event: KeyboardEvent) => void
   /**
    * Constructor de la clase Game
    * @param canvasRef Referencia al canvas
-   * @param interfaceManager Setters de la interfaz
+   * @param setters Setters de la interfaz
    */
-  constructor(canvasRef: React.RefObject<HTMLCanvasElement>, interfaceManager: {interfaceVisible: React.Dispatch<React.SetStateAction<number>>, interfaceState: React.Dispatch<React.SetStateAction<number>>}) {
+  constructor(canvasRef: React.RefObject<HTMLCanvasElement>, interfaceState: number, setters: Setters) {
     if (canvasRef.current !== null) {
       this.canvas = canvasRef.current
     } else {
@@ -57,8 +62,16 @@ export class Game {
     this.player = new Player()
     this.actualMap = new _Map_(mapInfo.startingMap)
 
-    this.interfaceManager = new InterfaceManager(this, interfaceManager.interfaceVisible, interfaceManager.interfaceState)
+    this.interfaceState = interfaceState
+    this.interfaceManager = new InterfaceManager(this, setters)
     this.animationManager = new AnimationManager(this)
+
+    this.boundKeyDownHandler = this.keyDownHandler.bind(this)
+    this.boundKeyUpHandler = this.keyUpHandler.bind(this)
+
+    // Eventos de teclado
+    window.addEventListener('keydown', this.boundKeyDownHandler)
+    window.addEventListener('keyup', this.boundKeyUpHandler)
   }
 
     /**
@@ -66,6 +79,7 @@ export class Game {
    */
     start() {
       // Resetear
+      this.battle = null
       this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
       this.interfaceManager.clearActionQueue()
       this.interfaceManager.clearDialogueQueue()
@@ -80,10 +94,6 @@ export class Game {
   
       // Iniciar animacion
       this.loop()
-  
-      // Eventos de teclado
-      window.addEventListener('keydown', this.keyDownHandler.bind(this))
-      window.addEventListener('keyup', this.keyUpHandler.bind(this))
     }
 
   /**
@@ -106,9 +116,7 @@ export class Game {
   stop() {
     // Detener animacion
     window.cancelAnimationFrame(this.animationFrame)
-    // this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
-    window.removeEventListener('keydown', this.keyDownHandler.bind(this))
-    window.removeEventListener('keyup', this.keyUpHandler.bind(this))
+    this.lastKey = ''
   }
 
   /**
@@ -167,7 +175,8 @@ export class Game {
           y: this.actualMap.battleZoneBoundaries[i].position.y + y
         })
 
-      if (this.actualMap.checkCollision(this.player.sprite, boundary) && _.random(0, 100, true) < 1){ // COMMENT: Cambiar valor para modificar probs de batalla
+      if (this.actualMap.checkCollision(this.player.sprite, boundary) && _.random(0, 100, true) < 1 && this.player.party.getPrimary().currentHp > 0){ // COMMENT: Cambiar valor para modificar probs de batalla
+        // TODO: Logica de cambio pokemon primario sin vida. (mandar a otro pokemon de primario o aparecer en clinica)
         this.stop()
         this.initBattle()
         break
@@ -200,7 +209,15 @@ export class Game {
     }
 
     if (e.key === 'Escape') {
-      this.mainMenu()
+      if (this.interfaceState === 0) {
+        this.mainMenu()
+      } else if (this.interfaceState === 3) {
+        this.interfaceManager.getSetters().interfaceState(2)
+      } else if (this.interfaceState === 4 || this.interfaceState === 5) {
+        this.battle
+          ? this.interfaceManager.getSetters().interfaceState(2)
+          : this.mainMenu()
+        }
     }
   }
 
@@ -219,7 +236,7 @@ export class Game {
    */
   async initBattle() {
     this.animationManager.blackScreenIn()
-    const data = await getPokemonData(0)
+    const data = await getPokemonData(337)
     const enemy = new Pokemon(data, true, 5)
     const battle = new Battle(this, enemy)
     this.battle = battle
@@ -250,8 +267,21 @@ export class Game {
 
   mainMenu() {
     this.isPaused = this.isPaused == 1 ? 0 : 1
-    this.interfaceManager.setInterfaceVisible(this.isPaused)
+    this.interfaceManager.getSetters().interfaceState(0)
+    this.interfaceManager.getSetters().interfaceVisible(this.isPaused)
     this.animationManager.animateMainMenu(this.isPaused)
+  }
+
+  openBag() {
+    this.isPaused = this.isPaused == 1 ? 0 : 1
+    this.interfaceManager.getSetters().interfaceVisible(this.isPaused)
+    this.interfaceManager.getSetters().interfaceState(4)
+  }
+
+  openParty() {
+    this.isPaused = this.isPaused == 1 ? 0 : 1
+    this.interfaceManager.getSetters().interfaceVisible(this.isPaused)
+    this.interfaceManager.getSetters().interfaceState(5)
   }
 
 }

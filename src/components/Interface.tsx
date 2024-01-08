@@ -1,4 +1,4 @@
-import './Interface.css'
+import './styles/Interface.css'
 import { DialogueBar } from './sub-components/DialogueBar'
 import { BattleMenuBar } from './sub-components/BattleMenuBar'
 import { BattleFightBar } from './sub-components/BattleFightBar'
@@ -7,6 +7,8 @@ import { Game } from '../logic/game'
 import { useEffect, useState } from 'react'
 import { Pokemon } from '../logic/pokemon'
 import { MainMenu } from './sub-components/MainMenu'
+import { Bag } from './Bag'
+import { Party } from './Party'
 
 export function Interface( { game, actualState }: { game: Game, actualState: number } ) {
 
@@ -38,13 +40,15 @@ export function Interface( { game, actualState }: { game: Game, actualState: num
               : actualState === 3
                 ? <BattleFightBar game={game} />
                 : actualState === 4
-                  ? null
-                  : null
+                  ? <Bag game={game} />
+                  : actualState === 5
+                    ? <Party game={game} />
+                    : null
       }
 
       {
-        actualState !== 0 && ally && enemy
-          ? <PokemonPanels ally={ally} enemy={enemy} />
+        ![0, 4, 5].includes(actualState) && ally && enemy
+          ? <PokemonPanels game={game} ally={ally} enemy={enemy} />
           : null
       }
     </div>

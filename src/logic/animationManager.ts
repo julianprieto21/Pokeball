@@ -81,7 +81,7 @@ export class AnimationManager {
   animateHealthBar(isEnemy: boolean, healthPercentage: number) {
     const team = isEnemy ? 'enemy' : 'ally'
     const healthBarId = '#' + team + '-current-health-bar'
-
+    console.log(healthBarId)
     this.tl.to( healthBarId, {
       width: `${healthPercentage}%`,
       duration: 0.5
@@ -105,8 +105,8 @@ export class AnimationManager {
             x: user.position.x + xMove * 2,
             duration: 0.1,
             onComplete: () => {
-             this.animateDamage(target)
-             this.animateHealthBar(target.isEnemy, healthPercentage)
+              this.animateDamage(target)
+              this.animateHealthBar(target.isEnemy, healthPercentage)
             }
           })
           .to(user.position, {
@@ -181,34 +181,29 @@ export class AnimationManager {
    * Funcion que se encarga de animar la experiencia que recibe el pokemon aliado
    * @param xp Cantidad de experiencia que recibe el pokemon
    */
-  animateExperience(xp: number) {
-    let xpLeft = 0
-    if (xp > 100) {
-      xpLeft = xp - 100
-      xp = 100
-    }
+  animateExperience(percentage: number) {
     this.tl.to('#ally-current-experience-bar', {
-      width: xp + '%',
+      width: percentage + '%',
       duration: 1,
       onStart: () => { this.game.canClick = false },
-      onComplete: () => {
-        window.document.getElementById('level')!.innerText = 'Lv' + this.game.battle!.ally!.level
-        if (xpLeft > 0) {
-          this.animateExperience(xpLeft)
-          window.document.getElementById('ally-current-experience-bar')!.style.width = '0%' // FIXME: Hacer mas REACT
-        } else {
-          this.game.canClick = true
+      onComplete: () => { 
+        this.game.canClick = true 
+        this.game.interfaceManager.getSetters().level!(this.game.battle!.ally!.level) // TODO: Funcion animate para cambiar nivel?
+        if (percentage == 100) {
+          window.document.getElementById('ally-current-experience-bar')!.style.width = '0%' // FIXME: Hacer lo mismo de otra manera
+          // this.game.interfaceManager.getSetters().exp!(0) // => No funciona
+          this.animateHealthBar(false, 100)
         }
       }
     })
   }
 
   animateMainMenu(pausedFlag: number) {
-    const isOpen: number = pausedFlag ? 3 : 0
+    const blur: number = pausedFlag ? 3 : 0
     this.tl.to('.game-canvas', {
       display: 'block',
       duration: 0.1,
-      filter: `blur(${isOpen}px)` // TODO: Blureado negro -> ColorProps (GSAP)
+      filter: `blur(${blur}px)` // TODO: Blureado negro -> ColorProps (GSAP)
     })
   }
 }

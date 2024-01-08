@@ -31,12 +31,12 @@ export class Battle {
     this.ctx = game.getCtx()
     this.field = game.getActualMap().fieldImg
     this.player = game.getPlayer()
-    this.ally = this.player.team.primary
+    this.ally = this.player.party.getPrimary()
     this.opponent = opponent
     if (this.opponent instanceof Pokemon ) {
       this.enemy = this.opponent // Encuentro salvaje
     } else {
-      this.enemy = this.opponent.team.primary // Entrenador
+      this.enemy = this.opponent.party.getPrimary() // Entrenador
     }
     this.engine = new Engine(this)
   }
@@ -57,8 +57,8 @@ export class Battle {
    */
   start(): void {
     // Activar interface
-    this.game.interfaceManager.setInterfaceVisible(1)
-    this.game.interfaceManager.setInterfaceState(1)
+    this.game.interfaceManager.getSetters().interfaceVisible(1)
+    this.game.interfaceManager.getSetters().interfaceState(1)
     // Iniciar elementos renderizables
     this.renders = [this.ally.mainSprite, this.enemy.mainSprite]
 

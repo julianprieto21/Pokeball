@@ -1,28 +1,27 @@
 import { Game } from "./game"
 import { dialogues } from "../utils/constants"
 import { format } from "../utils/functions"
+import { Setters } from "../types"
 
 
 /**
  * Clase que se encarga de la interfaz
  */
 export class InterfaceManager {
-  game: Game
-  setInterfaceVisible: React.Dispatch<React.SetStateAction<number>>
-  setInterfaceState: React.Dispatch<React.SetStateAction<number>>
+  public game: Game
   public dialogueQueue: string[] = []
   public actionQueue: Function[] = []
   private menuText: string = ''
+  private setters: Setters
   /**
    * Constructor de la clase InterfaceManager
    * @param game Instancia de la clase Game
    * @param interfaceVisible Setter de la visibilidad de la interfaz
    * @param interfaceState Setter del estado de la interfaz
    */
-  constructor(game: Game, interfaceVisible: React.Dispatch<React.SetStateAction<number>>, interfaceState: React.Dispatch<React.SetStateAction<number>>) {
+  constructor(game: Game, setters: Setters) {
     this.game = game
-    this.setInterfaceVisible = interfaceVisible
-    this.setInterfaceState = interfaceState
+    this.setters = setters
   }
 
   /**
@@ -93,8 +92,8 @@ export class InterfaceManager {
 
     this.clearActionQueue()
     this.clearDialogueQueue()
-    this.setInterfaceState(0)
-    this.setInterfaceVisible(0) 
+    this.setters.interfaceState(0)
+    this.setters.interfaceVisible(0) 
     this.game.battle.stop()
     this.game.battle = null
     this.game.start()
@@ -134,4 +133,11 @@ export class InterfaceManager {
     this.dialogueQueue = []
   }
 
+  getSetters() {
+    return this.setters
+  }
+
+  addSetters(name: string, setter: React.Dispatch<React.SetStateAction<any>>) {
+    this.setters[name] = setter
+  }
 }

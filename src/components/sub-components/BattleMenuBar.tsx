@@ -1,6 +1,6 @@
 import { Game } from '../../logic/game'
-import './Bar.css'
-import './Buttons.css'
+import '../styles/Bar.css'
+import '../styles/Buttons.css'
 import { imagePaths } from '../../utils/constants'
 
 export function BattleMenuBar( { game }: { game: Game } ) {
@@ -11,10 +11,14 @@ export function BattleMenuBar( { game }: { game: Game } ) {
     const button = e.target as HTMLButtonElement
     const buttonText = button.textContent
     console.log(buttonText)
-    if (buttonText === 'RUN') {
-      game.battle?.engine.retreat(game.battle.ally)
-    }
-    if (buttonText === 'FIGHT') game.interfaceManager.setInterfaceState(3)
+    if (buttonText === 'RUN') game.battle?.engine.retreat(game.battle.ally)
+  
+    if (buttonText === 'FIGHT') game.interfaceManager.getSetters().interfaceState(3)
+  
+    if (buttonText === 'BAG') game.interfaceManager.getSetters().interfaceState(4)
+
+    if (buttonText === 'POKEMON') game.interfaceManager.getSetters().interfaceState(5)
+  
   }
 
   return (

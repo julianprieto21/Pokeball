@@ -1,7 +1,10 @@
 import { useEffect, useState } from 'react'
 import { Game } from '../../logic/game'
-import './Bar.css'
+import '../styles/Bar.css'
 import { imagePaths } from '../../utils/constants'
+import gsap from 'gsap'
+gsap.registerPlugin(TextPlugin)
+
 
 export function DialogueBar( { game }: { game: Game } ) {
 
@@ -16,10 +19,10 @@ export function DialogueBar( { game }: { game: Game } ) {
     if (!game.canClick) return
     if (game.interfaceManager.dialogueQueue.length > 0 || game.interfaceManager.actionQueue.length > 0) {
       game.interfaceManager.playAction() // Ataque
-      setDialogueText(game.interfaceManager.getDialogue())
+      setDialogueText(game.interfaceManager.getDialogue()) // TODO: Animar texto
     } else {
       setDialogueText('')
-      game.interfaceManager.setInterfaceState(2) // battle menu bar
+      game.interfaceManager.getSetters().interfaceState(2) // battle menu bar
     }
   }
 

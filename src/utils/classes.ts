@@ -1,6 +1,4 @@
 import { TILESIZE } from './constants'
-import { Pokemon } from '../logic/pokemon'
-import { getPokemonData } from '../api/getData'
 
 /**
  * Clase que se encarga de crear un rectangulo que representa un limite
@@ -20,7 +18,7 @@ export class Boundary {
    * @param ctx Contexto del canvas
    */
   draw (ctx: CanvasRenderingContext2D): void {
-    ctx.fillStyle = 'rgba(255, 0, 0, .0)'
+    ctx.fillStyle = 'rgba(255, 0, 0, .3)'
     ctx.fillRect(this.position.x, this.position.y, this.width, this.height)
   }
 }
@@ -42,41 +40,5 @@ export class Movable {
    */
   draw (ctx: CanvasRenderingContext2D): void {
     ctx.drawImage(this.image, this.position.x, this.position.y)
-  }
-}
-
-/**
- * Clase que se encarga del manejo de los equipos del player
- */
-export class Team {
-  public pokemons: Pokemon[]
-  public primary: Pokemon
-  constructor (teamNames: Array<string | number>) {
-    this.pokemons = []
-    this.primary = this.pokemons[0]
-    void this.setTeam(teamNames)
-  }
-
-  /**
-   * Metodo que se encarga de crear el equipo del player
-   * @param names Nombres de los pokemon
-   */
-  public async setTeam (names: Array<string | number>): Promise<void> {
-    for (let i = 0; i < names.length; i++) {
-      const data = await getPokemonData(names[i])
-      const pokemon = new Pokemon(data)
-      this.pokemons.push(pokemon)
-    }
-    this.primary = this.pokemons[0]
-  }
-
-  /**
-   * Metodo que se encarga de cambiar el pokemon principal
-   * @param pokemon Pokemon a cambiar
-   */
-  public switchFirstPokemon (pokemon: Pokemon): void {
-    const index = this.pokemons.indexOf(pokemon)
-    if (index === -1) return
-    this.primary = pokemon
   }
 }

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Pokemon } from '../../logic/pokemon'
-import '../PokemonPanels.css'
+import '../styles/PokemonPanels.css'
 import { imagePaths } from '../../utils/constants'
 
 export function PokemonEnemyPanel( { pokemon }: { pokemon: Pokemon } ) {

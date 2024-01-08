@@ -17,6 +17,8 @@ export class Pokemon {
   public level: number
   private nature: PokemonData['nature']
   public isEnemy: boolean
+  public weight: number
+  public height: number
 
   public sprites: { front: string, back: string }
   public mainSprite: PokemonSprite
@@ -49,6 +51,8 @@ export class Pokemon {
     this.level = level
     this.nature = data.nature
     this.isEnemy = isEnemy
+    this.weight = data.weight / 10
+    this.height = data.height / 10
 
     this.sprites = { front: data.spriteFront, back: data.spriteBack }
     this.mainSprite = new PokemonSprite(this.id, this.isEnemy)
@@ -57,7 +61,7 @@ export class Pokemon {
     this.baseExperience = data.baseExperience
     this.ivs = this._setIVs()
     this.natureStats = this._setNature()
-    this.growthRate = data.growthRate.replace('-', '_')
+    this.growthRate = data.growthRate
     this.ability = data.ability.toUpperCase()
     this.stats = this._setStats()
     this.evolutionChain = data.evolution

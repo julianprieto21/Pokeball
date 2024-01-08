@@ -3,6 +3,7 @@ import { Interface } from "./components/Interface"
 import { CANVAS_WIDTH, CANVAS_HEIGHT } from './utils/constants'
 import { useEffect, useRef, useState } from 'react'
 import { Game } from './logic/game'
+import { Setters } from "./types"
 
 
 function App() {
@@ -13,14 +14,15 @@ function App() {
 
   const [game, setGame] = useState<Game>()
 
-  const setters = {
+  const setters: Setters = {
     interfaceVisible: setInterfaceVisible,
     interfaceState: setInterfaceState
   }
 
-  useEffect(() => {
+  useEffect(() => { // Instancia el juego // Es necesario en un useEffect?
     const gameObject = new Game(
       canvasRef,
+      interfaceState,
       setters
     )
     gameObject.start()
@@ -28,9 +30,14 @@ function App() {
     setGame(gameObject)
   }, [])
 
+  useEffect(() => { // Actualiza el state del juego
+    if (!game) return
+    game.interfaceState = interfaceState
+  }, [interfaceState])
+
   return (
     <>
-      <Canvas width={CANVAS_WIDTH} height={CANVAS_HEIGHT} canvasRef={canvasRef} />
+      <Canvas width={CANVAS_WIDTH} height={CANVAS_HEIGHT} canvasRef={canvasRef} className="game-canvas" />
 
       {
         interfaceVisible && game
@@ -40,7 +47,7 @@ function App() {
 
       <div className='black-screen' style={{backgroundColor: 'black', display: 'none', opacity: 0, width: 1024, height: 576, position: 'absolute', top: 0}}></div>
 
-      {/* <p style={{position: 'absolute'}}>InterfaceVisible: {interfaceVisible}<br/>InterfaceState: {interfaceState}</p> */}
+      <p style={{position: 'absolute'}}>InterfaceVisible: {interfaceVisible}<br/> interfaceState: {interfaceState}</p>
     </>
     )
 }
