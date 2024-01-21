@@ -1,6 +1,6 @@
 import { Canvas } from "./components/Canvas"
 import { Interface } from "./components/Interface"
-import { CANVAS_WIDTH, CANVAS_HEIGHT } from './utils/constants'
+import { CANVAS_WIDTH, CANVAS_HEIGHT, DEBUG_MODE } from './utils/constants'
 import { useEffect, useRef, useState } from 'react'
 import { Game } from './logic/game'
 import { Setters } from "./types"
@@ -47,7 +47,12 @@ function App() {
 
       <div className='black-screen' style={{backgroundColor: 'black', display: 'none', opacity: 0, width: 1024, height: 576, position: 'absolute', top: 0}}></div>
 
-      <p style={{position: 'absolute'}}>InterfaceVisible: {interfaceVisible}<br/> interfaceState: {interfaceState}</p>
+      {
+      DEBUG_MODE
+        ? <p style={{position: 'absolute'}}>InterfaceVisible: {interfaceVisible}<br/> interfaceState: {interfaceState}</p>
+        : null
+      }
+
     </>
     )
 }

@@ -44,19 +44,56 @@ export class Engine {
       second_move = allyMove
     }
 
-    this.battle.game.interfaceManager.actionQueue.push(() => { this.makeMove(first_move, first, second) })
-    this.battle.game.interfaceManager.actionQueue.push(() => { 
-      if (second.isAlive()) { 
-        this.makeMove(second_move, second, first)
-        if (!first.isAlive()) this.battle.game.interfaceManager.actionQueue.push(() => { 
-          this.faint(first)
-          if (!second.isEnemy) this.battle.game.interfaceManager.actionQueue.push(() => { this.winExperience(second, first) })
-          this.battle.game.interfaceManager.actionQueue.push(() => { this.retreat(second, true) })
-        })
+    this.addAction(() => {this.makeMove(first_move, first, second)}) // first attacks
+    this.addAction(() => { 
+      if (second.isAlive()) { // second is alive? 
+        this.makeMove(second_move, second, first) // yes -> second attacks
+        if (first.isAlive()) {} // first is alive? -> return to menu
+        else { 
+          this.addAction(() => { this.faint(first) }) // first faint
+          if (first.isEnemy) {
+            this.addAction(() => { this.winExperience(second, first) }) // if second is ally, win xp
+            this.addAction(() => {
+              if (second.isLevelUp) {
+                this.levelUp(second) // second level up
+                if (second.isEvolution) { this.addAction(() => { this.evolve(second) }) } // second evolve
+              } 
+              second.isLevelUp = false
+              second.isEvolution = false
+              this.addAction(() => { this.retreat(second, true) }) // second retreat
+            })
+          } else {
+            const nextPok = this.battle.game.getPlayer().party.getNextPokemon()
+            if (nextPok) {
+              this.addAction(() => { this.changePokemon(nextPok) })
+            } else {
+              this.addAction(() => { this.retreat(second, true) }) // second retreat
+            }           
+          }                    
+        }       
       } else {
-        this.faint(second)
-        if (!first.isEnemy) this.battle.game.interfaceManager.actionQueue.push(() => { this.winExperience(first, second) })
-        this.battle.game.interfaceManager.actionQueue.push(() => { this.retreat(first, true); console.log(first.isAlive()) })
+        this.faint(second) // no -> second faint
+        if (second.isEnemy) { // second is enemy?
+          this.addAction(() => { this.winExperience(first, second) }) // first win xp
+          this.addAction(() => {
+            if (first.isLevelUp) {
+              this.levelUp(first) // first level up
+              if (first.isEvolution) { this.addAction(() => { this.evolve(first) }) } // first evolve
+            } 
+            first.isLevelUp = false
+            first.isEvolution = false
+            this.addAction(() => { this.retreat(first, true) })  // first reatreat
+          })
+        } else {
+          const nextPok = this.battle.game.getPlayer().party.getNextPokemon()
+          if (nextPok) {
+            this.battle.game.interfaceManager.getSetters().interfaceState(5)
+            // this.addAction(() => { this.changePokemon(nextPok) })
+            // this.changePokemon(nextPok)
+          } else {
+            this.addAction(() => { this.retreat(first, true) }) // first reatreat
+          }
+        }
       }
     })
   }
@@ -100,7 +137,7 @@ export class Engine {
       this.battle.game.interfaceManager.addDialogue(format(dialogues.failAttackDialogue, [user.name]))
       return
     }
-    const damage = this.getDamage(move, user, target)
+    const [damage, critic] = this.getDamage(move, user, target)
     target.receiveDamage(damage)
     move.currentPP--
 
@@ -112,7 +149,10 @@ export class Engine {
     }
     
     // Dialogo de movimiento
-    this.battle.game.interfaceManager.addDialogue(format(dialogues.attackDialogue, [user.name, move.name]))
+    let critText
+    if (critic > 1) critText = ', and is critical!'
+    else critText = '!'
+    this.battle.game.interfaceManager.addDialogue(format(dialogues.attackDialogue, [user.name, move.name]) + critText)
   }
 
   /**
@@ -151,7 +191,7 @@ export class Engine {
 
     const damage = 0.01 * b * e * v * ((((0.2 * n + 1) * a * p) / (25 * d)) + 2)
     const critic = isCritical() ? 1.5 : 1
-    return _.floor(damage * critic)
+    return [_.floor(damage * critic), critic]
   }
 
   /**
@@ -220,7 +260,7 @@ export class Engine {
       const text = win ? format(dialogues.winReatreatDialogue, [pokemon.name]) : format(dialogues.retreatDialogue, [pokemon.name])
       this.battle.game.interfaceManager.addDialogue(text)
       this.battle.game.animationManager.retreatAnimation(pokemon.mainSprite)
-      // this.battle.game.animationManager.blackScreenIn() // TODO: Modificar para que si es escape, sea sin titilar
+      // this.battle.game.animationManager.blackScreenIn() // TODO: #4
     } else {
       this.battle.game.interfaceManager.addDialogue(format(dialogues.failRetreatDialogue, [pokemon.name]))
     }
@@ -244,5 +284,28 @@ export class Engine {
         }
     } else return true;
 
+  }
+
+  changePokemon( pokemon: Pokemon ) {
+    if (pokemon === this.ally) return
+    this.battle.ally = pokemon
+    this.battle.engine = new Engine(this.battle)
+    this.battle.game.interfaceManager.getSetters().interfaceState(1)
+    const leave = this.ally.currentHp > 0 ? this.ally.mainSprite : false
+    this.battle.game.interfaceManager.addDialogue(format(dialogues.intro2Dialogue, [pokemon.name]))
+    this.battle.game.animationManager.changePokemonAnimation(pokemon.mainSprite, leave)
+
+  }
+
+  addAction(action: any) {
+    this.battle.game.interfaceManager.actionQueue.push(action)
+  }
+
+  levelUp(pokemon: Pokemon) {
+    this.battle.game.interfaceManager.addDialogue(format(dialogues.levelUpDialogue, [pokemon.name, pokemon.level.toString()]))
+  }
+
+  evolve(pokemon: Pokemon) {
+    this.battle.game.interfaceManager.addDialogue(format(dialogues.evolveDialogue, [pokemon.name, pokemon.evolutionChain.first!.name]))
   }
 }

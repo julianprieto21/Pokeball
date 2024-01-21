@@ -1,6 +1,7 @@
 import { Game } from "../../logic/game";
-import { imagePaths } from "../../utils/constants";
+import { DEBUG_MODE, imagePathsNew } from "../../utils/constants";
 
+const IMAGE_PATHS = imagePathsNew
 
 export function MainMenu( { game }: { game: Game } ) {
 
@@ -15,18 +16,18 @@ export function MainMenu( { game }: { game: Game } ) {
             game.mainMenu() // Cerrar
             game.openBag();
         }
-        else if(id === 'main-menu-button-pok') { // TODO: Menu pokemon
+        else if(id === 'main-menu-button-pok') {
             game.mainMenu() // Cerrar
             game.openParty();
         }
         else if(id === 'main-menu-button-save') {
-            console.log('save');
+            if (DEBUG_MODE) console.log('save');
         }
         else if(id === 'main-menu-button-quit') {
-            console.log('quit');
+            if (DEBUG_MODE) console.log('quit');
         }
         else {
-            console.log('error');
+            if (DEBUG_MODE) console.log('error');
         }
     }
 
@@ -36,7 +37,7 @@ export function MainMenu( { game }: { game: Game } ) {
         className="main-menu">
             <img 
             id="main-menu-img"
-            src={imagePaths.mainMenuImgPath}
+            src={IMAGE_PATHS.mainMenuImgPath}
             alt='Main Menu'
             style={{position: 'absolute'}}
             />

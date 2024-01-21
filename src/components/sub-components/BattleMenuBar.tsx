@@ -1,7 +1,9 @@
 import { Game } from '../../logic/game'
 import '../styles/Bar.css'
 import '../styles/Buttons.css'
-import { imagePaths } from '../../utils/constants'
+import { imagePathsNew } from '../../utils/constants'
+
+const IMAGE_PATHS = imagePathsNew
 
 export function BattleMenuBar( { game }: { game: Game } ) {
 
@@ -10,7 +12,7 @@ export function BattleMenuBar( { game }: { game: Game } ) {
   const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
     const button = e.target as HTMLButtonElement
     const buttonText = button.textContent
-    console.log(buttonText)
+    
     if (buttonText === 'RUN') game.battle?.engine.retreat(game.battle.ally)
   
     if (buttonText === 'FIGHT') game.interfaceManager.getSetters().interfaceState(3)
@@ -26,7 +28,7 @@ export function BattleMenuBar( { game }: { game: Game } ) {
       <img 
         id="battle-menu-bar"
         className="bar"
-        src={imagePaths.battleMenuBarImgPath}
+        src={IMAGE_PATHS.battleMenuBarImgPath}
         alt='Battle Menu Bar'
       />
 

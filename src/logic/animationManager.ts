@@ -1,7 +1,7 @@
 import { gsap } from "gsap"
 import { PokemonSprite } from "../spritesClasses/pokemonSprite"
 import { Game } from "./game"
-import { CANVAS_WIDTH } from "../utils/constants"
+import { CANVAS_WIDTH, GAME_SPEED } from "../utils/constants"
 
 /**
 * Clase que se encarga de las animaciones 
@@ -38,7 +38,7 @@ export class AnimationManager {
 
     this.tl.to(this.allySprite.position, { 
       x: 100, 
-      duration: 1, 
+      duration: 1 / GAME_SPEED, 
       onStart: () => { this.game.canClick = false } , 
       onComplete: () => { this.game.canClick = true }  })
     
@@ -52,8 +52,8 @@ export class AnimationManager {
 
     this.tl.to(this.enemySprite.position, { 
       x: 580, 
-      duration: 1, 
-      onStart: () => { this.game.canClick = false } , 
+      duration: 1 / GAME_SPEED, 
+      onStart: () => { this.game.canClick = false} , 
       onComplete: () => { this.game.canClick = true } })
   }
 
@@ -69,7 +69,7 @@ export class AnimationManager {
       })
       .to(sprite, {
         opacity: 0,
-        onComplete: () => { this.game.canClick = true }
+        onComplete: () => { this.game.canClick = true}
       }, '<')
   }
 
@@ -81,10 +81,9 @@ export class AnimationManager {
   animateHealthBar(isEnemy: boolean, healthPercentage: number) {
     const team = isEnemy ? 'enemy' : 'ally'
     const healthBarId = '#' + team + '-current-health-bar'
-    console.log(healthBarId)
     this.tl.to( healthBarId, {
       width: `${healthPercentage}%`,
-      duration: 0.5
+      duration: 0.5  / GAME_SPEED
     }, '<')
   }
 
@@ -103,7 +102,7 @@ export class AnimationManager {
           })
           .to(user.position, {
             x: user.position.x + xMove * 2,
-            duration: 0.1,
+            duration: 0.1 / GAME_SPEED,
             onComplete: () => {
               this.animateDamage(target)
               this.animateHealthBar(target.isEnemy, healthPercentage)
@@ -125,13 +124,13 @@ export class AnimationManager {
           x: target.position.x + 10,
           yoyo: true,
           repeat: 3,
-          duration: 0.09
+          duration: 0.09  / GAME_SPEED
         }, '<')
         .to(target, {
           opacity: 0.4,
           yoyo: true,
           repeat: 3,
-          duration: 0.09
+          duration: 0.09 / GAME_SPEED
         }, '<')
   }
 
@@ -139,11 +138,10 @@ export class AnimationManager {
    * Funcion que se encarga de hacer aparecer la pantalla negra
    */
   blackScreenIn() {
-    console.log('black screen in')
     this.tl.to('.black-screen', {
       display: 'block',
       opacity: 1,
-      duration: 0.5,
+      duration: 0.5 / GAME_SPEED,
       yoyo: true,
       repeat: 4,
       onComplete: () => {
@@ -159,7 +157,7 @@ export class AnimationManager {
     this.tl.to('.black-screen', {
       display: 'none',
       opacity: 0,
-      duration: 0.5,
+      duration: 0.5 / GAME_SPEED,
       onComplete: () => {}
     })
   }
@@ -172,7 +170,7 @@ export class AnimationManager {
     const moveX = sprite.isEnemy ? CANVAS_WIDTH : -400
     this.tl.to(sprite.position, {
       x: moveX,
-      duration: 1,
+      duration: 1 / GAME_SPEED, 
       onComplete: () => { this.game.interfaceManager.quitBattle() }
     })
   }
@@ -184,11 +182,11 @@ export class AnimationManager {
   animateExperience(percentage: number) {
     this.tl.to('#ally-current-experience-bar', {
       width: percentage + '%',
-      duration: 1,
+      duration: 1 / GAME_SPEED,
       onStart: () => { this.game.canClick = false },
       onComplete: () => { 
         this.game.canClick = true 
-        this.game.interfaceManager.getSetters().level!(this.game.battle!.ally!.level) // TODO: Funcion animate para cambiar nivel?
+        this.game.interfaceManager.getSetters().level!(this.game.battle!.ally!.level) // TODO: #5
         if (percentage == 100) {
           window.document.getElementById('ally-current-experience-bar')!.style.width = '0%' // FIXME: Hacer lo mismo de otra manera
           // this.game.interfaceManager.getSetters().exp!(0) // => No funciona
@@ -203,8 +201,41 @@ export class AnimationManager {
     this.tl.to('.game-canvas', {
       display: 'block',
       duration: 0.1,
-      filter: `blur(${blur}px)` // TODO: Blureado negro -> ColorProps (GSAP)
+      filter: `blur(${blur}px)`
     })
+  }
+
+  changePokemonAnimation(entry: PokemonSprite, leave: PokemonSprite | boolean = false) {
+
+    if (leave instanceof PokemonSprite) {
+      this.tl.to(leave.position, {
+      x: -400,
+      duration: 1 / GAME_SPEED,
+      onStart: () => { this.game.canClick = false } , 
+      onComplete: () => { 
+        this.tl.to(entry.position, {
+          x: 100,
+          duration: 1 / GAME_SPEED,
+          onStart: () => { 
+            this.game.battle!.reaplaceRenderable(0, 1, entry)
+            this.animateHealthBar(false, 100) 
+          },
+          onComplete: () => { this.game.canClick = true }
+        })
+       }
+      })
+    } else {
+      this.tl.to(entry.position, {
+        x: 100,
+        duration: 1 / GAME_SPEED,
+        onStart: () => { 
+          this.game.battle!.reaplaceRenderable(0, 1, entry)
+          this.animateHealthBar(false, 100) 
+        },
+        onComplete: () => { this.game.canClick = true }
+      })
+    }
+    
   }
 }
 

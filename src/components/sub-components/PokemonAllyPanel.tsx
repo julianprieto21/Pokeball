@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react'
 import { Pokemon } from '../../logic/pokemon'
 import '../styles/PokemonPanels.css'
-import { imagePaths } from '../../utils/constants'
+import { imagePathsNew } from '../../utils/constants'
 import { Game } from '../../logic/game'
+
+const IMAGE_PATHS = imagePathsNew
 
 export function PokemonAllyPanel( { game, pokemon }: { game: Game, pokemon: Pokemon } ) {
 
@@ -15,14 +17,10 @@ export function PokemonAllyPanel( { game, pokemon }: { game: Game, pokemon: Poke
 
   game.interfaceManager.addSetters('level', setLevel)
   game.interfaceManager.addSetters('exp', setExperiencePorcentage) // FIXME: No funciona
-  
-  useEffect( () => {
-    console.log(experiencePorcentage)
-  })
 
   useEffect( () => { // Actualizaciones iniciales unicas
     setHealthPorcentage(pokemon.currentHp / pokemon.getStats().hp * 100)
-    // setExperiencePorcentage(pokemon.currentXp / pokemon.getNextLevelXp() * 100)
+    setExperiencePorcentage(pokemon.currentXp / pokemon.getNextLevelXp() * 100)
   }, [])
 
   useEffect( () => { // Actualizacion durante batalla - level up o daño
@@ -31,7 +29,7 @@ export function PokemonAllyPanel( { game, pokemon }: { game: Game, pokemon: Poke
     setHealth(pokemon.getStats().hp)
     setCurrentHP(pokemon.currentHp)
     setExperiencePorcentage(pokemon.currentXp / pokemon.getNextLevelXp() * 100)
-  }, [pokemon.level, pokemon.currentHp, pokemon.currentXp])
+  }, [pokemon.name, pokemon.level, pokemon.currentHp, pokemon.currentXp])
 
   return (
     <div
@@ -40,7 +38,7 @@ export function PokemonAllyPanel( { game, pokemon }: { game: Game, pokemon: Poke
       <img
         id="ally-panel"
         className="panel"
-        src={imagePaths.allyPokPanelImgPath}
+        src={IMAGE_PATHS.allyPokPanelImgPath}
         alt='Ally Panel'
       />
 

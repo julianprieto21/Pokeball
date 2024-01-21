@@ -17,7 +17,7 @@ export function Interface( { game, actualState }: { game: Game, actualState: num
 
   useEffect( () => {
     const battle = game.interfaceManager.getBattle()
-    if (!battle || actualState === 1) return
+    if (!battle || !game.showPanels) return
     const ally = battle.ally
     const enemy = battle.enemy
     setAlly(ally)

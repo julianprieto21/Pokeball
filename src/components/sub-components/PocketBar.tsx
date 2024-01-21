@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { imagePaths, pocketMap } from "../../utils/constants";
+import { GAME_SPEED, imagePathsNew, pocketMap } from "../../utils/constants";
 import gsap from "gsap";
 
-
+const IMAGE_PATHS = imagePathsNew
 
 export function PocketBar( { setPocket }: { setPocket: React.Dispatch<React.SetStateAction<string>> } ) {
 
@@ -27,7 +27,7 @@ export function PocketBar( { setPocket }: { setPocket: React.Dispatch<React.SetS
 
     const animateSelector = (color: string, leftPadding: number) => {
         gsap.to('#select', {
-            duration: 0.35,
+            duration: 0.35 / GAME_SPEED,
             left: `${leftPadding}px`,
             backgroundColor: color,
             onComplete: () => {
@@ -42,35 +42,35 @@ export function PocketBar( { setPocket }: { setPocket: React.Dispatch<React.SetS
         <div id="select" style={{left:`${leftPadding}px`, backgroundColor:pocketColor}}></div>
 
         <button id="misc" onClick={handlePocketClick}>
-        <img src={imagePaths.pocketIcons + 'misc.svg'} alt="Misc Icon" style={{width: '30px'}}></img>
+        <img src={IMAGE_PATHS.pocketIcons + 'misc.svg'} alt="Misc Icon" style={{width: '30px'}}></img>
         </button>
 
         <button id="medicine" onClick={handlePocketClick}>
-        <img src={imagePaths.pocketIcons + 'medicine.svg'} alt="Medicine Icon" style={{width: '25px'}}></img>
+        <img src={IMAGE_PATHS.pocketIcons + 'medicine.svg'} alt="Medicine Icon" style={{width: '25px'}}></img>
         </button>
 
         <button id="pokeballs" onClick={handlePocketClick}>
-        <img src={imagePaths.pocketIcons + 'pokeball.svg'} alt="Pokeballs Icon" style={{width: '40px'}}></img>
+        <img src={IMAGE_PATHS.pocketIcons + 'pokeball.svg'} alt="Pokeballs Icon" style={{width: '40px'}}></img>
         </button>
 
         <button id="machines" onClick={handlePocketClick}>
-        <img src={imagePaths.pocketIcons + 'machines.svg'} alt="Machines Icon" style={{width: '30px'}}></img>
+        <img src={IMAGE_PATHS.pocketIcons + 'machines.svg'} alt="Machines Icon" style={{width: '30px'}}></img>
         </button>
 
         <button id="berries" onClick={handlePocketClick}>
-        <img src={imagePaths.pocketIcons + 'berries.svg'} alt="Berries Icon" style={{width: '30px'}}></img>
+        <img src={IMAGE_PATHS.pocketIcons + 'berries.svg'} alt="Berries Icon" style={{width: '30px'}}></img>
         </button>
 
         <button id="mail" onClick={handlePocketClick}>
-        <img src={imagePaths.pocketIcons + 'mail.svg'} alt="Mail Icon" style={{width: '30px'}}></img>
+        <img src={IMAGE_PATHS.pocketIcons + 'mail.svg'} alt="Mail Icon" style={{width: '30px'}}></img>
         </button>
 
         <button id="battle" onClick={handlePocketClick}>
-        <img src={imagePaths.pocketIcons + 'battle.svg'} alt="Battle Icon" style={{width: '25px'}}></img>
+        <img src={IMAGE_PATHS.pocketIcons + 'battle.svg'} alt="Battle Icon" style={{width: '25px'}}></img>
         </button>
 
         <button id="key" onClick={handlePocketClick}>
-        <img src={imagePaths.pocketIcons + 'key.svg'} alt="Key Icon" style={{width: '30px'}}></img>
+        <img src={IMAGE_PATHS.pocketIcons + 'key.svg'} alt="Key Icon" style={{width: '30px'}}></img>
         </button>
 
     </div>

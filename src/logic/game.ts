@@ -1,6 +1,6 @@
 import { Player } from './player'
 import { _Map_ } from './map'
-import { mapInfo, PLAYER_SPEED } from '../utils/constants'
+import { GAME_SPEED, mapInfo, PLAYER_SPEED } from '../utils/constants'
 import { Boundary, Movable } from '../utils/classes'
 import { PlayerSprite } from '../spritesClasses/playerSprite'
 import { Battle } from './battle'
@@ -38,6 +38,7 @@ export class Game {
   public canClick: boolean = true
   public isPaused: number = 0
   public interfaceState: number
+  public showPanels: boolean = false
 
   public boundKeyDownHandler: (event: KeyboardEvent) => void
   public boundKeyUpHandler: (event: KeyboardEvent) => void
@@ -101,7 +102,7 @@ export class Game {
    */
   loop() {
     this.animationFrame = window.requestAnimationFrame(this.loop.bind(this))
-
+    // console.log(this.renders[0].position)
     if (this.isPaused) return 
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
     this.renders.forEach((render) => {
@@ -175,8 +176,11 @@ export class Game {
           y: this.actualMap.battleZoneBoundaries[i].position.y + y
         })
 
-      if (this.actualMap.checkCollision(this.player.sprite, boundary) && _.random(0, 100, true) < 1 && this.player.party.getPrimary().currentHp > 0){ // COMMENT: Cambiar valor para modificar probs de batalla
-        // TODO: Logica de cambio pokemon primario sin vida. (mandar a otro pokemon de primario o aparecer en clinica)
+      if (
+        this.actualMap.checkCollision(this.player.sprite, boundary) &&
+        _.random(0, 200 - GAME_SPEED * 79.6, true) < 1 &&
+        this.player.party.getPrimary().currentHp > 0
+        ){ 
         this.stop()
         this.initBattle()
         break
@@ -219,6 +223,7 @@ export class Game {
           : this.mainMenu()
         }
     }
+
   }
 
   /**

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Game } from "../logic/game";
-import { imagePaths } from "../utils/constants";
+import { imagePathsNew } from "../utils/constants";
 import "./styles/Bag.css";
 import { ItemList } from "./sub-components/ItemList";
 import { PocketBar } from "./sub-components/PocketBar";
@@ -10,6 +10,7 @@ import { ItemDescription } from "./sub-components/ItemDescription";
 import { ItemActionButtons } from "./sub-components/ItemActionButtons";
 import { Pokemon } from "../logic/pokemon";
 
+const IMAGE_PATHS = imagePathsNew
 
 export function Bag ( { game }: {game: Game }) {
     
@@ -18,12 +19,6 @@ export function Bag ( { game }: {game: Game }) {
     const [itemSelected, setItemSelected] = useState<Item>()
     const [, setSelectedPokemon] = useState<Pokemon>(game.getPlayer().party.getPrimary())
 
-    const handleBackClick = () => {
-        game.battle
-            ? game.interfaceManager.getSetters().interfaceState(2)
-            : game.mainMenu()
-    }
-
     const player = game.getPlayer()
     const playerTeam = player.party
     const playerBag = player.bag
@@ -31,18 +26,36 @@ export function Bag ( { game }: {game: Game }) {
 
 
     return <>
-        <img src={imagePaths.bagBackground} alt="Bag Background"/>
+        <img src={IMAGE_PATHS.bagBackground} alt="Bag Background"/>
 
-        <img id="iconBag" alt="Bag Icon" src={imagePaths.pocketIcons + 'backpack.svg'}/>
+        <img id="iconBag" alt="Bag Icon" src={IMAGE_PATHS.pocketIcons + 'backpack.svg'}/>
         <h1 id="title">BAG</h1>
 
         <div id="pokemons">
-            <PokemonIcon pokemon={playerTeam.getPrimary()} setSelectedPokemon={setSelectedPokemon}/>
-            <PokemonIcon pokemon={playerTeam.getPokemons()[1]} setSelectedPokemon={setSelectedPokemon}/>
-            <PokemonIcon pokemon={playerTeam.getPokemons()[2]} setSelectedPokemon={setSelectedPokemon}/>
-            <PokemonIcon pokemon={playerTeam.getPokemons()[3]} setSelectedPokemon={setSelectedPokemon}/>
-            <PokemonIcon pokemon={playerTeam.getPokemons()[4]} setSelectedPokemon={setSelectedPokemon}/>
-            <PokemonIcon pokemon={playerTeam.getPokemons()[5]} setSelectedPokemon={setSelectedPokemon}/>
+            {playerTeam.getPrimary()
+                ? <PokemonIcon pokemon={playerTeam.getPrimary()} setSelectedPokemon={setSelectedPokemon}/>
+                : null
+            }
+            {playerTeam.getPokemons()[1]
+                ? <PokemonIcon pokemon={playerTeam.getPokemons()[1]} setSelectedPokemon={setSelectedPokemon}/>
+                : null
+            }
+            {playerTeam.getPokemons()[2]
+                ? <PokemonIcon pokemon={playerTeam.getPokemons()[2]} setSelectedPokemon={setSelectedPokemon}/>
+                : null
+            }
+            {playerTeam.getPokemons()[3]
+                ? <PokemonIcon pokemon={playerTeam.getPokemons()[3]} setSelectedPokemon={setSelectedPokemon}/>
+                : null
+            }
+            {playerTeam.getPokemons()[4]
+                ? <PokemonIcon pokemon={playerTeam.getPokemons()[4]} setSelectedPokemon={setSelectedPokemon}/>
+                : null
+            }
+            {playerTeam.getPokemons()[5]
+                ? <PokemonIcon pokemon={playerTeam.getPokemons()[5]} setSelectedPokemon={setSelectedPokemon}/>
+                : null
+            }
         </div>
  
         <div id="bag">
@@ -61,7 +74,5 @@ export function Bag ( { game }: {game: Game }) {
 
         </div>
 
-        <button id="backButton"
-        onClick={handleBackClick}>BACK</button>
     </>
 }

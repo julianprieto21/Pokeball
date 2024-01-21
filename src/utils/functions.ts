@@ -61,7 +61,7 @@ function parseStats (stats: any): PokemonData['baseStats'] {
 export function parsePokemonData (main: any, specie: any, evolution: any, nature: any): PokemonData {
   const extractMoves = ( moves: any ): string[] => {
     const possibleMoves = []
-    for (let i = 0; i < 5; i++) { // TODO: Continuar en un futuro. La idea seria que de estos movimientos elegir y tomando cuando suba de nivel
+    for (let i = 0; i < 5; i++) { // TODO: #2
       possibleMoves.push(moves[i].move.name)
     }
     return possibleMoves

@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { Game } from "../../logic/game";
-import { typesMap, imagePaths } from "../../utils/constants";
+import { typesMap, imagePathsNew } from "../../utils/constants";
 import _ from 'lodash'
+
+const IMAGE_PATHS = imagePathsNew
 
 export function BattleFightBar( { game }: { game: Game } ) {
 
@@ -52,7 +54,7 @@ export function BattleFightBar( { game }: { game: Game } ) {
       <img 
         id="battle-fight-bar"
         className="bar"
-        src={imagePaths.battleFightBarImgPath}
+        src={IMAGE_PATHS.battleFightBarImgPath}
         alt="Battle Fight Bar"
       />
 

@@ -1,6 +1,6 @@
 import { PokemonSprite } from '../spritesClasses/pokemonSprite'
 import { PokemonData, PokemonNatureStats, PokemonStats, PokemonTypes } from '../types'
-import { movesByType } from '../utils/constants'
+import { DEBUG_MODE, movesByType } from '../utils/constants'
 import { growthRate, statValue } from '../utils/functions'
 import { getPokemonData, getMoveData } from '../api/getData'
 import _ from 'lodash'
@@ -17,6 +17,8 @@ export class Pokemon {
   public level: number
   private nature: PokemonData['nature']
   public isEnemy: boolean
+  public isLevelUp: boolean
+  public isEvolution: boolean
   public weight: number
   public height: number
 
@@ -51,6 +53,8 @@ export class Pokemon {
     this.level = level
     this.nature = data.nature
     this.isEnemy = isEnemy
+    this.isLevelUp = false
+    this.isEvolution = false
     this.weight = data.weight / 10
     this.height = data.height / 10
 
@@ -195,6 +199,7 @@ export class Pokemon {
    */
   public levelUp (xpLeft: number): void {
     this.level++
+    this.isLevelUp = true 
     if (this.level === this.evolutionChain.first?.level) {
       this.evolve(this.evolutionChain.first.name) // operador "void" para ignorar error al no poner await en funcion asincrona evolve
     } else if (this.level === this.evolutionChain.second?.level) {
@@ -211,6 +216,7 @@ export class Pokemon {
    * @returns Promesa que se resuelve cuando se termina de evolucionar
    */
   public async evolve (evolutionName: string): Promise<void> {
+    this.isEvolution = true
     return await getPokemonData(evolutionName)
       .then((data: PokemonData) => {
         this.id = data.id
@@ -242,7 +248,7 @@ export class Pokemon {
   receiveExperience (xp: number): void {
     this.currentXp += xp
     if (this.currentXp >= this.getNextLevelXp()) {
-      console.log('level up')
+      if (DEBUG_MODE) console.log('level up')
       this.levelUp(this.currentXp - this.getNextLevelXp())
     }
   }

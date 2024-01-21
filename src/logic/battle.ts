@@ -80,4 +80,8 @@ export class Battle {
     window.cancelAnimationFrame(this.animationFrame)
     this.ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT)
   }
+
+  reaplaceRenderable(start: number, deleteCount: number, item: PokemonSprite | MoveSprite) {
+    this.renders.splice(start, deleteCount, item)
+  }
 }

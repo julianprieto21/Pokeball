@@ -1,7 +1,9 @@
 export const CANVAS_WIDTH = 1024
 export const CANVAS_HEIGHT = 576
 export const TILESIZE = 64
-export const PLAYER_SPEED = 5
+export const DEBUG_MODE = false
+export const GAME_SPEED = DEBUG_MODE ? 2.5 : 1
+export const PLAYER_SPEED = 5 * GAME_SPEED
 
 export const mapInfo = {
   startingMap: {
@@ -208,16 +210,35 @@ export const dialogues: Record<string, string> = {
   introDialogue: 'A wild {0} appeared!',
   intro2Dialogue: 'Go! {0}!',
   menuDialogue: 'What should {0} do?',
-  attackDialogue: '{0} used {1}!',
+  attackDialogue: '{0} used {1}',
   faintDialogue: 'Enemy {0} fainted!',
   winExperienceDialogue: '{0} gained {1} experience points!',
   failAttackDialogue: '{0} fails to attack!',
   retreatDialogue: '{0} run away!',
   winReatreatDialogue: '{0} win!',
   failRetreatDialogue: '{0} can´t escape!',
+  levelUpDialogue: '{0} leveled up to {1}!',
+  evolveDialogue: '{0} evolved to {1}!',
 }
 
-export const imagePaths: Record<string, string> = {
+export const imagePathsNew: Record<string, string> = {
+  allyPokPanelImgPath: 'assets/interface/pokemonAllyPanel.png',
+  enemyPokPanelImgPath: 'assets/interface/pokemonEnemyPanel.png',
+  dialogueBarImgPath: 'assets/interface/dialogueBar.png',
+  battleMenuBarImgPath: 'assets/interface/battleMenuBar.png',
+  battleFightBarImgPath: 'assets/interface/battleFightBar.png',
+  playerUpImgPath: 'assets/sprites/humans/player/up.png',
+  playerLeftImgPath: 'assets/sprites/humans/player/left.png',
+  playerDownImgPath: 'assets/sprites/humans/player/down.png',
+  playerRightImgPath: 'assets/sprites/humans/player/right.png',
+  pokemonFrontImgPath: 'assets/sprites/pokemons/front/',
+  pokemonBackImgPath: 'assets/sprites/pokemons/back/',
+  mainMenuImgPath: 'assets/interface/mainMenu.png',
+  bagBackground: 'assets/interface/bagBackground.png',
+  pocketIcons: 'assets/interface/pocketIcons/'
+}
+
+export const imagePathsOld: Record<string, string> = { // TODO: #8
   allyPokPanelImgPath: 'assets/interface/pokemonAllyPanel.png',
   enemyPokPanelImgPath: 'assets/interface/pokemonEnemyPanel.png',
   dialogueBarImgPath: 'assets/interface/dialogueBar.png',

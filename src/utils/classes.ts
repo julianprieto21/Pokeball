@@ -1,13 +1,15 @@
-import { TILESIZE } from './constants'
+import { DEBUG_MODE, TILESIZE } from './constants'
 
 /**
  * Clase que se encarga de crear un rectangulo que representa un limite
  */
 export class Boundary {
+  initialPos: { x: number, y: number }
   position: { x: number, y: number }
   width: number
   height: number
   constructor (position: { x: number, y: number }) {
+    this.initialPos = position
     this.position = position
     this.width = TILESIZE
     this.height = TILESIZE
@@ -19,7 +21,7 @@ export class Boundary {
    */
   draw (ctx: CanvasRenderingContext2D): void {
     ctx.fillStyle = 'rgba(255, 0, 0, .3)'
-    ctx.fillRect(this.position.x, this.position.y, this.width, this.height)
+    if (DEBUG_MODE) ctx.fillRect(this.position.x, this.position.y, this.width, this.height)
   }
 }
 

@@ -1,5 +1,7 @@
 import { Sprite } from '../types'
-import { imagePaths, CANVAS_WIDTH } from '../utils/constants'
+import { imagePathsNew, CANVAS_WIDTH } from '../utils/constants'
+
+const IMAGE_PATHS = imagePathsNew
 
 /**
  * Clase que se encarga de crear un sprite de un pokemon
@@ -21,7 +23,7 @@ export class PokemonSprite implements Sprite {
   constructor (id: number, isEnemy: boolean) {
     this.initialPos = isEnemy ? { x: CANVAS_WIDTH, y: -20 } : { x: -400, y: 110 }
     this.position = this.initialPos
-    this.sprites = { front: `${imagePaths.pokemonFrontImgPath}${id}.png`, back: `${imagePaths.pokemonBackImgPath}${id}.png` }
+    this.sprites = { front: `${IMAGE_PATHS.pokemonFrontImgPath}${id}.png`, back: `${IMAGE_PATHS.pokemonBackImgPath}${id}.png` }
     this.width = 0
     this.height = 0
     this.isEnemy = isEnemy

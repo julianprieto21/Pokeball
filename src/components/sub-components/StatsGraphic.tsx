@@ -50,7 +50,7 @@ export function StatsGraphic( { pokemon }: { pokemon: Pokemon } ) { // BUG: Graf
             max: pokemon.level * 5 // Maximos de los ejes segun el nivel del pokemon?
           }
         },
-        // animation: false // COMMENT: Esto da error mas abajo
+        // animation: false // FIXME: Esto da error mas abajo. Deberia ser false
       }
       
       Chart.register(...registerables);

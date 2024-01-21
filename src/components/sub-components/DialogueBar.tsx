@@ -1,25 +1,39 @@
 import { useEffect, useState } from 'react'
 import { Game } from '../../logic/game'
 import '../styles/Bar.css'
-import { imagePaths } from '../../utils/constants'
+import { GAME_SPEED, imagePathsNew } from '../../utils/constants'
 import gsap from 'gsap'
 gsap.registerPlugin(TextPlugin)
 
+const IMAGE_PATHS = imagePathsNew
 
 export function DialogueBar( { game }: { game: Game } ) {
 
   const [dialogueText, setDialogueText] = useState('')
 
   useEffect(() => {
-    setDialogueText(game.interfaceManager.getDialogue())
+    const text = game.interfaceManager.getDialogue()
+    animateText(text)
+  }, [])
+
+  const animateText = (text: string) => {
+    setDialogueText('')
+    gsap.to('#initial-dialogue-text', {
+      duration: 0.8 / GAME_SPEED,
+      opacity: 1, 
+      text: { value: text },
+      onComplete: () => {setDialogueText(text)}
+    })
   }
-  , [])
 
   const handleClick = () => {
+    game.showPanels = true
     if (!game.canClick) return
     if (game.interfaceManager.dialogueQueue.length > 0 || game.interfaceManager.actionQueue.length > 0) {
       game.interfaceManager.playAction() // Ataque
-      setDialogueText(game.interfaceManager.getDialogue()) // TODO: Animar texto
+      setDialogueText('')
+      const text = game.interfaceManager.getDialogue()
+      animateText(text)
     } else {
       setDialogueText('')
       game.interfaceManager.getSetters().interfaceState(2) // battle menu bar
@@ -31,7 +45,7 @@ export function DialogueBar( { game }: { game: Game } ) {
       <img 
         id="dialogue-bar"
         className="bar"
-        src={imagePaths.dialogueBarImgPath}
+        src={IMAGE_PATHS.dialogueBarImgPath}
         onClick={handleClick}
         alt='Dialogue Bar'
       />

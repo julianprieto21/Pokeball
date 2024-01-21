@@ -1,6 +1,7 @@
 import { getItemData, getPokemonData } from "../api/getData"
 import { PlayerSprite } from "../spritesClasses/playerSprite"
 import { Pockets } from "../types"
+import { DEBUG_MODE } from "../utils/constants"
 import { Item } from "./item"
 import { Pokemon } from "./pokemon"
 
@@ -18,7 +19,7 @@ export class Player {
    * Constructor de la clase Player
    */
   constructor () {
-    this.team = [341, 10, 2, 52, 144, 109]
+    this.team = [341, 10]//, 10, 2, 52, 144, 109]
     this.party = new Party(this.team)
     this.bag = new Bag()
     this.sprite = new PlayerSprite()
@@ -63,7 +64,7 @@ export class Bag {
     this.setItems()
   }
 
-  private async setItems() { // COMMENT: Metodo de testeo. Puede usarse para el guardado de personajes. Al poner save, guardar los nombres de los items para ser cargados luego usando este metodo.
+  private async setItems() { // Metodo de testeo. Puede usarse para el guardado de personajes. Al poner save, guardar los nombres de los items para ser cargados luego usando este metodo.
     // if (this.quantity === 0) return
     const items = ['potion', 'antidote', 'poke-ball', 'potion']
     for (let i = 0; i < items.length; i++) {
@@ -74,7 +75,7 @@ export class Bag {
   }
 
   addItem(item: Item) {
-    if (this.quantity === this.maxCapacity) return console.log('Bag is full')
+    if (this.quantity === this.maxCapacity && DEBUG_MODE) return console.log('Bag is full')
 
     this.quantity++
     const pocketName = item.pocket
@@ -142,5 +143,13 @@ export class Party {
 
   getPrimary() {
     return this.primary
+  }
+
+  getLenght() {
+    return this.pokemons.length
+  }
+
+  getNextPokemon(): Pokemon | undefined {
+    return this.pokemons.find(pokemon => pokemon.currentHp > 0);
   }
 }

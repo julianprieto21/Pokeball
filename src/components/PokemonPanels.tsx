@@ -12,7 +12,7 @@ export function PokemonPanels( { game, ally, enemy }: { game: Game, ally: Pokemo
   useEffect(() => {
     setAllyPokemon(ally)
     setEnemyPokemon(enemy)
-  }, [])
+  })
 
   return (
     <>
