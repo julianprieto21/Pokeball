@@ -1,63 +1,67 @@
 .pokemon {
-    width: 280px;
-    height: 65px;
-    background-color: var(--light-text-color);
-    border-radius: 2.5cap 1cap 1cap 2.5cap;
-    box-shadow: 4px 4px 10px rgba(40, 40, 40, .6);
-    color: var(--dark-text-color);
-    top: 130px;
-    left: 50px;
-  }
-  
-  .pokemon:hover {
-    /* border-radius: 30px; */
-    margin-left: 20px;
-  }
-  .pokemon:hover #icon {
-    margin-left: 20px;
-  }
-  .pokemon:focus {
-    margin-left: 20px;
-  }
-  .pokemon:focus #icon {
-    margin-left: 20px;
-  }  
+  width: 280px;
+  height: 65px;
+  background-color: var(--light-text-color);
+  border-radius: 2.5cap 1cap 1cap 2.5cap;
+  box-shadow: 4px 4px 10px rgba(40, 40, 40, 0.6);
+  color: var(--dark-text-color);
+  top: 130px;
+  left: 50px;
+  transition: all;
+  transition-duration: 100ms;
+}
 
-  .pokemon h2 {
-    position: relative;
-    font-size: 16px;
-    margin: 0;
-    display: flex;
-    margin-left: 74px;
-    margin-top: 4px;
-  }
-  
-  .pokemon #icon {
-    position: absolute;
-    display: inline-block;
-    width: 90px;
-    height: 90px;
-    left: -4px;
-    margin-top: -8px;
-  }
+.pokemon:hover {
+  /* border-radius: 30px; */
+  margin-left: 20px;
+}
+.pokemon:hover #icon {
+  margin-left: 20px;
+}
+.pokemon:focus {
+  margin-left: 20px;
+}
+.pokemon:focus #icon {
+  margin-left: 20px;
+}
 
-  .pokemon #health {
-    position: relative;
-    left: 74px;
-    bottom: -4px;
-    margin: 0;
-  }
-  
-  .pokemon #level {
-    position: relative;
-    right: -200px;
-    bottom: 20px;
-    margin: 0;
-  }
-  
-  .pokemon #healthBar {
-    position: relative;
-    left: 74px;
-    height: 5px;
-    background-color: var(--green-health-color);
-  }
+.pokemon h2 {
+  position: relative;
+  font-size: 16px;
+  margin: 0;
+  display: flex;
+  margin-left: 74px;
+  margin-top: 4px;
+}
+
+.pokemon #icon {
+  position: absolute;
+  display: inline-block;
+  width: 90px;
+  height: 90px;
+  left: -4px;
+  margin-top: -8px;
+  transition: all;
+  transition-duration: 100ms;
+}
+
+.pokemon #health {
+  position: relative;
+  left: 74px;
+  bottom: -4px;
+  margin: 0;
+}
+
+.pokemon #level {
+  position: relative;
+  right: -200px;
+  bottom: 20px;
+  margin: 0;
+}
+
+.pokemon #healthBar {
+  position: relative;
+  left: 74px;
+  height: 5px;
+  background-color: var(--green-health-color);
+}

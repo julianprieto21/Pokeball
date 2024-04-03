@@ -1,17 +1,19 @@
-import './styles/Canvas.css'
+import "./styles/Canvas.css";
 
-export function Canvas( 
-  { width, height, canvasRef, className }: 
-  {width: number; height: number, canvasRef: React.RefObject<HTMLCanvasElement>, className: string } 
-  ) {
+interface Props {
+  width: number;
+  height: number;
+  canvasRef: React.RefObject<HTMLCanvasElement>;
+  className: string;
+}
 
+export function Canvas({ width, height, canvasRef, className }: Props) {
   return (
-    <canvas 
+    <canvas
       className={className}
       width={width}
       height={height}
-      ref={canvasRef}         
-      style={{ width: width, height: height }}  
+      ref={canvasRef}
     />
-  )
+  );
 }
