@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Game } from "../logic/game";
 import { imagePathsNew } from "../utils/constants";
-import "./styles/Bag.css";
 import { ItemList } from "./sub-components/ItemList";
 import { PocketBar } from "./sub-components/PocketBar";
 import { PokemonIcon } from "./sub-components/PokemonIcon";
@@ -29,13 +28,15 @@ export function Bag({ game }: { game: Game }) {
       <img src={IMAGE_PATHS.bagBackground} alt="Bag Background" />
 
       <img
-        id="iconBag"
         alt="Bag Icon"
         src={IMAGE_PATHS.pocketIcons + "backpack.svg"}
+        className="size-8 sm:size-14 lg:size-20 -rotate-[30deg] absolute top-1 sm:top-4 left-4"
       />
-      <h1 id="title">BAG</h1>
+      <h1 className="text-2xl sm:text-5xl lg:text-7xl top-1 sm:top-4 left-16 sm:left-24 lg:left-28 absolute">
+        BAG
+      </h1>
 
-      <div id="pokemons">
+      <div className="absolute top-11 sm:top-20 lg:top-28 flex flex-col gap-1 sm:gap-2 lg:gap-3 left-8 sm:left-16 lg:left-16">
         {playerTeam.getPokemons().map((pokemon, index) => {
           return (
             <PokemonIcon
@@ -47,7 +48,7 @@ export function Bag({ game }: { game: Game }) {
         })}
       </div>
 
-      <div id="bag">
+      <div className="h-full absolute top-0 right-0 w-[230px] sm:w-1/2 sm:right-4 lg:right-14">
         <PocketBar setPocket={setPocketOpen} />
 
         <ItemList

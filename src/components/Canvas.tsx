@@ -1,5 +1,3 @@
-import "./styles/Canvas.css";
-
 interface Props {
   width: number;
   height: number;

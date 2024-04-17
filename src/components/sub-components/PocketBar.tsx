@@ -14,14 +14,15 @@ export function PocketBar({
 
   useEffect(() => {
     setPocketColor(pocketMap["misc"].color);
-    setLeftPadding(25);
+    setLeftPadding(18);
   }, []);
 
   const handlePocketClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     const target = e.currentTarget;
     const id = target.id;
     const color = pocketMap[id].color;
-    const selectorLeftPadding = pocketMap[id].id * 50 + 25;
+    const selectorLeftPadding =
+      pocketMap[id].id * 48 + 18 + 4 * pocketMap[id].id;
     animateSelector(color, selectorLeftPadding);
     setPocket(id);
 
@@ -52,14 +53,20 @@ export function PocketBar({
   ];
 
   return (
-    <div id="pockets">
+    <div className="relative flex flex-row justify-evenly items-center bg-gray-400 top-4 p-1.5 rounded-full">
       <div
         id="select"
+        className="rounded-xl absolute size-4 lg:h-14 lg:w-12"
         style={{ left: `${leftPadding}px`, backgroundColor: pocketColor }}
       ></div>
       {pocketsMap.map((pocket) => (
         <>
-          <button type="button" id={pocket.id} onClick={handlePocketClick}>
+          <button
+            type="button"
+            className="grid place-content-center size-4 sm:size-6 lg:size-12 rounded-xl bg-transparent z-10"
+            id={pocket.id}
+            onClick={handlePocketClick}
+          >
             <img
               src={IMAGE_PATHS.pocketIcons + pocket.id + ".svg"}
               alt={pocket.id}

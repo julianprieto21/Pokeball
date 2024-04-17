@@ -26,13 +26,15 @@ export function Party({ game }: { game: Game }) {
       <img src={IMAGE_PATHS.bagBackground} alt="Bag Background" />
 
       <img
-        id="iconBag"
+        className="size-8 sm:size-14 lg:size-20 -rotate-[30deg] absolute top-1 sm:top-4 left-4"
         alt="Bag Icon"
         src={IMAGE_PATHS.pocketIcons + "backpack.svg"}
       />
-      <h1 id="title">PARTY</h1>
+      <h1 className="text-2xl sm:text-5xl lg:text-7xl top-1 sm:top-4 left-16 sm:left-24 lg:left-28 absolute">
+        PARTY
+      </h1>
 
-      <div id="pokemons">
+      <div className="absolute top-11 sm:top-20 lg:top-28 flex flex-col gap-1 sm:gap-2 lg:gap-3 left-8 sm:left-16 lg:left-16">
         {playerTeam.getPokemons().map((pokemon, index) => {
           return (
             <PokemonIcon

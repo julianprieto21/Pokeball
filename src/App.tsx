@@ -1,60 +1,59 @@
-import { Canvas } from "./components/Canvas"
-import { Interface } from "./components/Interface"
-import { CANVAS_WIDTH, CANVAS_HEIGHT, DEBUG_MODE } from './utils/constants'
-import { useEffect, useRef, useState } from 'react'
-import { Game } from './logic/game'
-import { Setters } from "./types"
-
+import { Canvas } from "./components/Canvas";
+import { Interface } from "./components/Interface";
+import { CANVAS_WIDTH, CANVAS_HEIGHT, DEBUG_MODE } from "./utils/constants";
+import { useEffect, useRef, useState } from "react";
+import { Game } from "./logic/game";
+import { Setters } from "./types";
 
 function App() {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [interfaceVisible, setInterfaceVisible] = useState(0);
+  const [interfaceState, setInterfaceState] = useState(0);
 
-  const canvasRef = useRef<HTMLCanvasElement>(null)
-  const [interfaceVisible, setInterfaceVisible] = useState(0)
-  const [interfaceState, setInterfaceState] = useState(0)
-
-  const [game, setGame] = useState<Game>()
+  const [game, setGame] = useState<Game>();
 
   const setters: Setters = {
     interfaceVisible: setInterfaceVisible,
-    interfaceState: setInterfaceState
-  }
+    interfaceState: setInterfaceState,
+  };
 
-  useEffect(() => { // Instancia el juego // Es necesario en un useEffect?
-    const gameObject = new Game(
-      canvasRef,
-      interfaceState,
-      setters
-    )
-    gameObject.start()
+  useEffect(() => {
+    // Instancia el juego // Es necesario en un useEffect?
+    const gameObject = new Game(canvasRef, interfaceState, setters);
+    gameObject.start();
 
-    setGame(gameObject)
-  }, [])
+    setGame(gameObject);
+  }, []);
 
-  useEffect(() => { // Actualiza el state del juego
-    if (!game) return
-    game.interfaceState = interfaceState
-  }, [interfaceState])
+  useEffect(() => {
+    // Actualiza el state del juego
+    if (!game) return;
+    game.interfaceState = interfaceState;
+  }, [interfaceState]);
 
   return (
-    <>
-      <Canvas width={CANVAS_WIDTH} height={CANVAS_HEIGHT} canvasRef={canvasRef} className="game-canvas" />
+    <main className="relative size-full">
+      <Canvas
+        width={CANVAS_WIDTH}
+        height={CANVAS_HEIGHT}
+        canvasRef={canvasRef}
+        className="game-canvas w-screen sm:h-screen sm:w-auto lg:h-auto"
+      />
 
-      {
-        interfaceVisible && game
-          ? <Interface game={game} actualState={interfaceState} />
-          : null
-      }
+      {interfaceVisible && game ? (
+        <Interface game={game} actualState={interfaceState} />
+      ) : null}
 
-      <div className='black-screen' style={{backgroundColor: 'black', display: 'none', opacity: 0, width: 1024, height: 576, position: 'absolute', top: 0}}></div>
+      <div className="black-screen bg-black hidden opacity-0 size-full absolute top-0"></div>
 
-      {
-      DEBUG_MODE
-        ? <p style={{position: 'absolute'}}>InterfaceVisible: {interfaceVisible}<br/> interfaceState: {interfaceState}</p>
-        : null
-      }
-
-    </>
-    )
+      {DEBUG_MODE ? (
+        <div className="absolute bottom-0 text-xs font-thin p-3 flex flex-row sm:flex-col gap-2">
+          <p>InterfaceVisible: {interfaceVisible}</p>
+          <p>interfaceState: {interfaceState}</p>
+        </div>
+      ) : null}
+    </main>
+  );
 }
 
-export default App
+export default App;

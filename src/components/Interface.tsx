@@ -1,4 +1,3 @@
-import "./styles/Interface.css";
 import { DialogueBar } from "./sub-components/DialogueBar";
 import { BattleMenuBar } from "./sub-components/BattleMenuBar";
 import { BattleFightBar } from "./sub-components/BattleFightBar";
@@ -32,7 +31,7 @@ export function Interface({
   // game permite actualizar la animacion de cuando mueren
 
   return (
-    <div className="interface">
+    <div className="interface size-full absolute top-0">
       {actualState === 0 && <MainMenu game={game} />}
       {actualState === 1 && <DialogueBar game={game} />}
       {actualState === 2 && <BattleMenuBar game={game} />}

@@ -1,9 +1,4 @@
 import { Game } from "../../logic/game";
-import "../styles/Bar.css";
-import "../styles/Buttons.css";
-import { imagePathsNew } from "../../utils/constants";
-
-const IMAGE_PATHS = imagePathsNew;
 
 export function BattleMenuBar({ game }: { game: Game }) {
   const text = game.interfaceManager.getMenuText();
@@ -26,32 +21,29 @@ export function BattleMenuBar({ game }: { game: Game }) {
   };
 
   return (
-    <>
-      <img
-        id="battle-menu-bar"
-        className="bar"
-        src={IMAGE_PATHS.battleMenuBarImgPath}
-        alt="Battle Menu Bar"
-      />
+    <div className="w-full h-20 sm:h-28 lg:h-48 bottom-0 absolute">
+      <div className="bg-[#282828] w-4/6 h-full bottom-0 absolute border-8 outline outline-2 -outline-offset-8 outline-[#404048] border-[#181818]">
+        <p className="pl-2 pt-1 sm:pl-4 sm:pt-2 lg:pl-6 lg:pt-4 text-md sm:text-lg lg:text-3xl">
+          {text}
+        </p>
+      </div>
 
-      <p id="initial-dialogue-text" className="text">
-        {text}
-      </p>
-
-      <div id="battle-menu-buttons" className="buttons" onClick={handleClick}>
+      <div
+        className="grid grid-cols-2 bg-[#f8f8f8] w-2/6 h-full absolute bottom-0 right-0 border-8 outline outline-2 -outline-offset-8 outline-[#66707a] border-[#181818]"
+        onClick={handleClick}
+      >
         {textButtons.map((button, index) => {
           return (
             <button
               type="button"
               key={index}
-              id="battle-menu-button"
-              className="button"
+              className="text-xs sm:text-base lg:text-xl text-[--dark-text-color] hover:text-[--light-text-color] hover:bg-[--dark-text-color]"
             >
               {button}
             </button>
           );
         })}
       </div>
-    </>
+    </div>
   );
 }

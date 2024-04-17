@@ -1,10 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
-
+  background-color: #242424;
   color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -12,23 +15,12 @@
   -moz-osx-font-smoothing: grayscale;
   /* -webkit-text-size-adjust: 100%; */
 
-  background-color: #242424;
-  min-height: 100vh;
-
   --green-health-color: rgb(88, 208, 128);
   --default-health-color: rgb(72, 64, 88);
   --experience-color: rgb(64, 200, 248);
   --dark-text-color: rgb(40, 40, 40);
   --light-text-color: rgb(248, 248, 248);
-
   --button-border-color: #8888c8;
-}
-
-#root {
-  margin: 0 auto;
-  padding: 0;
-  /* text-align: center; */
-  position: relative;
 }
 
 a {
@@ -40,20 +32,12 @@ a:hover {
   color: #535bf2;
 }
 
-body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
-}
-
 h1 {
   font-size: 3.2em;
   line-height: 1.1;
 }
 
-button {
+/* button {
   border: 1px solid transparent;
   padding: 0.6em 1.2em;
   font-size: 1em;
@@ -61,25 +45,11 @@ button {
   font-family: inherit;
   cursor: pointer;
   transition: border-color 0.25s;
-}
+} */
 button:hover {
   border-color: #646cff;
 }
 button:focus,
 button:focus-visible {
   outline: none;
-
-}
-
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
 }
