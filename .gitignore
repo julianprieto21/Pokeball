@@ -29,7 +29,6 @@ dist-ssr
 public
 .eslintrc.cjs
 package-lock.json
-tsconfig.node.json
 README.md
 
 # Folders
