@@ -1,6 +1,6 @@
 import { Player } from "./player";
 import { _Map_ } from "./map";
-import { GAME_SPEED, mapInfo, PLAYER_SPEED } from "../utils/constants";
+import { mapInfo } from "../utils/constants";
 import { Boundary, Movable } from "../utils/classes";
 import { PlayerSprite } from "../spritesClasses/playerSprite";
 import { Battle } from "./battle";
@@ -11,6 +11,9 @@ import { InterfaceManager } from "./interfaceManager";
 import { AnimationManager } from "./animationManager";
 import _ from "lodash";
 import { Setters } from "../types";
+
+const PLAYER_SPEED = parseInt(process.env.PLAYER_SPEED as string);
+const GAME_SPEED = parseInt(process.env.GAME_SPEED as string);
 
 /**
  * Clase que se encarga de la logica del juego

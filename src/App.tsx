@@ -1,9 +1,12 @@
 import { Canvas } from "./components/Canvas";
 import { Interface } from "./components/Interface";
-import { CANVAS_WIDTH, CANVAS_HEIGHT, DEBUG_MODE } from "./utils/constants";
 import { useEffect, useRef, useState } from "react";
 import { Game } from "./logic/game";
 import { Setters } from "./types";
+
+const CANVAS_HEIGHT = parseInt(process.env.CANVAS_HEIGHT as string);
+const CANVAS_WIDTH = parseInt(process.env.CANVAS_WIDTH as string);
+const DEBUG_MODE = process.env.DEBUG_MODE as string;
 
 function App() {
   const canvasRef = useRef<HTMLCanvasElement>(null);

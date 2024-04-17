@@ -1,9 +1,10 @@
 import { getItemData, getPokemonData } from "../api/getData";
 import { PlayerSprite } from "../spritesClasses/playerSprite";
 import { Pockets } from "../types";
-import { DEBUG_MODE } from "../utils/constants";
 import { Item } from "./item";
 import { Pokemon } from "./pokemon";
+
+const DEBUG_MODE = process.env.DEBUG_MODE as string;
 
 /**
  * Clase que se encarga de guardar la informacion del jugador
