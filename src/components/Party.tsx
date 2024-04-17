@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import { Game } from "../logic/game";
-import { imagePathsNew } from "../utils/constants";
-import { PokemonIcon } from "./sub-components/PokemonIcon";
-import { Pokemon } from "../logic/pokemon";
-import { PokemonInfo } from "./sub-components/PokemonInfo";
+import { Game } from "../lib/logic/game";
+import { imagePathsNew } from "../lib/constants";
+import { PokemonIcon } from "./pokemon/PokemonIcon";
+import { Pokemon } from "../lib/dataClasses/pokemon";
+import { PokemonInfo } from "./pokemon/PokemonInfo";
 
 const IMAGE_PATHS = imagePathsNew;
 

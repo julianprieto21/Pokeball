@@ -1,11 +1,11 @@
-import { DialogueBar } from "./sub-components/DialogueBar";
-import { BattleMenuBar } from "./sub-components/BattleMenuBar";
-import { BattleFightBar } from "./sub-components/BattleFightBar";
-import { PokemonPanels } from "./PokemonPanels";
-import { Game } from "../logic/game";
+import { DialogueBar } from "./bars/DialogueBar";
+import { BattleMenuBar } from "./bars/BattleMenuBar";
+import { BattleFightBar } from "./bars/BattleFightBar";
+import { PokemonPanels } from "./pokemon/PokemonPanels";
+import { Game } from "../lib/logic/game";
 import { useEffect, useState } from "react";
-import { Pokemon } from "../logic/pokemon";
-import { MainMenu } from "./sub-components/MainMenu";
+import { Pokemon } from "../lib/dataClasses/pokemon";
+import { MainMenu } from "./MainMenu";
 import { Bag } from "./Bag";
 import { Party } from "./Party";
 

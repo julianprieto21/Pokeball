@@ -1,7 +1,7 @@
 import { Canvas } from "./components/Canvas";
 import { Interface } from "./components/Interface";
 import { useEffect, useRef, useState } from "react";
-import { Game } from "./logic/game";
+import { Game } from "./lib/logic/game";
 import { Setters } from "./types";
 
 const CANVAS_HEIGHT = parseInt(process.env.CANVAS_HEIGHT as string);

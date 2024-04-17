@@ -1,13 +1,13 @@
 import { useState } from "react";
-import { Game } from "../logic/game";
-import { imagePathsNew } from "../utils/constants";
-import { ItemList } from "./sub-components/ItemList";
-import { PocketBar } from "./sub-components/PocketBar";
-import { PokemonIcon } from "./sub-components/PokemonIcon";
-import { Item } from "../logic/item";
-import { ItemDescription } from "./sub-components/ItemDescription";
-import { ItemActionButtons } from "./sub-components/ItemActionButtons";
-import { Pokemon } from "../logic/pokemon";
+import { Game } from "../lib/logic/game";
+import { imagePathsNew } from "../lib/constants";
+import { ItemList } from "./item/ItemList";
+import { PocketBar } from "./item/PocketBar";
+import { PokemonIcon } from "./pokemon/PokemonIcon";
+import { Item } from "../lib/dataClasses/item";
+import { ItemDescription } from "./item/ItemDescription";
+import { ItemActionButtons } from "./item/ItemActionButtons";
+import { Pokemon } from "../lib/dataClasses/pokemon";
 
 const IMAGE_PATHS = imagePathsNew;
 
