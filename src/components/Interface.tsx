@@ -31,7 +31,7 @@ export function Interface({
   // game permite actualizar la animacion de cuando mueren
 
   return (
-    <div className="interface size-full absolute top-0">
+    <div className="size-full absolute top-0">
       {actualState === 0 && <MainMenu game={game} />}
       {actualState === 1 && <DialogueBar game={game} />}
       {actualState === 2 && <BattleMenuBar game={game} />}
