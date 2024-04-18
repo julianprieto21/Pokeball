@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { Game } from "../../lib/logic/game";
 
 import gsap from "gsap";
+import { GAME_SPEED } from "../../lib/config";
 gsap.registerPlugin(TextPlugin);
-const GAME_SPEED = parseInt(process.env.GAME_SPEED as string);
 
 export function DialogueBar({ game }: { game: Game }) {
   const [dialogueText, setDialogueText] = useState("");

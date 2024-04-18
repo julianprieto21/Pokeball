@@ -1,10 +1,8 @@
 import { Sprite } from "../../types";
+import { CANVAS_HEIGHT, CANVAS_WIDTH, DEBUG_MODE } from "../config";
 import { imagePathsNew } from "../constants";
 
 const IMAGE_PATHS = imagePathsNew;
-const CANVAS_HEIGHT = parseInt(process.env.CANVAS_HEIGHT as string);
-const CANVAS_WIDTH = parseInt(process.env.CANVAS_WIDTH as string);
-const DEBUG_MODE = process.env.DEBUG_MODE as string;
 
 /**
  * Clase que se encarga de crear un sprite de un jugador

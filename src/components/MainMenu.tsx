@@ -1,6 +1,6 @@
+import { DEBUG_MODE } from "../lib/config";
 import { Game } from "../lib/logic/game";
 
-const DEBUG_MODE = process.env.DEBUG_MODE;
 export function MainMenu({ game }: { game: Game }) {
   const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
     const target = e.target as HTMLDivElement;

@@ -1,7 +1,6 @@
 import { MapInfo } from "../../types";
 import { Boundary } from "../classes";
-
-const TILESIZE = parseInt(process.env.TILESIZE as string);
+import { TILESIZE } from "../config";
 
 /**
  * Clase que se encarga de guardar y configurar la informacion de un mapa

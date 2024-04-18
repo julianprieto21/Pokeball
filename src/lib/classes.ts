@@ -1,5 +1,4 @@
-const DEBUG_MODE = process.env.DEBUG_MODE as string;
-const TILESIZE = parseInt(process.env.TILESIZE as string);
+import { DEBUG_MODE, TILESIZE } from "./config";
 
 /**
  * Clase que se encarga de crear un rectangulo que representa un limite

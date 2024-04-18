@@ -10,8 +10,7 @@ import { growthRate, statValue } from "../functions";
 import { getPokemonData, getMoveData } from "../getData";
 import _ from "lodash";
 import { Move } from "./move";
-
-const DEBUG_MODE = process.env.DEBUG_MODE as string;
+import { DEBUG_MODE } from "../config";
 
 /**
  * Clase que representa a un pokemon

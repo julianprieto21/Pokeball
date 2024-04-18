@@ -1,8 +1,8 @@
 import { Sprite } from "../../types";
+import { CANVAS_WIDTH } from "../config";
 import { imagePathsNew } from "../constants";
 
 const IMAGE_PATHS = imagePathsNew;
-const CANVAS_WIDTH = parseInt(process.env.CANVAS_WIDTH as string);
 
 /**
  * Clase que se encarga de crear un sprite de un pokemon

@@ -1,9 +1,7 @@
 import { gsap } from "gsap";
 import { PokemonSprite } from "../spritesClasses/pokemonSprite";
 import { Game } from "./game";
-
-const CANVAS_WIDTH = parseInt(process.env.CANVAS_WIDTH as string);
-const GAME_SPEED = parseInt(process.env.GAME_SPEED as string);
+import { CANVAS_WIDTH, GAME_SPEED } from "../config";
 
 /**
  * Clase que se encarga de las animaciones

@@ -11,9 +11,7 @@ import { InterfaceManager } from "./interfaceManager";
 import { AnimationManager } from "./animationManager";
 import _ from "lodash";
 import { Setters } from "../../types";
-
-const PLAYER_SPEED = parseInt(process.env.PLAYER_SPEED as string);
-const GAME_SPEED = parseInt(process.env.GAME_SPEED as string);
+import { GAME_SPEED, PLAYER_SPEED } from "../config";
 
 /**
  * Clase que se encarga de la logica del juego

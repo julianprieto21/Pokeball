@@ -6,9 +6,7 @@ import { Pokemon } from "../dataClasses/pokemon";
 import { format } from "../functions";
 import { PokemonSprite } from "../spritesClasses/pokemonSprite";
 import { MoveSprite } from "../spritesClasses/moveSprite";
-
-const CANVAS_HEIGHT = parseInt(process.env.CANVAS_HEIGHT as string);
-const CANVAS_WIDTH = parseInt(process.env.CANVAS_WIDTH as string);
+import { CANVAS_HEIGHT, CANVAS_WIDTH } from "../config";
 
 /**
  * Clase que se encarga de la batalla

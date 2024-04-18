@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { imagePathsNew, pocketMap } from "../../lib/constants";
 import gsap from "gsap";
+import { GAME_SPEED } from "../../lib/config";
 
 const IMAGE_PATHS = imagePathsNew;
-const GAME_SPEED = parseInt(process.env.GAME_SPEED as string);
 
 export function PocketBar({
   setPocket,
