@@ -2,28 +2,24 @@ import { Canvas } from "./components/Canvas";
 import { Interface } from "./components/Interface";
 import { useEffect, useRef, useState } from "react";
 import { Game } from "./lib/logic/game";
-import { Setters } from "./types";
 import { CANVAS_HEIGHT, CANVAS_WIDTH, DEBUG_MODE } from "./lib/config";
 
 function App() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [interfaceVisible, setInterfaceVisible] = useState(0);
   const [interfaceState, setInterfaceState] = useState(0);
-
   const [game, setGame] = useState<Game>();
 
-  const setters: Setters = {
-    interfaceVisible: setInterfaceVisible,
-    interfaceState: setInterfaceState,
-  };
-
   useEffect(() => {
+    if (!canvasRef.current || game) return;
     // Instancia el juego // Es necesario en un useEffect?
-    const gameObject = new Game(canvasRef, interfaceState, setters);
+    const gameObject = new Game(canvasRef, interfaceState, {
+      interfaceVisible: setInterfaceVisible,
+      interfaceState: setInterfaceState,
+    });
     gameObject.start();
-
     setGame(gameObject);
-  }, []);
+  }, [game, interfaceState]);
 
   useEffect(() => {
     // Actualiza el state del juego
@@ -39,7 +35,6 @@ function App() {
         canvasRef={canvasRef}
         className="game-canvas w-screen sm:h-screen sm:w-auto lg:h-auto"
       />
-
       {interfaceVisible && game ? (
         <Interface game={game} actualState={interfaceState} />
       ) : null}
