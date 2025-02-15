@@ -23,8 +23,8 @@ export class PokemonSprite implements Sprite {
    */
   constructor(id: number, isEnemy: boolean) {
     this.initialPos = isEnemy
-      ? { x: CANVAS_WIDTH, y: -20 }
-      : { x: -400, y: 110 };
+      ? { x: CANVAS_WIDTH, y: 30 }
+      : { x: -400, y: 240 };
     this.position = this.initialPos;
     this.sprites = {
       front: `${IMAGE_PATHS.pokemonFrontImgPath}${id}.png`,

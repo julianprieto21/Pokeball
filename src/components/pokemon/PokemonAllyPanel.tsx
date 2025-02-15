@@ -42,7 +42,7 @@ export function PokemonAllyPanel({
   }, [pokemon.name, pokemon.level, pokemon.currentHp, pokemon.currentXp]);
 
   return (
-    <div className="absolute w-fit bottom-[82px] right-8 sm:right-20 lg:right-24 sm:bottom-32 lg:bottom-52">
+    <div className="absolute w-fit bottom-[82px] right-8 sm:right-20 lg:right-40 sm:bottom-32 lg:bottom-52">
       <img
         className="w-40 sm:w-52 lg:size-auto"
         src={IMAGE_PATHS.allyPokPanelImgPath}

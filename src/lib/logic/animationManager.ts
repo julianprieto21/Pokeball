@@ -38,7 +38,7 @@ export class AnimationManager {
       throw new Error("Sprites are not set");
 
     this.tl.to(this.allySprite.position, {
-      x: 100,
+      x: 155,
       duration: 1 / GAME_SPEED,
       onStart: () => {
         this.game.canClick = false;
@@ -56,7 +56,7 @@ export class AnimationManager {
     if (!this.enemySprite) throw new Error("Sprites are not set");
 
     this.tl.to(this.enemySprite.position, {
-      x: 580,
+      x: 760,
       duration: 1 / GAME_SPEED,
       onStart: () => {
         this.game.canClick = false;

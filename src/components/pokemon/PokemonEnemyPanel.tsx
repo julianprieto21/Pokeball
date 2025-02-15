@@ -16,7 +16,7 @@ export function PokemonEnemyPanel({ pokemon }: { pokemon: Pokemon }) {
   }, [pokemon.level]);
 
   return (
-    <div className="w-fit absolute left-9 sm:left-20 lg:left-24 sm:top-4 top-2 overflow-clip">
+    <div className="w-fit absolute left-9 sm:left-20 lg:left-40 sm:top-4 top-2 overflow-clip">
       <img
         src={IMAGE_PATHS.enemyPokPanelImgPath}
         alt="Enemy Panel"

@@ -19,7 +19,7 @@ export class Player {
    * Constructor de la clase Player
    */
   constructor() {
-    this.team = [341, 10, 2, 52, 144, 109];
+    this.team = [2, 10, 341, 52, 144, 109];
     this.party = new Party(this.team);
     this.bag = new Bag();
     this.sprite = new PlayerSprite();

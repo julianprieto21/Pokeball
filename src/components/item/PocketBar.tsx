@@ -15,7 +15,7 @@ export function PocketBar({
 
   useEffect(() => {
     setPocketColor(pocketMap["misc"].color);
-    setLeftPadding(18);
+    setLeftPadding(pocketMap["misc"].id * 48 + 32 + 28 * pocketMap["misc"].id);
   }, []);
 
   const handlePocketClick = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -23,7 +23,7 @@ export function PocketBar({
     const id = target.id;
     const color = pocketMap[id].color;
     const selectorLeftPadding =
-      pocketMap[id].id * 48 + 18 + 4 * pocketMap[id].id;
+      pocketMap[id].id * 48 + 32 + 28 * pocketMap[id].id;
     animateSelector(color, selectorLeftPadding);
     setPocket(id);
 
@@ -54,10 +54,10 @@ export function PocketBar({
   ];
 
   return (
-    <div className="relative flex flex-row justify-evenly items-center bg-gray-400 top-4 p-1.5 rounded-full">
+    <div className="relative flex flex-row justify-between items-center gap-7 bg-gray-400 top-4 p-1.5 px-8 rounded-full">
       <div
         id="select"
-        className="rounded-xl absolute size-4 lg:h-14 lg:w-12"
+        className="rounded-xl absolute lg:h-14 lg:w-12"
         style={{ left: `${leftPadding}px`, backgroundColor: pocketColor }}
       ></div>
       {pocketsMap.map((pocket) => (

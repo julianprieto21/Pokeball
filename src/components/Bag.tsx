@@ -24,31 +24,32 @@ export function Bag({ game }: { game: Game }) {
   const playerBag = player.bag;
 
   return (
-    <>
+    <section className="relative size-full">
       <img src={IMAGE_PATHS.bagBackground} alt="Bag Background" />
+      <div className="absolute flex flex-col top-0 gap-5 w-1/2">
+        <h1 className="text-2xl sm:text-5xl lg:text-7xl flex gap-6 mt-4 ml-6">
+          <img
+            alt="Bag Icon"
+            src={IMAGE_PATHS.pocketIcons + "backpack.svg"}
+            className="size-8 sm:size-14 lg:size-20 -rotate-[30deg]"
+          />
+          BAG
+        </h1>
 
-      <img
-        alt="Bag Icon"
-        src={IMAGE_PATHS.pocketIcons + "backpack.svg"}
-        className="size-8 sm:size-14 lg:size-20 -rotate-[30deg] absolute top-1 sm:top-4 left-4"
-      />
-      <h1 className="text-2xl sm:text-5xl lg:text-7xl top-1 sm:top-4 left-16 sm:left-24 lg:left-28 absolute">
-        BAG
-      </h1>
-
-      <div className="absolute top-11 sm:top-20 lg:top-28 flex flex-col gap-1 sm:gap-2 lg:gap-3 left-8 sm:left-16 lg:left-16">
-        {playerTeam.getPokemons().map((pokemon, index) => {
-          return (
-            <PokemonIcon
-              key={index}
-              pokemon={pokemon}
-              setSelectedPokemon={setSelectedPokemon}
-            />
-          );
-        })}
+        <div className="flex flex-col gap-1 sm:gap-2 lg:gap-3 items-center">
+          {playerTeam.getPokemons().map((pokemon, index) => {
+            return (
+              <PokemonIcon
+                key={index}
+                pokemon={pokemon}
+                setSelectedPokemon={setSelectedPokemon}
+              />
+            );
+          })}
+        </div>
       </div>
 
-      <div className="h-full absolute top-0 right-0 w-[230px] sm:w-1/2 sm:right-4 lg:right-14">
+      <div className="w-1/2 h-full absolute top-0 right-0">
         <PocketBar setPocket={setPocketOpen} />
 
         <ItemList
@@ -64,6 +65,6 @@ export function Bag({ game }: { game: Game }) {
           <ItemDescription item={itemHover} />
         ) : null}
       </div>
-    </>
+    </section>
   );
 }

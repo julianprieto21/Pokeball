@@ -1,8 +1,8 @@
 export const mapInfo = {
   startingMap: {
     offset: {
-      x: -1310,
-      y: -550,
+      x: -1185,
+      y: -500,
     },
     backImg: "assets/background/maps/starting/map.png",
     foreImg: "assets/background/maps/starting/foreground.png",

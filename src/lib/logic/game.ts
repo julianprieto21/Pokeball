@@ -211,12 +211,15 @@ export class Game {
 
       if (
         this.actualMap.checkCollision(this.player.sprite, boundary) &&
-        _.random(0, 200 - GAME_SPEED * 79.6, true) < 1 &&
+        _.random(0, 1, true) < 0.3 &&
         this.player.party.getPrimary().currentHp > 0
       ) {
-        this.stop();
-        this.initBattle();
-        break;
+        const chance = _.random(0, 1, true);
+        if (chance < 0.3) {
+          this.stop();
+          this.initBattle();
+          break;
+        }
       }
     }
 
