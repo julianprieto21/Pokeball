@@ -11,7 +11,7 @@ import { InterfaceManager } from "./interfaceManager";
 import { AnimationManager } from "./animationManager";
 import _ from "lodash";
 import { Setters } from "../../types";
-import { GAME_SPEED, PLAYER_SPEED } from "../config";
+import { PLAYER_SPEED } from "../config";
 
 /**
  * Clase que se encarga de la logica del juego
